@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 575);
+/******/ 	return __webpack_require__(__webpack_require__.s = 580);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -13072,7 +13072,12 @@ module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 /* 489 */,
 /* 490 */,
 /* 491 */,
-/* 492 */
+/* 492 */,
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13129,7 +13134,6 @@ var initialPrep = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-
             console.log('1...');
             _context.next = 3;
             return fetchMapFeatures();
@@ -13140,19 +13144,19 @@ var initialPrep = function () {
 
             console.log('2... ');
             _context.next = 7;
-            return drawMapFeatures();
+            return getFreqDistData();
 
           case 7:
 
             console.log('3... ');
             _context.next = 10;
-            return fetchAddLayers();
+            return drawMapFeatures();
 
           case 10:
 
             console.log('4... ');
             _context.next = 13;
-            return checkCookie();
+            return fetchAddLayers();
 
           case 13:
 
@@ -13179,7 +13183,7 @@ var fetchMapFeatures = function () {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            geo_url = API_SERVER + GEO_VIEW + '?select=geoid_1,geometry';
+            geo_url = API_SERVER + GEO_VIEW + '?taz=lt.1000&select=taz,geometry,nhood';
             _context2.prev = 1;
             _context2.next = 4;
             return fetch(geo_url);
@@ -13203,7 +13207,6 @@ var fetchMapFeatures = function () {
 
               feat['type'] = 'Feature';
               feat['geometry'] = JSON.parse(feat.geometry);
-              feat = updateGeoType(feat);
             }
             _context2.next = 19;
             break;
@@ -13260,91 +13263,42 @@ var fetchMapFeatures = function () {
   };
 }();
 
-var updateGeoType = function () {
-  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(obj) {
+var fetchAddLayers = function () {
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+    var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, item, resp, features, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, feat, lyr;
+
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            obj['bgflag'] = 0;
-
-            if (!(obj[GEOID_VAR].length == 11)) {
-              _context3.next = 6;
-              break;
-            }
-
-            obj['tract_id'] = obj[GEOID_VAR].substring(5, 11);
-            obj['bg_id'] = 'NA';
-            _context3.next = 13;
-            break;
-
-          case 6:
-            if (!(obj[GEOID_VAR].length == 19)) {
-              _context3.next = 12;
-              break;
-            }
-
-            obj['tract_id'] = obj[GEOID_VAR].substring(12, 18);
-            obj['bg_id'] = obj[GEOID_VAR].substring(18, 19);
-            obj['bgflag'] = 1;
-            _context3.next = 13;
-            break;
-
-          case 12:
-            throw 'ERROR: Unknown feature/geography!!!' + GEOID_VAR + ': ' + obj[GEOID_VAR];
-
-          case 13:
-            return _context3.abrupt('return', obj);
-
-          case 14:
-          case 'end':
-            return _context3.stop();
-        }
-      }
-    }, _callee3, this);
-  }));
-
-  return function updateGeoType(_x) {
-    return _ref3.apply(this, arguments);
-  };
-}();
-
-var fetchAddLayers = function () {
-  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-    var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, item, resp, features, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, feat, lyr;
-
-    return _regenerator2.default.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.prev = 0;
+            _context3.prev = 0;
             _iteratorNormalCompletion2 = true;
             _didIteratorError2 = false;
             _iteratorError2 = undefined;
-            _context4.prev = 4;
+            _context3.prev = 4;
             _iterator2 = (0, _getIterator3.default)(ADDLAYERS);
 
           case 6:
             if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context4.next = 39;
+              _context3.next = 39;
               break;
             }
 
             item = _step2.value;
-            _context4.next = 10;
+            _context3.next = 10;
             return fetch(API_SERVER + item.view);
 
           case 10:
-            resp = _context4.sent;
-            _context4.next = 13;
+            resp = _context3.sent;
+            _context3.next = 13;
             return resp.json();
 
           case 13:
-            features = _context4.sent;
+            features = _context3.sent;
             _iteratorNormalCompletion3 = true;
             _didIteratorError3 = false;
             _iteratorError3 = undefined;
-            _context4.prev = 17;
+            _context3.prev = 17;
 
             for (_iterator3 = (0, _getIterator3.default)(features); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
               feat = _step3.value;
@@ -13352,38 +13306,38 @@ var fetchAddLayers = function () {
               feat['type'] = 'Feature';
               feat['geometry'] = JSON.parse(feat.geometry);
             }
-            _context4.next = 25;
+            _context3.next = 25;
             break;
 
           case 21:
-            _context4.prev = 21;
-            _context4.t0 = _context4['catch'](17);
+            _context3.prev = 21;
+            _context3.t0 = _context3['catch'](17);
             _didIteratorError3 = true;
-            _iteratorError3 = _context4.t0;
+            _iteratorError3 = _context3.t0;
 
           case 25:
-            _context4.prev = 25;
-            _context4.prev = 26;
+            _context3.prev = 25;
+            _context3.prev = 26;
 
             if (!_iteratorNormalCompletion3 && _iterator3.return) {
               _iterator3.return();
             }
 
           case 28:
-            _context4.prev = 28;
+            _context3.prev = 28;
 
             if (!_didIteratorError3) {
-              _context4.next = 31;
+              _context3.next = 31;
               break;
             }
 
             throw _iteratorError3;
 
           case 31:
-            return _context4.finish(28);
+            return _context3.finish(28);
 
           case 32:
-            return _context4.finish(25);
+            return _context3.finish(25);
 
           case 33:
             lyr = L.geoJSON(features, {
@@ -13396,63 +13350,63 @@ var fetchAddLayers = function () {
 
           case 36:
             _iteratorNormalCompletion2 = true;
-            _context4.next = 6;
+            _context3.next = 6;
             break;
 
           case 39:
-            _context4.next = 45;
+            _context3.next = 45;
             break;
 
           case 41:
-            _context4.prev = 41;
-            _context4.t1 = _context4['catch'](4);
+            _context3.prev = 41;
+            _context3.t1 = _context3['catch'](4);
             _didIteratorError2 = true;
-            _iteratorError2 = _context4.t1;
+            _iteratorError2 = _context3.t1;
 
           case 45:
-            _context4.prev = 45;
-            _context4.prev = 46;
+            _context3.prev = 45;
+            _context3.prev = 46;
 
             if (!_iteratorNormalCompletion2 && _iterator2.return) {
               _iterator2.return();
             }
 
           case 48:
-            _context4.prev = 48;
+            _context3.prev = 48;
 
             if (!_didIteratorError2) {
-              _context4.next = 51;
+              _context3.next = 51;
               break;
             }
 
             throw _iteratorError2;
 
           case 51:
-            return _context4.finish(48);
+            return _context3.finish(48);
 
           case 52:
-            return _context4.finish(45);
+            return _context3.finish(45);
 
           case 53:
-            _context4.next = 58;
+            _context3.next = 58;
             break;
 
           case 55:
-            _context4.prev = 55;
-            _context4.t2 = _context4['catch'](0);
+            _context3.prev = 55;
+            _context3.t2 = _context3['catch'](0);
 
-            console.log('additional layers error: ' + _context4.t2);
+            console.log('additional layers error: ' + _context3.t2);
 
           case 58:
           case 'end':
-            return _context4.stop();
+            return _context3.stop();
         }
       }
-    }, _callee4, this, [[0, 55], [4, 41, 45, 53], [17, 21, 25, 33], [26,, 28, 32], [46,, 48, 52]]);
+    }, _callee3, this, [[0, 55], [4, 41, 45, 53], [17, 21, 25, 33], [26,, 28, 32], [46,, 48, 52]]);
   }));
 
   return function fetchAddLayers() {
-    return _ref4.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 }();
 
@@ -13460,14 +13414,606 @@ var fetchAddLayers = function () {
 
 
 var getMapData = function () {
+  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+    var data_url, resp, jsonData, tmp, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, yr, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, inc, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, _imp, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, met, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, entry, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, _met, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, imp, _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _iterator8, _step8, _yr, _iteratorNormalCompletion13, _didIteratorError13, _iteratorError13, _iterator13, _step13, _inc, _iteratorNormalCompletion14, _didIteratorError14, _iteratorError14, _iterator14, _step14, _imp2, row, _iteratorNormalCompletion15, _didIteratorError15, _iteratorError15, _iterator15, _step15, _met2;
+
+    return _regenerator2.default.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            data_url = API_SERVER + DATA_VIEW;
+            _context4.next = 3;
+            return fetch(data_url);
+
+          case 3:
+            resp = _context4.sent;
+            _context4.next = 6;
+            return resp.json();
+
+          case 6:
+            jsonData = _context4.sent;
+
+            base_lookup = {}; // collects attributes for each geometry
+
+            tmp = {}; // aggregates attributes across all geometries
+
+            _iteratorNormalCompletion5 = true;
+            _didIteratorError5 = false;
+            _iteratorError5 = undefined;
+            _context4.prev = 12;
+            _iterator5 = (0, _getIterator3.default)(YR_LIST);
+
+          case 14:
+            if (_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done) {
+              _context4.next = 92;
+              break;
+            }
+
+            yr = _step5.value;
+
+            tmp[yr] = {};
+            base_lookup[yr] = {};
+            _iteratorNormalCompletion9 = true;
+            _didIteratorError9 = false;
+            _iteratorError9 = undefined;
+            _context4.prev = 21;
+            _iterator9 = (0, _getIterator3.default)(app.income_options);
+
+          case 23:
+            if (_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done) {
+              _context4.next = 75;
+              break;
+            }
+
+            inc = _step9.value;
+
+            tmp[yr][inc.value] = {};
+            base_lookup[yr][inc.value] = {};
+            _iteratorNormalCompletion10 = true;
+            _didIteratorError10 = false;
+            _iteratorError10 = undefined;
+            _context4.prev = 30;
+            _iterator10 = (0, _getIterator3.default)(app.importance_options);
+
+          case 32:
+            if (_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done) {
+              _context4.next = 58;
+              break;
+            }
+
+            _imp = _step10.value;
+
+            tmp[yr][inc.value][_imp.value] = {};
+            base_lookup[yr][inc.value][_imp.value] = {};
+            _iteratorNormalCompletion11 = true;
+            _didIteratorError11 = false;
+            _iteratorError11 = undefined;
+            _context4.prev = 39;
+            for (_iterator11 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+              met = _step11.value;
+
+              tmp[yr][inc.value][_imp.value][met.value] = 0;
+            }
+            _context4.next = 47;
+            break;
+
+          case 43:
+            _context4.prev = 43;
+            _context4.t0 = _context4['catch'](39);
+            _didIteratorError11 = true;
+            _iteratorError11 = _context4.t0;
+
+          case 47:
+            _context4.prev = 47;
+            _context4.prev = 48;
+
+            if (!_iteratorNormalCompletion11 && _iterator11.return) {
+              _iterator11.return();
+            }
+
+          case 50:
+            _context4.prev = 50;
+
+            if (!_didIteratorError11) {
+              _context4.next = 53;
+              break;
+            }
+
+            throw _iteratorError11;
+
+          case 53:
+            return _context4.finish(50);
+
+          case 54:
+            return _context4.finish(47);
+
+          case 55:
+            _iteratorNormalCompletion10 = true;
+            _context4.next = 32;
+            break;
+
+          case 58:
+            _context4.next = 64;
+            break;
+
+          case 60:
+            _context4.prev = 60;
+            _context4.t1 = _context4['catch'](30);
+            _didIteratorError10 = true;
+            _iteratorError10 = _context4.t1;
+
+          case 64:
+            _context4.prev = 64;
+            _context4.prev = 65;
+
+            if (!_iteratorNormalCompletion10 && _iterator10.return) {
+              _iterator10.return();
+            }
+
+          case 67:
+            _context4.prev = 67;
+
+            if (!_didIteratorError10) {
+              _context4.next = 70;
+              break;
+            }
+
+            throw _iteratorError10;
+
+          case 70:
+            return _context4.finish(67);
+
+          case 71:
+            return _context4.finish(64);
+
+          case 72:
+            _iteratorNormalCompletion9 = true;
+            _context4.next = 23;
+            break;
+
+          case 75:
+            _context4.next = 81;
+            break;
+
+          case 77:
+            _context4.prev = 77;
+            _context4.t2 = _context4['catch'](21);
+            _didIteratorError9 = true;
+            _iteratorError9 = _context4.t2;
+
+          case 81:
+            _context4.prev = 81;
+            _context4.prev = 82;
+
+            if (!_iteratorNormalCompletion9 && _iterator9.return) {
+              _iterator9.return();
+            }
+
+          case 84:
+            _context4.prev = 84;
+
+            if (!_didIteratorError9) {
+              _context4.next = 87;
+              break;
+            }
+
+            throw _iteratorError9;
+
+          case 87:
+            return _context4.finish(84);
+
+          case 88:
+            return _context4.finish(81);
+
+          case 89:
+            _iteratorNormalCompletion5 = true;
+            _context4.next = 14;
+            break;
+
+          case 92:
+            _context4.next = 98;
+            break;
+
+          case 94:
+            _context4.prev = 94;
+            _context4.t3 = _context4['catch'](12);
+            _didIteratorError5 = true;
+            _iteratorError5 = _context4.t3;
+
+          case 98:
+            _context4.prev = 98;
+            _context4.prev = 99;
+
+            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+              _iterator5.return();
+            }
+
+          case 101:
+            _context4.prev = 101;
+
+            if (!_didIteratorError5) {
+              _context4.next = 104;
+              break;
+            }
+
+            throw _iteratorError5;
+
+          case 104:
+            return _context4.finish(101);
+
+          case 105:
+            return _context4.finish(98);
+
+          case 106:
+            _iteratorNormalCompletion6 = true;
+            _didIteratorError6 = false;
+            _iteratorError6 = undefined;
+            _context4.prev = 109;
+            _iterator6 = (0, _getIterator3.default)(jsonData);
+
+          case 111:
+            if (_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done) {
+              _context4.next = 136;
+              break;
+            }
+
+            entry = _step6.value;
+
+            base_lookup[entry[YEAR_VAR]][entry[INC_VAR]][entry[IMP_VAR]][entry[GEOID_VAR]] = entry;
+            _iteratorNormalCompletion12 = true;
+            _didIteratorError12 = false;
+            _iteratorError12 = undefined;
+            _context4.prev = 117;
+            for (_iterator12 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+              _met = _step12.value;
+
+              tmp[entry[YEAR_VAR]][entry[INC_VAR]][entry[IMP_VAR]][_met.value] += entry[_met.value];
+            }
+            _context4.next = 125;
+            break;
+
+          case 121:
+            _context4.prev = 121;
+            _context4.t4 = _context4['catch'](117);
+            _didIteratorError12 = true;
+            _iteratorError12 = _context4.t4;
+
+          case 125:
+            _context4.prev = 125;
+            _context4.prev = 126;
+
+            if (!_iteratorNormalCompletion12 && _iterator12.return) {
+              _iterator12.return();
+            }
+
+          case 128:
+            _context4.prev = 128;
+
+            if (!_didIteratorError12) {
+              _context4.next = 131;
+              break;
+            }
+
+            throw _iteratorError12;
+
+          case 131:
+            return _context4.finish(128);
+
+          case 132:
+            return _context4.finish(125);
+
+          case 133:
+            _iteratorNormalCompletion6 = true;
+            _context4.next = 111;
+            break;
+
+          case 136:
+            _context4.next = 142;
+            break;
+
+          case 138:
+            _context4.prev = 138;
+            _context4.t5 = _context4['catch'](109);
+            _didIteratorError6 = true;
+            _iteratorError6 = _context4.t5;
+
+          case 142:
+            _context4.prev = 142;
+            _context4.prev = 143;
+
+            if (!_iteratorNormalCompletion6 && _iterator6.return) {
+              _iterator6.return();
+            }
+
+          case 145:
+            _context4.prev = 145;
+
+            if (!_didIteratorError6) {
+              _context4.next = 148;
+              break;
+            }
+
+            throw _iteratorError6;
+
+          case 148:
+            return _context4.finish(145);
+
+          case 149:
+            return _context4.finish(142);
+
+          case 150:
+
+            _aggregateData = {};
+            _iteratorNormalCompletion7 = true;
+            _didIteratorError7 = false;
+            _iteratorError7 = undefined;
+            _context4.prev = 154;
+            for (_iterator7 = (0, _getIterator3.default)(app.importance_options); !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+              imp = _step7.value;
+
+              _aggregateData[imp.value] = [];
+            }
+
+            _context4.next = 162;
+            break;
+
+          case 158:
+            _context4.prev = 158;
+            _context4.t6 = _context4['catch'](154);
+            _didIteratorError7 = true;
+            _iteratorError7 = _context4.t6;
+
+          case 162:
+            _context4.prev = 162;
+            _context4.prev = 163;
+
+            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+              _iterator7.return();
+            }
+
+          case 165:
+            _context4.prev = 165;
+
+            if (!_didIteratorError7) {
+              _context4.next = 168;
+              break;
+            }
+
+            throw _iteratorError7;
+
+          case 168:
+            return _context4.finish(165);
+
+          case 169:
+            return _context4.finish(162);
+
+          case 170:
+            _iteratorNormalCompletion8 = true;
+            _didIteratorError8 = false;
+            _iteratorError8 = undefined;
+            _context4.prev = 173;
+            _iterator8 = (0, _getIterator3.default)(YR_LIST);
+
+          case 175:
+            if (_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done) {
+              _context4.next = 250;
+              break;
+            }
+
+            _yr = _step8.value;
+            _iteratorNormalCompletion13 = true;
+            _didIteratorError13 = false;
+            _iteratorError13 = undefined;
+            _context4.prev = 180;
+            _iterator13 = (0, _getIterator3.default)(app.income_options);
+
+          case 182:
+            if (_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done) {
+              _context4.next = 233;
+              break;
+            }
+
+            _inc = _step13.value;
+            _iteratorNormalCompletion14 = true;
+            _didIteratorError14 = false;
+            _iteratorError14 = undefined;
+            _context4.prev = 187;
+            _iterator14 = (0, _getIterator3.default)(app.importance_options);
+
+          case 189:
+            if (_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done) {
+              _context4.next = 216;
+              break;
+            }
+
+            _imp2 = _step14.value;
+            row = {};
+
+            row['year'] = _yr.toString();
+            _iteratorNormalCompletion15 = true;
+            _didIteratorError15 = false;
+            _iteratorError15 = undefined;
+            _context4.prev = 196;
+            for (_iterator15 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
+              _met2 = _step15.value;
+
+              row[_met2.value] = Math.round(tmp[_yr][_inc.value][_imp2.value][_met2.value] * prec) / prec;
+            }
+            _context4.next = 204;
+            break;
+
+          case 200:
+            _context4.prev = 200;
+            _context4.t7 = _context4['catch'](196);
+            _didIteratorError15 = true;
+            _iteratorError15 = _context4.t7;
+
+          case 204:
+            _context4.prev = 204;
+            _context4.prev = 205;
+
+            if (!_iteratorNormalCompletion15 && _iterator15.return) {
+              _iterator15.return();
+            }
+
+          case 207:
+            _context4.prev = 207;
+
+            if (!_didIteratorError15) {
+              _context4.next = 210;
+              break;
+            }
+
+            throw _iteratorError15;
+
+          case 210:
+            return _context4.finish(207);
+
+          case 211:
+            return _context4.finish(204);
+
+          case 212:
+            _aggregateData[_imp2.value].push(row);
+
+          case 213:
+            _iteratorNormalCompletion14 = true;
+            _context4.next = 189;
+            break;
+
+          case 216:
+            _context4.next = 222;
+            break;
+
+          case 218:
+            _context4.prev = 218;
+            _context4.t8 = _context4['catch'](187);
+            _didIteratorError14 = true;
+            _iteratorError14 = _context4.t8;
+
+          case 222:
+            _context4.prev = 222;
+            _context4.prev = 223;
+
+            if (!_iteratorNormalCompletion14 && _iterator14.return) {
+              _iterator14.return();
+            }
+
+          case 225:
+            _context4.prev = 225;
+
+            if (!_didIteratorError14) {
+              _context4.next = 228;
+              break;
+            }
+
+            throw _iteratorError14;
+
+          case 228:
+            return _context4.finish(225);
+
+          case 229:
+            return _context4.finish(222);
+
+          case 230:
+            _iteratorNormalCompletion13 = true;
+            _context4.next = 182;
+            break;
+
+          case 233:
+            _context4.next = 239;
+            break;
+
+          case 235:
+            _context4.prev = 235;
+            _context4.t9 = _context4['catch'](180);
+            _didIteratorError13 = true;
+            _iteratorError13 = _context4.t9;
+
+          case 239:
+            _context4.prev = 239;
+            _context4.prev = 240;
+
+            if (!_iteratorNormalCompletion13 && _iterator13.return) {
+              _iterator13.return();
+            }
+
+          case 242:
+            _context4.prev = 242;
+
+            if (!_didIteratorError13) {
+              _context4.next = 245;
+              break;
+            }
+
+            throw _iteratorError13;
+
+          case 245:
+            return _context4.finish(242);
+
+          case 246:
+            return _context4.finish(239);
+
+          case 247:
+            _iteratorNormalCompletion8 = true;
+            _context4.next = 175;
+            break;
+
+          case 250:
+            _context4.next = 256;
+            break;
+
+          case 252:
+            _context4.prev = 252;
+            _context4.t10 = _context4['catch'](173);
+            _didIteratorError8 = true;
+            _iteratorError8 = _context4.t10;
+
+          case 256:
+            _context4.prev = 256;
+            _context4.prev = 257;
+
+            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+              _iterator8.return();
+            }
+
+          case 259:
+            _context4.prev = 259;
+
+            if (!_didIteratorError8) {
+              _context4.next = 262;
+              break;
+            }
+
+            throw _iteratorError8;
+
+          case 262:
+            return _context4.finish(259);
+
+          case 263:
+            return _context4.finish(256);
+
+          case 264:
+          case 'end':
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this, [[12, 94, 98, 106], [21, 77, 81, 89], [30, 60, 64, 72], [39, 43, 47, 55], [48,, 50, 54], [65,, 67, 71], [82,, 84, 88], [99,, 101, 105], [109, 138, 142, 150], [117, 121, 125, 133], [126,, 128, 132], [143,, 145, 149], [154, 158, 162, 170], [163,, 165, 169], [173, 252, 256, 264], [180, 235, 239, 247], [187, 218, 222, 230], [196, 200, 204, 212], [205,, 207, 211], [223,, 225, 229], [240,, 242, 246], [257,, 259, 263]]);
+  }));
+
+  return function getMapData() {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var getFreqDistData = function () {
   var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-    var data_url, resp, jsonData, tmp, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, yr, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, met, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, entry, _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _iterator8, _step8, _yr2, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, _met, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, _yr, row, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, _met2;
+    var data_url, resp, jsonData, _iteratorNormalCompletion16, _didIteratorError16, _iteratorError16, _iterator16, _step16, yr, _iteratorNormalCompletion18, _didIteratorError18, _iteratorError18, _iterator18, _step18, inc, _iteratorNormalCompletion19, _didIteratorError19, _iteratorError19, _iterator19, _step19, imp, _iteratorNormalCompletion20, _didIteratorError20, _iteratorError20, _iterator20, _step20, met, bin, _iteratorNormalCompletion17, _didIteratorError17, _iteratorError17, _iterator17, _step17, entry, _iteratorNormalCompletion21, _didIteratorError21, _iteratorError21, _iterator21, _step21, _met3;
 
     return _regenerator2.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            data_url = API_SERVER + DATA_VIEW;
+            data_url = API_SERVER + FREQ_DIST_VIEW;
             _context5.next = 3;
             return fetch(data_url);
 
@@ -13479,559 +14025,1071 @@ var getMapData = function () {
           case 6:
             jsonData = _context5.sent;
 
-            base_lookup = {};
-            tmp = {};
-            _iteratorNormalCompletion4 = true;
-            _didIteratorError4 = false;
-            _iteratorError4 = undefined;
-            _context5.prev = 12;
-            _iterator4 = (0, _getIterator3.default)(YR_LIST);
 
-          case 14:
-            if (_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done) {
-              _context5.next = 39;
+            freq_dist_lookup = {}; // collects attributes for each bin in the frequency distribution
+
+            // build the dictionary
+            _iteratorNormalCompletion16 = true;
+            _didIteratorError16 = false;
+            _iteratorError16 = undefined;
+            _context5.prev = 11;
+            _iterator16 = (0, _getIterator3.default)(YR_LIST);
+
+          case 13:
+            if (_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done) {
+              _context5.next = 88;
               break;
             }
 
-            yr = _step4.value;
+            yr = _step16.value;
 
-            tmp[yr] = {};
-            _iteratorNormalCompletion7 = true;
-            _didIteratorError7 = false;
-            _iteratorError7 = undefined;
-            _context5.prev = 20;
-            for (_iterator7 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-              met = _step7.value;
+            freq_dist_lookup[yr] = {};
+            _iteratorNormalCompletion18 = true;
+            _didIteratorError18 = false;
+            _iteratorError18 = undefined;
+            _context5.prev = 19;
+            _iterator18 = (0, _getIterator3.default)(app.income_options);
 
-              tmp[yr][met.value] = 0;
-            }
-            _context5.next = 28;
-            break;
-
-          case 24:
-            _context5.prev = 24;
-            _context5.t0 = _context5['catch'](20);
-            _didIteratorError7 = true;
-            _iteratorError7 = _context5.t0;
-
-          case 28:
-            _context5.prev = 28;
-            _context5.prev = 29;
-
-            if (!_iteratorNormalCompletion7 && _iterator7.return) {
-              _iterator7.return();
-            }
-
-          case 31:
-            _context5.prev = 31;
-
-            if (!_didIteratorError7) {
-              _context5.next = 34;
+          case 21:
+            if (_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done) {
+              _context5.next = 71;
               break;
             }
 
-            throw _iteratorError7;
+            inc = _step18.value;
 
-          case 34:
-            return _context5.finish(31);
+            freq_dist_lookup[yr][inc.value] = {};
+            _iteratorNormalCompletion19 = true;
+            _didIteratorError19 = false;
+            _iteratorError19 = undefined;
+            _context5.prev = 27;
+            _iterator19 = (0, _getIterator3.default)(app.importance_options);
 
-          case 35:
-            return _context5.finish(28);
+          case 29:
+            if (_iteratorNormalCompletion19 = (_step19 = _iterator19.next()).done) {
+              _context5.next = 54;
+              break;
+            }
 
-          case 36:
-            _iteratorNormalCompletion4 = true;
-            _context5.next = 14;
+            imp = _step19.value;
+
+            freq_dist_lookup[yr][inc.value][imp.value] = {};
+            _iteratorNormalCompletion20 = true;
+            _didIteratorError20 = false;
+            _iteratorError20 = undefined;
+            _context5.prev = 35;
+            for (_iterator20 = (0, _getIterator3.default)(app.chart_metric_options); !(_iteratorNormalCompletion20 = (_step20 = _iterator20.next()).done); _iteratorNormalCompletion20 = true) {
+              met = _step20.value;
+
+              freq_dist_lookup[yr][inc.value][imp.value][met.value] = {};
+              // last loop is unnecessary
+              for (bin = app.bin_start; bin < app.bin_stop; bin += app.bin_step) {
+                freq_dist_lookup[yr][inc.value][imp.value][met.value][bin] = 0;
+              }
+            }
+            _context5.next = 43;
             break;
 
           case 39:
-            _context5.next = 45;
-            break;
+            _context5.prev = 39;
+            _context5.t0 = _context5['catch'](35);
+            _didIteratorError20 = true;
+            _iteratorError20 = _context5.t0;
 
-          case 41:
-            _context5.prev = 41;
-            _context5.t1 = _context5['catch'](12);
-            _didIteratorError4 = true;
-            _iteratorError4 = _context5.t1;
+          case 43:
+            _context5.prev = 43;
+            _context5.prev = 44;
 
-          case 45:
-            _context5.prev = 45;
+            if (!_iteratorNormalCompletion20 && _iterator20.return) {
+              _iterator20.return();
+            }
+
+          case 46:
             _context5.prev = 46;
 
-            if (!_iteratorNormalCompletion4 && _iterator4.return) {
-              _iterator4.return();
-            }
-
-          case 48:
-            _context5.prev = 48;
-
-            if (!_didIteratorError4) {
-              _context5.next = 51;
+            if (!_didIteratorError20) {
+              _context5.next = 49;
               break;
             }
 
-            throw _iteratorError4;
+            throw _iteratorError20;
+
+          case 49:
+            return _context5.finish(46);
+
+          case 50:
+            return _context5.finish(43);
 
           case 51:
-            return _context5.finish(48);
-
-          case 52:
-            return _context5.finish(45);
-
-          case 53:
-            _iteratorNormalCompletion5 = true;
-            _didIteratorError5 = false;
-            _iteratorError5 = undefined;
-            _context5.prev = 56;
-            _iterator5 = (0, _getIterator3.default)(jsonData);
-
-          case 58:
-            if (_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done) {
-              _context5.next = 107;
-              break;
-            }
-
-            entry = _step5.value;
-
-
-            base_lookup[entry[GEOID_VAR]] = entry;
-
-            _iteratorNormalCompletion8 = true;
-            _didIteratorError8 = false;
-            _iteratorError8 = undefined;
-            _context5.prev = 64;
-            _iterator8 = (0, _getIterator3.default)(YR_LIST);
-
-          case 66:
-            if (_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done) {
-              _context5.next = 90;
-              break;
-            }
-
-            _yr2 = _step8.value;
-            _iteratorNormalCompletion9 = true;
-            _didIteratorError9 = false;
-            _iteratorError9 = undefined;
-            _context5.prev = 71;
-
-            for (_iterator9 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-              _met = _step9.value;
-
-              tmp[_yr2][_met.value] += entry[_met.value + _yr2];
-            }
-            _context5.next = 79;
+            _iteratorNormalCompletion19 = true;
+            _context5.next = 29;
             break;
 
-          case 75:
-            _context5.prev = 75;
-            _context5.t2 = _context5['catch'](71);
-            _didIteratorError9 = true;
-            _iteratorError9 = _context5.t2;
+          case 54:
+            _context5.next = 60;
+            break;
 
-          case 79:
-            _context5.prev = 79;
-            _context5.prev = 80;
+          case 56:
+            _context5.prev = 56;
+            _context5.t1 = _context5['catch'](27);
+            _didIteratorError19 = true;
+            _iteratorError19 = _context5.t1;
 
-            if (!_iteratorNormalCompletion9 && _iterator9.return) {
-              _iterator9.return();
+          case 60:
+            _context5.prev = 60;
+            _context5.prev = 61;
+
+            if (!_iteratorNormalCompletion19 && _iterator19.return) {
+              _iterator19.return();
             }
 
-          case 82:
-            _context5.prev = 82;
+          case 63:
+            _context5.prev = 63;
 
-            if (!_didIteratorError9) {
-              _context5.next = 85;
+            if (!_didIteratorError19) {
+              _context5.next = 66;
               break;
             }
 
-            throw _iteratorError9;
+            throw _iteratorError19;
+
+          case 66:
+            return _context5.finish(63);
+
+          case 67:
+            return _context5.finish(60);
+
+          case 68:
+            _iteratorNormalCompletion18 = true;
+            _context5.next = 21;
+            break;
+
+          case 71:
+            _context5.next = 77;
+            break;
+
+          case 73:
+            _context5.prev = 73;
+            _context5.t2 = _context5['catch'](19);
+            _didIteratorError18 = true;
+            _iteratorError18 = _context5.t2;
+
+          case 77:
+            _context5.prev = 77;
+            _context5.prev = 78;
+
+            if (!_iteratorNormalCompletion18 && _iterator18.return) {
+              _iterator18.return();
+            }
+
+          case 80:
+            _context5.prev = 80;
+
+            if (!_didIteratorError18) {
+              _context5.next = 83;
+              break;
+            }
+
+            throw _iteratorError18;
+
+          case 83:
+            return _context5.finish(80);
+
+          case 84:
+            return _context5.finish(77);
 
           case 85:
-            return _context5.finish(82);
+            _iteratorNormalCompletion16 = true;
+            _context5.next = 13;
+            break;
 
-          case 86:
-            return _context5.finish(79);
-
-          case 87:
-            _iteratorNormalCompletion8 = true;
-            _context5.next = 66;
+          case 88:
+            _context5.next = 94;
             break;
 
           case 90:
-            _context5.next = 96;
-            break;
+            _context5.prev = 90;
+            _context5.t3 = _context5['catch'](11);
+            _didIteratorError16 = true;
+            _iteratorError16 = _context5.t3;
 
-          case 92:
-            _context5.prev = 92;
-            _context5.t3 = _context5['catch'](64);
-            _didIteratorError8 = true;
-            _iteratorError8 = _context5.t3;
+          case 94:
+            _context5.prev = 94;
+            _context5.prev = 95;
 
-          case 96:
-            _context5.prev = 96;
-            _context5.prev = 97;
-
-            if (!_iteratorNormalCompletion8 && _iterator8.return) {
-              _iterator8.return();
+            if (!_iteratorNormalCompletion16 && _iterator16.return) {
+              _iterator16.return();
             }
 
-          case 99:
-            _context5.prev = 99;
+          case 97:
+            _context5.prev = 97;
 
-            if (!_didIteratorError8) {
-              _context5.next = 102;
+            if (!_didIteratorError16) {
+              _context5.next = 100;
               break;
             }
 
-            throw _iteratorError8;
+            throw _iteratorError16;
+
+          case 100:
+            return _context5.finish(97);
+
+          case 101:
+            return _context5.finish(94);
 
           case 102:
-            return _context5.finish(99);
 
-          case 103:
-            return _context5.finish(96);
-
-          case 104:
-            _iteratorNormalCompletion5 = true;
-            _context5.next = 58;
-            break;
+            // fill the dictionary
+            _iteratorNormalCompletion17 = true;
+            _didIteratorError17 = false;
+            _iteratorError17 = undefined;
+            _context5.prev = 105;
+            _iterator17 = (0, _getIterator3.default)(jsonData);
 
           case 107:
-            _context5.next = 113;
-            break;
-
-          case 109:
-            _context5.prev = 109;
-            _context5.t4 = _context5['catch'](56);
-            _didIteratorError5 = true;
-            _iteratorError5 = _context5.t4;
-
-          case 113:
-            _context5.prev = 113;
-            _context5.prev = 114;
-
-            if (!_iteratorNormalCompletion5 && _iterator5.return) {
-              _iterator5.return();
+            if (_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done) {
+              _context5.next = 131;
+              break;
             }
+
+            entry = _step17.value;
+            _iteratorNormalCompletion21 = true;
+            _didIteratorError21 = false;
+            _iteratorError21 = undefined;
+            _context5.prev = 112;
+
+            for (_iterator21 = (0, _getIterator3.default)(app.chart_metric_options); !(_iteratorNormalCompletion21 = (_step21 = _iterator21.next()).done); _iteratorNormalCompletion21 = true) {
+              _met3 = _step21.value;
+
+              freq_dist_lookup[entry[YEAR_VAR]][entry[INC_VAR]][entry[IMP_VAR]][_met3.value][entry[FREQ_DIST_BIN_VAR]] = entry[_met3.value];
+            }
+            _context5.next = 120;
+            break;
 
           case 116:
             _context5.prev = 116;
-
-            if (!_didIteratorError5) {
-              _context5.next = 119;
-              break;
-            }
-
-            throw _iteratorError5;
-
-          case 119:
-            return _context5.finish(116);
+            _context5.t4 = _context5['catch'](112);
+            _didIteratorError21 = true;
+            _iteratorError21 = _context5.t4;
 
           case 120:
-            return _context5.finish(113);
+            _context5.prev = 120;
+            _context5.prev = 121;
 
-          case 121:
-            _aggregateData = [];
-            _iteratorNormalCompletion6 = true;
-            _didIteratorError6 = false;
-            _iteratorError6 = undefined;
-            _context5.prev = 125;
-            _iterator6 = (0, _getIterator3.default)(YR_LIST);
+            if (!_iteratorNormalCompletion21 && _iterator21.return) {
+              _iterator21.return();
+            }
+
+          case 123:
+            _context5.prev = 123;
+
+            if (!_didIteratorError21) {
+              _context5.next = 126;
+              break;
+            }
+
+            throw _iteratorError21;
+
+          case 126:
+            return _context5.finish(123);
 
           case 127:
-            if (_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done) {
-              _context5.next = 154;
+            return _context5.finish(120);
+
+          case 128:
+            _iteratorNormalCompletion17 = true;
+            _context5.next = 107;
+            break;
+
+          case 131:
+            _context5.next = 137;
+            break;
+
+          case 133:
+            _context5.prev = 133;
+            _context5.t5 = _context5['catch'](105);
+            _didIteratorError17 = true;
+            _iteratorError17 = _context5.t5;
+
+          case 137:
+            _context5.prev = 137;
+            _context5.prev = 138;
+
+            if (!_iteratorNormalCompletion17 && _iterator17.return) {
+              _iterator17.return();
+            }
+
+          case 140:
+            _context5.prev = 140;
+
+            if (!_didIteratorError17) {
+              _context5.next = 143;
               break;
             }
 
-            _yr = _step6.value;
-            row = {};
+            throw _iteratorError17;
 
-            row['year'] = _yr.toString();
-            _iteratorNormalCompletion10 = true;
-            _didIteratorError10 = false;
-            _iteratorError10 = undefined;
-            _context5.prev = 134;
-            for (_iterator10 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-              _met2 = _step10.value;
+          case 143:
+            return _context5.finish(140);
 
-              row[_met2.value] = tmp[_yr][_met2.value];
-            }
-            _context5.next = 142;
-            break;
-
-          case 138:
-            _context5.prev = 138;
-            _context5.t5 = _context5['catch'](134);
-            _didIteratorError10 = true;
-            _iteratorError10 = _context5.t5;
-
-          case 142:
-            _context5.prev = 142;
-            _context5.prev = 143;
-
-            if (!_iteratorNormalCompletion10 && _iterator10.return) {
-              _iterator10.return();
-            }
+          case 144:
+            return _context5.finish(137);
 
           case 145:
-            _context5.prev = 145;
-
-            if (!_didIteratorError10) {
-              _context5.next = 148;
-              break;
-            }
-
-            throw _iteratorError10;
-
-          case 148:
-            return _context5.finish(145);
-
-          case 149:
-            return _context5.finish(142);
-
-          case 150:
-            _aggregateData.push(row);
-
-          case 151:
-            _iteratorNormalCompletion6 = true;
-            _context5.next = 127;
-            break;
-
-          case 154:
-            _context5.next = 160;
-            break;
-
-          case 156:
-            _context5.prev = 156;
-            _context5.t6 = _context5['catch'](125);
-            _didIteratorError6 = true;
-            _iteratorError6 = _context5.t6;
-
-          case 160:
-            _context5.prev = 160;
-            _context5.prev = 161;
-
-            if (!_iteratorNormalCompletion6 && _iterator6.return) {
-              _iterator6.return();
-            }
-
-          case 163:
-            _context5.prev = 163;
-
-            if (!_didIteratorError6) {
-              _context5.next = 166;
-              break;
-            }
-
-            throw _iteratorError6;
-
-          case 166:
-            return _context5.finish(163);
-
-          case 167:
-            return _context5.finish(160);
-
-          case 168:
           case 'end':
             return _context5.stop();
         }
       }
-    }, _callee5, this, [[12, 41, 45, 53], [20, 24, 28, 36], [29,, 31, 35], [46,, 48, 52], [56, 109, 113, 121], [64, 92, 96, 104], [71, 75, 79, 87], [80,, 82, 86], [97,, 99, 103], [114,, 116, 120], [125, 156, 160, 168], [134, 138, 142, 150], [143,, 145, 149], [161,, 163, 167]]);
+    }, _callee5, this, [[11, 90, 94, 102], [19, 73, 77, 85], [27, 56, 60, 68], [35, 39, 43, 51], [44,, 46, 50], [61,, 63, 67], [78,, 80, 84], [95,, 97, 101], [105, 133, 137, 145], [112, 116, 120, 128], [121,, 123, 127], [138,, 140, 144]]);
   }));
 
-  return function getMapData() {
+  return function getFreqDistData() {
     return _ref5.apply(this, arguments);
   };
 }();
 
-var drawMapFeatures = function () {
+var buildCharts = function () {
   var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
-    var queryMapData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-    var cleanFeatures, sel_metric, base_metric, comp_metric, map_metric, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, feat, feat_entry, color_func, sel_colorvals2, bp, mode, custom_bps, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, i;
+    var dist_vals, pct_dist_vals, tots, val, bin_tots, xlabels, bin_min, bin_max, ykeys, ylabels, yMin, yMax, _iteratorNormalCompletion22, _didIteratorError22, _iteratorError22, _iterator22, _step22, inc, _iteratorNormalCompletion28, _didIteratorError28, _iteratorError28, _iterator28, _step28, _met6, bin, _d, _iteratorNormalCompletion23, _didIteratorError23, _iteratorError23, _iterator23, _step23, met, _iteratorNormalCompletion24, _didIteratorError24, _iteratorError24, _iterator24, _step24, _inc2, _iteratorNormalCompletion25, _didIteratorError25, _iteratorError25, _iterator25, _step25, _inc3, _iteratorNormalCompletion26, _didIteratorError26, _iteratorError26, _iterator26, _step26, _met4, d, _iteratorNormalCompletion27, _didIteratorError27, _iteratorError27, _iterator27, _step27, _met5, _iteratorNormalCompletion29, _didIteratorError29, _iteratorError29, _iterator29, _step29, _inc4;
 
     return _regenerator2.default.wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            if (_featJson) {
-              _context6.next = 2;
+            // frequency distribution chart
+            dist_vals = [];
+            pct_dist_vals = [];
+            tots = {};
+            val = void 0;
+            bin_tots = {};
+            xlabels = [];
+            bin_min = app.bin_start;
+            bin_max = bin_min + app.bin_step;
+            ykeys = [];
+            ylabels = [];
+            yMin = 'auto 0';
+            yMax = 'auto';
+
+            //console.log(app.selected_year);
+
+            if (app.selected_year == 'diff') {
+              yMin = -0.03;
+              yMax = 0.03;
+            }
+            _iteratorNormalCompletion22 = true;
+            _didIteratorError22 = false;
+            _iteratorError22 = undefined;
+            _context6.prev = 16;
+            _iterator22 = (0, _getIterator3.default)(app.income_options);
+
+          case 18:
+            if (_iteratorNormalCompletion22 = (_step22 = _iterator22.next()).done) {
+              _context6.next = 46;
               break;
             }
 
-            return _context6.abrupt('return');
+            inc = _step22.value;
+
+            tots[inc.value] = {};
+            bin_tots[inc.value] = {};
+            ykeys.push(inc.value);
+            ylabels.push(inc.text);
+            _iteratorNormalCompletion28 = true;
+            _didIteratorError28 = false;
+            _iteratorError28 = undefined;
+            _context6.prev = 27;
+            for (_iterator28 = (0, _getIterator3.default)(app.chart_metric_options); !(_iteratorNormalCompletion28 = (_step28 = _iterator28.next()).done); _iteratorNormalCompletion28 = true) {
+              _met6 = _step28.value;
+
+              tots[inc.value][_met6.value] = 0;
+              bin_tots[inc.value][_met6.value] = 0;
+            }
+            _context6.next = 35;
+            break;
+
+          case 31:
+            _context6.prev = 31;
+            _context6.t0 = _context6['catch'](27);
+            _didIteratorError28 = true;
+            _iteratorError28 = _context6.t0;
+
+          case 35:
+            _context6.prev = 35;
+            _context6.prev = 36;
+
+            if (!_iteratorNormalCompletion28 && _iterator28.return) {
+              _iterator28.return();
+            }
+
+          case 38:
+            _context6.prev = 38;
+
+            if (!_didIteratorError28) {
+              _context6.next = 41;
+              break;
+            }
+
+            throw _iteratorError28;
+
+          case 41:
+            return _context6.finish(38);
+
+          case 42:
+            return _context6.finish(35);
+
+          case 43:
+            _iteratorNormalCompletion22 = true;
+            _context6.next = 18;
+            break;
+
+          case 46:
+            _context6.next = 52;
+            break;
+
+          case 48:
+            _context6.prev = 48;
+            _context6.t1 = _context6['catch'](16);
+            _didIteratorError22 = true;
+            _iteratorError22 = _context6.t1;
+
+          case 52:
+            _context6.prev = 52;
+            _context6.prev = 53;
+
+            if (!_iteratorNormalCompletion22 && _iterator22.return) {
+              _iterator22.return();
+            }
+
+          case 55:
+            _context6.prev = 55;
+
+            if (!_didIteratorError22) {
+              _context6.next = 58;
+              break;
+            }
+
+            throw _iteratorError22;
+
+          case 58:
+            return _context6.finish(55);
+
+          case 59:
+            return _context6.finish(52);
+
+          case 60:
+            bin = app.bin_start;
+
+          case 61:
+            if (!(bin <= app.bin_stop)) {
+              _context6.next = 160;
+              break;
+            }
+
+            if (!(bin == bin_max)) {
+              _context6.next = 114;
+              break;
+            }
+
+            // reached the end of the last bin, push the data and lables and move to the next one
+            xlabels.push(bin_min + '-' + bin_max);
+
+            _d = {};
+            _iteratorNormalCompletion23 = true;
+            _didIteratorError23 = false;
+            _iteratorError23 = undefined;
+            _context6.prev = 68;
+            _iterator23 = (0, _getIterator3.default)(app.chart_metric_options);
+
+          case 70:
+            if (_iteratorNormalCompletion23 = (_step23 = _iterator23.next()).done) {
+              _context6.next = 96;
+              break;
+            }
+
+            met = _step23.value;
+
+            _d[met.value] = {};
+            _d[met.value]['x'] = bin_min;
+            _iteratorNormalCompletion24 = true;
+            _didIteratorError24 = false;
+            _iteratorError24 = undefined;
+            _context6.prev = 77;
+            for (_iterator24 = (0, _getIterator3.default)(app.income_options); !(_iteratorNormalCompletion24 = (_step24 = _iterator24.next()).done); _iteratorNormalCompletion24 = true) {
+              _inc2 = _step24.value;
+
+              _d[met.value][_inc2.value] = bin_tots[_inc2.value][met.value];
+              bin_tots[_inc2.value][met.value] = 0;
+            }
+            _context6.next = 85;
+            break;
+
+          case 81:
+            _context6.prev = 81;
+            _context6.t2 = _context6['catch'](77);
+            _didIteratorError24 = true;
+            _iteratorError24 = _context6.t2;
+
+          case 85:
+            _context6.prev = 85;
+            _context6.prev = 86;
+
+            if (!_iteratorNormalCompletion24 && _iterator24.return) {
+              _iterator24.return();
+            }
+
+          case 88:
+            _context6.prev = 88;
+
+            if (!_didIteratorError24) {
+              _context6.next = 91;
+              break;
+            }
+
+            throw _iteratorError24;
+
+          case 91:
+            return _context6.finish(88);
+
+          case 92:
+            return _context6.finish(85);
+
+          case 93:
+            _iteratorNormalCompletion23 = true;
+            _context6.next = 70;
+            break;
+
+          case 96:
+            _context6.next = 102;
+            break;
+
+          case 98:
+            _context6.prev = 98;
+            _context6.t3 = _context6['catch'](68);
+            _didIteratorError23 = true;
+            _iteratorError23 = _context6.t3;
+
+          case 102:
+            _context6.prev = 102;
+            _context6.prev = 103;
+
+            if (!_iteratorNormalCompletion23 && _iterator23.return) {
+              _iterator23.return();
+            }
+
+          case 105:
+            _context6.prev = 105;
+
+            if (!_didIteratorError23) {
+              _context6.next = 108;
+              break;
+            }
+
+            throw _iteratorError23;
+
+          case 108:
+            return _context6.finish(105);
+
+          case 109:
+            return _context6.finish(102);
+
+          case 110:
+            dist_vals.push(_d['avg_tours']);
+            pct_dist_vals.push(_d['pct_tours']);
+
+            bin_min = bin_max;
+            bin_max = bin_min + app.bin_step;
+
+          case 114:
+            _iteratorNormalCompletion25 = true;
+            _didIteratorError25 = false;
+            _iteratorError25 = undefined;
+            _context6.prev = 117;
+            _iterator25 = (0, _getIterator3.default)(app.income_options);
+
+          case 119:
+            if (_iteratorNormalCompletion25 = (_step25 = _iterator25.next()).done) {
+              _context6.next = 143;
+              break;
+            }
+
+            _inc3 = _step25.value;
+            _iteratorNormalCompletion26 = true;
+            _didIteratorError26 = false;
+            _iteratorError26 = undefined;
+            _context6.prev = 124;
+
+            for (_iterator26 = (0, _getIterator3.default)(app.chart_metric_options); !(_iteratorNormalCompletion26 = (_step26 = _iterator26.next()).done); _iteratorNormalCompletion26 = true) {
+              _met4 = _step26.value;
+
+              val = freq_dist_lookup[app.selected_year][_inc3.value][app.selected_importance][_met4.value][bin];
+              bin_tots[_inc3.value][_met4.value] += val;
+            }
+            _context6.next = 132;
+            break;
+
+          case 128:
+            _context6.prev = 128;
+            _context6.t4 = _context6['catch'](124);
+            _didIteratorError26 = true;
+            _iteratorError26 = _context6.t4;
+
+          case 132:
+            _context6.prev = 132;
+            _context6.prev = 133;
+
+            if (!_iteratorNormalCompletion26 && _iterator26.return) {
+              _iterator26.return();
+            }
+
+          case 135:
+            _context6.prev = 135;
+
+            if (!_didIteratorError26) {
+              _context6.next = 138;
+              break;
+            }
+
+            throw _iteratorError26;
+
+          case 138:
+            return _context6.finish(135);
+
+          case 139:
+            return _context6.finish(132);
+
+          case 140:
+            _iteratorNormalCompletion25 = true;
+            _context6.next = 119;
+            break;
+
+          case 143:
+            _context6.next = 149;
+            break;
+
+          case 145:
+            _context6.prev = 145;
+            _context6.t5 = _context6['catch'](117);
+            _didIteratorError25 = true;
+            _iteratorError25 = _context6.t5;
+
+          case 149:
+            _context6.prev = 149;
+            _context6.prev = 150;
+
+            if (!_iteratorNormalCompletion25 && _iterator25.return) {
+              _iterator25.return();
+            }
+
+          case 152:
+            _context6.prev = 152;
+
+            if (!_didIteratorError25) {
+              _context6.next = 155;
+              break;
+            }
+
+            throw _iteratorError25;
+
+          case 155:
+            return _context6.finish(152);
+
+          case 156:
+            return _context6.finish(149);
+
+          case 157:
+            bin++;
+            _context6.next = 61;
+            break;
+
+          case 160:
+            // push the overflow bin
+            d = {};
+            _iteratorNormalCompletion27 = true;
+            _didIteratorError27 = false;
+            _iteratorError27 = undefined;
+            _context6.prev = 164;
+            _iterator27 = (0, _getIterator3.default)(app.chart_metric_options);
+
+          case 166:
+            if (_iteratorNormalCompletion27 = (_step27 = _iterator27.next()).done) {
+              _context6.next = 192;
+              break;
+            }
+
+            _met5 = _step27.value;
+
+            d[_met5.value] = {};
+            d[_met5.value]['x'] = bin_min;
+            _iteratorNormalCompletion29 = true;
+            _didIteratorError29 = false;
+            _iteratorError29 = undefined;
+            _context6.prev = 173;
+            for (_iterator29 = (0, _getIterator3.default)(app.income_options); !(_iteratorNormalCompletion29 = (_step29 = _iterator29.next()).done); _iteratorNormalCompletion29 = true) {
+              _inc4 = _step29.value;
+
+              d[_met5.value][_inc4.value] = bin_tots[_inc4.value][_met5.value];
+            }
+            _context6.next = 181;
+            break;
+
+          case 177:
+            _context6.prev = 177;
+            _context6.t6 = _context6['catch'](173);
+            _didIteratorError29 = true;
+            _iteratorError29 = _context6.t6;
+
+          case 181:
+            _context6.prev = 181;
+            _context6.prev = 182;
+
+            if (!_iteratorNormalCompletion29 && _iterator29.return) {
+              _iterator29.return();
+            }
+
+          case 184:
+            _context6.prev = 184;
+
+            if (!_didIteratorError29) {
+              _context6.next = 187;
+              break;
+            }
+
+            throw _iteratorError29;
+
+          case 187:
+            return _context6.finish(184);
+
+          case 188:
+            return _context6.finish(181);
+
+          case 189:
+            _iteratorNormalCompletion27 = true;
+            _context6.next = 166;
+            break;
+
+          case 192:
+            _context6.next = 198;
+            break;
+
+          case 194:
+            _context6.prev = 194;
+            _context6.t7 = _context6['catch'](164);
+            _didIteratorError27 = true;
+            _iteratorError27 = _context6.t7;
+
+          case 198:
+            _context6.prev = 198;
+            _context6.prev = 199;
+
+            if (!_iteratorNormalCompletion27 && _iterator27.return) {
+              _iterator27.return();
+            }
+
+          case 201:
+            _context6.prev = 201;
+
+            if (!_didIteratorError27) {
+              _context6.next = 204;
+              break;
+            }
+
+            throw _iteratorError27;
+
+          case 204:
+            return _context6.finish(201);
+
+          case 205:
+            return _context6.finish(198);
+
+          case 206:
+
+            dist_vals.push(d['avg_tours']);
+            pct_dist_vals.push(d['pct_tours']);
+            xlabels.push('>' + bin_min);
+
+            //updateDistChart(dist_vals, 'x', ykeys, xlabels, ylabels, yMin, yMax, binFmt, yFmtInt, 'dist-chart')
+            updateDistChart(pct_dist_vals, 'x', ykeys, xlabels, ylabels, yMin, yMax, binFmt, yFmtPct, 'pct-dist-chart');
+
+          case 210:
+          case 'end':
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this, [[16, 48, 52, 60], [27, 31, 35, 43], [36,, 38, 42], [53,, 55, 59], [68, 98, 102, 110], [77, 81, 85, 93], [86,, 88, 92], [103,, 105, 109], [117, 145, 149, 157], [124, 128, 132, 140], [133,, 135, 139], [150,, 152, 156], [164, 194, 198, 206], [173, 177, 181, 189], [182,, 184, 188], [199,, 201, 205]]);
+  }));
+
+  return function buildCharts() {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+var buildCharts_Simple = function () {
+  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7() {
+    var dist_vals, pct_dist_vals, tot, val, bin_tot, xlabels, bin_min, bin_max, ykeys, ylabels, bin, _iteratorNormalCompletion30, _didIteratorError30, _iteratorError30, _iterator30, _step30, inc, _bin;
+
+    return _regenerator2.default.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            // frequency distribution chart
+            dist_vals = [];
+            pct_dist_vals = [];
+            tot = 0;
+            val = void 0;
+            bin_tot = 0;
+            xlabels = [];
+            bin_min = app.bin_start;
+            bin_max = bin_min + app.bin_step;
+            ykeys = [];
+            ylabels = [];
+            bin = app.bin_start;
+
+          case 11:
+            if (!(bin <= app.bin_stop)) {
+              _context7.next = 35;
+              break;
+            }
+
+            if (bin == bin_max) {
+              // reached the end of the last bin, push the data and lables and move to the next one
+              xlabels.push(bin_min + '-' + bin_max);
+              dist_vals.push({ x: bin_min, y: bin_tot });
+
+              bin_min = bin_max;
+              bin_max = bin_min + app.bin_step;
+              bin_tot = 0;
+            }
+
+            _iteratorNormalCompletion30 = true;
+            _didIteratorError30 = false;
+            _iteratorError30 = undefined;
+            _context7.prev = 16;
+            for (_iterator30 = (0, _getIterator3.default)(app.income_options); !(_iteratorNormalCompletion30 = (_step30 = _iterator30.next()).done); _iteratorNormalCompletion30 = true) {
+              inc = _step30.value;
+
+              //console.log(inc)
+              val = freq_dist_lookup[app.selected_year][inc.value][app.selected_importance][bin];
+              bin_tot += val;
+              tot += val;
+            }
+            _context7.next = 24;
+            break;
+
+          case 20:
+            _context7.prev = 20;
+            _context7.t0 = _context7['catch'](16);
+            _didIteratorError30 = true;
+            _iteratorError30 = _context7.t0;
+
+          case 24:
+            _context7.prev = 24;
+            _context7.prev = 25;
+
+            if (!_iteratorNormalCompletion30 && _iterator30.return) {
+              _iterator30.return();
+            }
+
+          case 27:
+            _context7.prev = 27;
+
+            if (!_didIteratorError30) {
+              _context7.next = 30;
+              break;
+            }
+
+            throw _iteratorError30;
+
+          case 30:
+            return _context7.finish(27);
+
+          case 31:
+            return _context7.finish(24);
+
+          case 32:
+            bin++;
+            _context7.next = 11;
+            break;
+
+          case 35:
+            // push the overflow bin
+            dist_vals.push({ x: bin_min, y: val });
+            xlabels.push('>' + bin_min);
+
+            for (_bin in dist_vals) {
+              pct_dist_vals.push({ x: _bin.x, y: dist_vals[_bin].y / tot });
+            }
+
+            updateDistChart(dist_vals, 'x', 'y', xlabels, 'Tours', binFmt, yFmtInt, 'dist-chart-simple');
+            updateDistChart(pct_dist_vals, 'x', 'y', xlabels, 'Pct of Tours', binFmt, yFmtPct, 'pct-dist-chart-simple');
+
+          case 40:
+          case 'end':
+            return _context7.stop();
+        }
+      }
+    }, _callee7, this, [[16, 20, 24, 32], [25,, 27, 31]]);
+  }));
+
+  return function buildCharts_Simple() {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+var drawMapFeatures = function () {
+  var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8() {
+    var queryMapData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+    var cleanFeatures, sel_metric, map_metric, _iteratorNormalCompletion31, _didIteratorError31, _iteratorError31, _iterator31, _step31, feat, color_func, sel_colorvals2, bp, dist_vals, mode, custom_bps, _iteratorNormalCompletion32, _didIteratorError32, _iteratorError32, _iterator32, _step32, i;
+
+    return _regenerator2.default.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            if (_featJson) {
+              _context8.next = 2;
+              break;
+            }
+
+            return _context8.abrupt('return');
 
           case 2:
             cleanFeatures = _featJson.slice();
             sel_metric = app.selected_metric;
-            base_metric = sel_metric + app.sliderValue[0];
-            comp_metric = sel_metric + app.sliderValue[1];
 
-            if (base_metric == comp_metric) {
-              app.comp_check = false;
-              app.pct_check = false;
-            } else {
-              app.comp_check = true;
-            }
+
             prec = FRAC_COLS.includes(sel_metric) ? 100 : 1;
 
-            _context6.prev = 8;
+            _context8.prev = 5;
 
             if (!queryMapData) {
-              _context6.next = 35;
+              _context8.next = 34;
               break;
             }
 
             if (!(base_lookup == undefined)) {
-              _context6.next = 13;
+              _context8.next = 10;
               break;
             }
 
-            _context6.next = 13;
+            _context8.next = 10;
             return getMapData();
 
-          case 13:
+          case 10:
             map_metric = void 0;
 
             map_vals = [];
-            _iteratorNormalCompletion11 = true;
-            _didIteratorError11 = false;
-            _iteratorError11 = undefined;
-            _context6.prev = 18;
-            for (_iterator11 = (0, _getIterator3.default)(cleanFeatures); !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-              feat = _step11.value;
+
+            //if (app.selected_income == 'all') {
+            _context8.next = 14;
+            return buildCharts();
+
+          case 14:
+            //} else {
+            //  await buildCharts_Simple();
+            //}
+            _iteratorNormalCompletion31 = true;
+            _didIteratorError31 = false;
+            _iteratorError31 = undefined;
+            _context8.prev = 17;
+            for (_iterator31 = (0, _getIterator3.default)(cleanFeatures); !(_iteratorNormalCompletion31 = (_step31 = _iterator31.next()).done); _iteratorNormalCompletion31 = true) {
+              feat = _step31.value;
 
               map_metric = null;
-
-              if (app.comp_check) {
-                if (base_lookup.hasOwnProperty(feat[GEOID_VAR])) {
-                  feat_entry = base_lookup[feat[GEOID_VAR]];
-
-                  map_metric = Math.round(feat_entry[comp_metric] / (feat['sq_mile'] * 1000)) - Math.round(feat_entry[base_metric] / (feat['sq_mile'] * 1000));
-                  feat['base'] = feat_entry[base_metric];
-                  feat['comp'] = feat_entry[comp_metric];
-                  if (app.pct_check && app.comp_check) {
-                    if (feat_entry[base_metric] > 0) {
-                      map_metric = map_metric * 100 / feat_entry[base_metric];
-                    }
-                  }
-                }
-              } else {
-                if (base_lookup.hasOwnProperty(feat[GEOID_VAR])) {
-                  map_metric = base_lookup[feat[GEOID_VAR]][VARMAP[feat['bgflag']][sel_metric]] * 100;
-                }
+              if (base_lookup[app.selected_year][app.selected_income][app.selected_importance].hasOwnProperty(feat[GEOID_VAR])) {
+                map_metric = base_lookup[app.selected_year][app.selected_income][app.selected_importance][feat[GEOID_VAR]][sel_metric];
               }
-
               if (map_metric !== null) {
                 map_metric = Math.round(map_metric * prec) / prec;
                 map_vals.push(map_metric);
               }
               feat['metric'] = map_metric;
             }
-            _context6.next = 26;
+            _context8.next = 25;
             break;
 
-          case 22:
-            _context6.prev = 22;
-            _context6.t0 = _context6['catch'](18);
-            _didIteratorError11 = true;
-            _iteratorError11 = _context6.t0;
+          case 21:
+            _context8.prev = 21;
+            _context8.t0 = _context8['catch'](17);
+            _didIteratorError31 = true;
+            _iteratorError31 = _context8.t0;
 
-          case 26:
-            _context6.prev = 26;
-            _context6.prev = 27;
+          case 25:
+            _context8.prev = 25;
+            _context8.prev = 26;
 
-            if (!_iteratorNormalCompletion11 && _iterator11.return) {
-              _iterator11.return();
+            if (!_iteratorNormalCompletion31 && _iterator31.return) {
+              _iterator31.return();
             }
 
-          case 29:
-            _context6.prev = 29;
+          case 28:
+            _context8.prev = 28;
 
-            if (!_didIteratorError11) {
-              _context6.next = 32;
+            if (!_didIteratorError31) {
+              _context8.next = 31;
               break;
             }
 
-            throw _iteratorError11;
+            throw _iteratorError31;
+
+          case 31:
+            return _context8.finish(28);
 
           case 32:
-            return _context6.finish(29);
+            return _context8.finish(25);
 
           case 33:
-            return _context6.finish(26);
-
-          case 34:
             map_vals = map_vals.sort(function (a, b) {
               return a - b;
             });
 
-          case 35:
+          case 34:
             if (!(map_vals.length > 0)) {
-              _context6.next = 81;
+              _context8.next = 81;
               break;
             }
 
             color_func = void 0;
             sel_colorvals2 = void 0;
             bp = void 0;
+            dist_vals = [];
 
             if (!queryMapData) {
-              _context6.next = 44;
+              _context8.next = 44;
               break;
             }
 
+            // color ramps
             sel_colorvals = (0, _from2.default)(new _set2.default(map_vals)).sort(function (a, b) {
               return a - b;
             });
-
             if (sel_colorvals.length <= DISCRETE_VAR_LIMIT || INT_COLS.includes(sel_metric)) {
               sel_binsflag = false;
               color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals.concat([sel_colorvals[sel_colorvals.length - 1] + 1]));
               sel_colorvals2 = sel_colorvals.slice(0);
-
-              app.bp0 = 0;
-              app.bp1 = 0;
-              app.bp2 = 0;
-              app.bp3 = 0;
-              app.bp4 = 0;
-              app.bp5 = 1;
             } else {
               mode = 'base';
 
-              if (app.comp_check) {
-                if (app.pct_check) {
-                  mode = 'pctdiff';
-                } else {
-                  mode = 'diff';
-                }
+              if (app.selected_year == 'diff') {
+                mode = 'diff';
+                app.selected_colorscheme = COLORRAMP.DIV;
+              } else {
+                app.selected_colorscheme = COLORRAMP.SEQ;
               }
 
               custom_bps = CUSTOM_BP_DICT[sel_metric][mode];
 
-              sel_colorvals = [map_vals[0]].concat(custom_bps);
+              sel_colorvals = [custom_bps[0] - 100].concat(custom_bps);
               map_vals[map_vals.length - 1] > custom_bps[custom_bps.length - 1] ? sel_colorvals.push(map_vals[map_vals.length - 1]) : sel_colorvals.push(custom_bps[custom_bps.length - 1] + 1);
-
-              bp = (0, _from2.default)(sel_colorvals).sort(function (a, b) {
-                return a - b;
-              });
-              app.bp0 = bp[0];
-              app.bp5 = bp[bp.length - 1];
-              app.bp1 = custom_bps[0];
-              app.bp2 = custom_bps[1];
-              app.bp3 = custom_bps[2];
-              app.bp4 = custom_bps[3];
-              if (custom_bps[0] < app.bp0) app.bp1 = app.bp0;
 
               sel_colorvals = (0, _from2.default)(new _set2.default(sel_colorvals)).sort(function (a, b) {
                 return a - b;
               });
-              //updateColorScheme(sel_colorvals);
               sel_binsflag = true;
               color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals);
               sel_colorvals2 = sel_colorvals.slice(0, sel_colorvals.length - 1);
             }
-            _context6.next = 45;
+
+            _context8.next = 45;
             break;
 
           case 44:
@@ -14040,48 +15098,48 @@ var drawMapFeatures = function () {
           case 45:
 
             sel_colors = [];
-            _iteratorNormalCompletion12 = true;
-            _didIteratorError12 = false;
-            _iteratorError12 = undefined;
-            _context6.prev = 49;
-            for (_iterator12 = (0, _getIterator3.default)(sel_colorvals2); !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-              i = _step12.value;
+            _iteratorNormalCompletion32 = true;
+            _didIteratorError32 = false;
+            _iteratorError32 = undefined;
+            _context8.prev = 49;
+            for (_iterator32 = (0, _getIterator3.default)(sel_colorvals2); !(_iteratorNormalCompletion32 = (_step32 = _iterator32.next()).done); _iteratorNormalCompletion32 = true) {
+              i = _step32.value;
 
               sel_colors.push(color_func(i).hex());
             }
 
-            _context6.next = 57;
+            _context8.next = 57;
             break;
 
           case 53:
-            _context6.prev = 53;
-            _context6.t1 = _context6['catch'](49);
-            _didIteratorError12 = true;
-            _iteratorError12 = _context6.t1;
+            _context8.prev = 53;
+            _context8.t1 = _context8['catch'](49);
+            _didIteratorError32 = true;
+            _iteratorError32 = _context8.t1;
 
           case 57:
-            _context6.prev = 57;
-            _context6.prev = 58;
+            _context8.prev = 57;
+            _context8.prev = 58;
 
-            if (!_iteratorNormalCompletion12 && _iterator12.return) {
-              _iterator12.return();
+            if (!_iteratorNormalCompletion32 && _iterator32.return) {
+              _iterator32.return();
             }
 
           case 60:
-            _context6.prev = 60;
+            _context8.prev = 60;
 
-            if (!_didIteratorError12) {
-              _context6.next = 63;
+            if (!_didIteratorError32) {
+              _context8.next = 63;
               break;
             }
 
-            throw _iteratorError12;
+            throw _iteratorError32;
 
           case 63:
-            return _context6.finish(60);
+            return _context8.finish(60);
 
           case 64:
-            return _context6.finish(57);
+            return _context8.finish(57);
 
           case 65:
             if (geoLayer) mymap.removeLayer(geoLayer);
@@ -14099,26 +15157,25 @@ var drawMapFeatures = function () {
 
             mapLegend = L.control({ position: 'bottomright' });
             mapLegend.onAdd = function (map) {
-              var div = L.DomUtil.create('div', 'legend');
-              var legHTML = getLegHTML(sel_colorvals, sel_colors, sel_binsflag, '%');
-
-              legHTML = '<h4>' + METRIC_DESC_SHORT[sel_metric] + (app.pct_check ? ' % Diff' : METRIC_UNITS.hasOwnProperty(sel_metric) ? '<br>(' + METRIC_UNITS[sel_metric] + ')' : '') + '</h4>' + legHTML;
+              var div = L.DomUtil.create('div', 'info legend');
+              var legHTML = getLegHTML(sel_colorvals, sel_colors, sel_binsflag);
+              legHTML = '<h4>Average Travel Time <br>(minutes)</h4>' + legHTML;
               div.innerHTML = legHTML;
               return div;
             };
-            if (app.selected_metric != 'None') mapLegend.addTo(mymap);
+            mapLegend.addTo(mymap);
 
             if (!selectedGeo) {
-              _context6.next = 80;
+              _context8.next = 80;
               break;
             }
 
-            if (!base_lookup.hasOwnProperty(selectedGeo.feature[GEOID_VAR])) {
-              _context6.next = 77;
+            if (!base_lookup[app.selected_year][app.selected_income][app.selected_importance].hasOwnProperty(selectedGeo.feature[GEOID_VAR])) {
+              _context8.next = 77;
               break;
             }
 
-            return _context6.abrupt('return', cleanFeatures.filter(function (entry) {
+            return _context8.abrupt('return', cleanFeatures.filter(function (entry) {
               return entry[GEOID_VAR] == selectedGeo.feature[GEOID_VAR];
             })[0]);
 
@@ -14126,54 +15183,55 @@ var drawMapFeatures = function () {
             resetPopGeo();
 
           case 78:
-            _context6.next = 81;
+            _context8.next = 81;
             break;
 
           case 80:
-            return _context6.abrupt('return', null);
+            return _context8.abrupt('return', null);
 
           case 81:
-            _context6.next = 86;
+            _context8.next = 87;
             break;
 
           case 83:
-            _context6.prev = 83;
-            _context6.t2 = _context6['catch'](8);
+            _context8.prev = 83;
+            _context8.t2 = _context8['catch'](5);
 
-            console.log(_context6.t2);
+            console.log(_context8.t2);
+            alert(_context8.t2);
 
-          case 86:
+          case 87:
           case 'end':
-            return _context6.stop();
+            return _context8.stop();
         }
       }
-    }, _callee6, this, [[8, 83], [18, 22, 26, 34], [27,, 29, 33], [49, 53, 57, 65], [58,, 60, 64]]);
+    }, _callee8, this, [[5, 83], [17, 21, 25, 33], [26,, 28, 32], [49, 53, 57, 65], [58,, 60, 64]]);
   }));
 
   return function drawMapFeatures() {
-    return _ref6.apply(this, arguments);
+    return _ref8.apply(this, arguments);
   };
 }();
 
 var selectionChanged = function () {
-  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(thing) {
+  var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(thing) {
     var selfeat;
-    return _regenerator2.default.wrap(function _callee7$(_context7) {
+    return _regenerator2.default.wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
-            app.chartTitle = METRIC_DESC[app.selected_metric] + ' Trend';
+            app.chartTitle = app.selected_metric.toUpperCase() + ' TREND';
 
-            if (!(app.sliderValue && app.selected_metric)) {
-              _context7.next = 6;
+            if (!(app.selected_year && app.selected_income && app.selected_metric && app.selected_importance)) {
+              _context9.next = 6;
               break;
             }
 
-            _context7.next = 4;
+            _context9.next = 4;
             return drawMapFeatures();
 
           case 4:
-            selfeat = _context7.sent;
+            selfeat = _context9.sent;
 
             if (selfeat) {
               highlightSelectedSegment();
@@ -14182,29 +15240,61 @@ var selectionChanged = function () {
 
           case 6:
           case 'end':
-            return _context7.stop();
+            return _context9.stop();
         }
       }
-    }, _callee7, this);
+    }, _callee9, this);
   }));
 
-  return function selectionChanged(_x3) {
-    return _ref7.apply(this, arguments);
+  return function selectionChanged(_x4) {
+    return _ref9.apply(this, arguments);
   };
 }();
 
-var postComments = function () {
-  var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(comment) {
-    var comment_url;
-    return _regenerator2.default.wrap(function _callee8$(_context8) {
+var updateMap = function () {
+  var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(thing) {
+    var selfeat;
+    return _regenerator2.default.wrap(function _callee10$(_context10) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            app.isUpdActive = false;
+            _context10.next = 3;
+            return drawMapFeatures(false);
+
+          case 3:
+            selfeat = _context10.sent;
+
+            if (selfeat) {
+              highlightSelectedSegment();
+              popSelGeo.setContent(getInfoHtml(selfeat));
+            }
+
+          case 5:
+          case 'end':
+            return _context10.stop();
+        }
+      }
+    }, _callee10, this);
+  }));
+
+  return function updateMap(_x5) {
+    return _ref10.apply(this, arguments);
+  };
+}();
+
+var fetchComments = function () {
+  var _ref11 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(comment) {
+    var comment_url;
+    return _regenerator2.default.wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
           case 0:
             comment_url = COMMENT_SERVER + COMMENT_VIEW;
             // console.log(JSON.stringify(comment))
 
-            _context8.prev = 1;
-            _context8.next = 4;
+            _context11.prev = 1;
+            _context11.next = 4;
             return fetch(comment_url, {
               method: 'POST',
               body: (0, _stringify2.default)(comment),
@@ -14214,25 +15304,25 @@ var postComments = function () {
             });
 
           case 4:
-            _context8.next = 9;
+            _context11.next = 9;
             break;
 
           case 6:
-            _context8.prev = 6;
-            _context8.t0 = _context8['catch'](1);
+            _context11.prev = 6;
+            _context11.t0 = _context11['catch'](1);
 
-            console.log('comment error: ' + _context8.t0);
+            console.log('comment error: ' + _context11.t0);
 
           case 9:
           case 'end':
-            return _context8.stop();
+            return _context11.stop();
         }
       }
-    }, _callee8, this, [[1, 6]]);
+    }, _callee11, this, [[1, 6]]);
   }));
 
-  return function postComments(_x4) {
-    return _ref8.apply(this, arguments);
+  return function fetchComments(_x6) {
+    return _ref11.apply(this, arguments);
   };
 }();
 
@@ -14252,12 +15342,14 @@ var getColorFromVal = maplib.getColorFromVal2;
 var baseLayer = maplib.baseLayer;
 var mymap = maplib.sfmap;
 mymap.setView([37.76889, -122.440997], 13);
+
 mymap.removeLayer(baseLayer);
 var url = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token={accessToken}';
 var token = 'pk.eyJ1Ijoic2ZjdGEiLCJhIjoiY2ozdXBhNm1mMDFkaTJ3dGRmZHFqanRuOCJ9.KDmACTJBGNA6l0CyPi1Luw';
 var attribution = '<a href="http://openstreetmap.org">OpenStreetMap</a> | ' + '<a href="http://mapbox.com">Mapbox</a>';
 baseLayer = L.tileLayer(url, {
   attribution: attribution,
+  minZoom: 10,
   maxZoom: 18,
   accessToken: token
 }).addTo(mymap);
@@ -14274,65 +15366,98 @@ streetLayer.addTo(mymap);
 var stripes = new L.StripePattern({ weight: 3, spaceWeight: 3, opacity: 0.6, angle: 135 });stripes.addTo(mymap);
 
 var ADDLAYERS = [{
-  view: 'sup_district_boundaries', name: 'Supervisorial District Boundaries',
-  style: { opacity: 1, weight: 3, color: '#730073', fillOpacity: 0, interactive: false }
+  view: 'coc2017_diss', name: 'Communities of Concern',
+  style: { opacity: 1, weight: 2, color: 'grey', fillPattern: stripes, interactive: false },
+  info: 'https://www.arcgis.com/home/item.html?id=1501fe1552414d569ca747e0e23628ff'
+}, {
+  view: 'hin2017', name: 'High Injury Network',
+  style: { opacity: 1, weight: 3, color: '#FF8C00', interactive: false },
+  info: 'https://www.visionzerosf.org/maps-data/'
 }, {
   view: 'sfparks', name: 'Major Parks',
   style: { opacity: 1, weight: 2, color: 'grey', fillPattern: stripes, interactive: false }
 }, {
-  view: 'hin2017', name: 'High Injury Network',
-  style: { opacity: 1, weight: 3, color: '#FF8C00', interactive: false }
+  view: 'sup_district_boundaries', name: 'Supervisorial District Boundaries',
+  style: { opacity: 1, weight: 3, color: '#730073', fillOpacity: 0, interactive: false },
+  info: 'https://sfbos.org/'
 }];
 
 // some important global variables.
 var API_SERVER = 'https://api.sfcta.org/api/';
-var GEO_VIEW = 'coc2017';
-var DATA_VIEW = 'coc2017';
+var GEO_VIEW = 'taz_boundaries';
+var DATA_VIEW = 'connectsf_traveltime';
 var COMMENT_SERVER = 'https://api.sfcta.org/commapi/';
-var COMMENT_VIEW = 'coc_comment';
+var COMMENT_VIEW = 'test_comment';
+var VIZNAME = 'csf_acc';
+var FREQ_DIST_VIEW = 'connectsf_ttdist_all';
+var FREQ_BY_GEO_VIEW = 'PLACEHOLDER';
+var FREQ_DIST_BIN_VAR = 'bin';
+//const FREQ_DIST_METRIC_VAR = 'avg_tours';
 
-var GEOTYPE = 'CoC';
-var GEOID_VAR = 'geoid_1';
+var GEOTYPE = 'TAZ';
+var GEOID_VAR = 'taz';
+var YEAR_VAR = 'year';
+var IMP_VAR = 'importance';
+var INC_VAR = 'income_group';
 
-var FRAC_COLS = [];
-var YR_LIST = [2015, 2050];
+var FRAC_COLS = ['oneway_travel_time_mins', 'avg_time'];
+var YR_LIST = ['2015', '2050', 'diff'];
+var IMP_LIST = ['mandatory', 'discretionary'];
 
-var INT_COLS = [];
+var INT_COLS = ['num_tours'];
 var DISCRETE_VAR_LIMIT = 10;
-var MISSING_COLOR = '#ffffcc';
-var COLORRAMP = { SEQ: ['#fceca8', '#f6c558', '#dc9e48', '#8f5448'],
-  DIV: ['#d7191c', '#fdae61', '#ffffbf', '#a6d96a', '#1a9641'] };
+var MISSING_COLOR = '#f3f3f3';
 
+//COLOR RAMPS
+/*
+#feffc2','#e2f0ad','#b9da8b','#90c36a','#74b250','#5d9a56','#437656','#205756','#054252 //pale green to dark blue-green
+#eefacd','#c5e5bf','#89c5a8','#49a895','#009485','#00807b','#116570','#164b61','#173252 //pale blue-green to dark blue
+#daf2ef','#bedceb','#9abae2','#709bd9','#5885d1','#5674b9','#585b94','#544270','#512f57 //pale blue to dark blue-purple
+#e1f9fc','#d1e3f9','#c7ccf4','#bfb1de','#baa0d2','#928cbb','#57709a','#045377','#004263 //pale blue-purple to dark blue
+#ffdcd2','#f8bdb6','#eaafbe','#dd97c4','#d687c8','#b473b4','#88599a','#5e3d7f','#442c6b //peach to purple
+#ffedff','#ffdaea','#f5c0c6','#e2a9a1','#d79a8a','#bd807e','#975d70','#6f3b5d','#562756 //off-white to maroon-purple
+#fffcd4','#fde5ba','#fdc193','#ffa175','#f28350','#d47144','#a1563b','#73464c','#3d3551 //pale yellow to dark dust-purple
+#ffe6c9','#ffd6b1','#ffbe90','#f0a76b','#e09246','#a48146','#6e6e43','#445c3b','#214236 //peach to dark green
+#fff9bf','#feefa9','#ffe28a','#ffd469','#ffc845','#eba946','#cc7b45','#995045','#7d3e43 //pale yellow to dark rust
+*/
+
+// ConnectSF brand color ramps
+/*const COLORRAMP = {SEQ: ['#f3f3f3','#f6d3d2','#f6b3b1','#f29292','#ec7074'],
+                   DIV: ['#54bdba','#a9d7d5','#f1f1f1','#f5b2b0','#ec7074']};*/
+var COLORRAMP = { //SEQ: ['#eefacd','#89c5a8','#009485','#116570','#173252'],
+  //SEQ: ['#eefacd','#c5e5bf','#89c5a8','#49a895','#009485','#00807b','#116570','#164b61','#173252'],
+  //SEQ: ['#c5e5bf','#89c5a8','#49a895','#009485','#00807b','#164b61','#173252'],
+  SEQ: ['#fef0f1', '#fde0e2', '#facacc', '#f8afb1', '#f69497', '#f47d80', '#f26e72', '#dd4f51', '#c73232'],
+  //DIV: ['#eaf8f8', //negative
+  //      '#eeeeef', //neutral
+  //      '#fef0f1','#fde0e2','#f8afb1','#f69497','#f47d80','#f26e72','#dd4f51','#c73232']}; //positive
+  DIV: ['#54bdba', '#a9d7d5', '#f1f1f1', '#f5b2b0', '#ec7074'] };
+
+var MIN_BWIDTH = 2;
+var MAX_BWIDTH = 10;
+var DEF_BWIDTH = 4;
+var BWIDTH_MAP = {
+  1: DEF_BWIDTH,
+  2: DEF_BWIDTH,
+  3: [2.5, 5],
+  4: [1.6, 3.2, 4.8],
+  5: [1.25, 2.5, 3.75, 5],
+  6: [1, 2, 3, 4, 5]
+};
 var MAX_PCTDIFF = 200;
 var CUSTOM_BP_DICT = {
-  'min': { 'base': [50, 70, 90] },
-  'linc': { 'base': [25, 30, 35] },
-  'o75': { 'base': [5, 10, 15] },
-  'disab': { 'base': [10, 25, 40] },
-  'lep': { 'base': [10, 20, 30] },
-  'zvhh': { 'base': [5, 10, 15] },
-  'spfam': { 'base': [10, 20, 30] },
-  'rentb': { 'base': [5, 15, 25] }
+  //'avg_time': {'base':[5, 10, 15, 20, 25, 30, 35, 40], 'diff':[-5, -2, 2, 5], 'pctdiff':[-20, -5, 5, 20]},
+  'avg_time': { 'base': [15, 18, 21, 24, 27, 30], 'diff': [-5, -2, 2, 5], 'pctdiff': [-20, -5, 5, 20] },
+  'num_tours': { 'base': [250, 500, 750, 1000], 'diff': [-100, -10, 10, 100], 'pctdiff': [-20, -5, 5, 20] }
 };
 
-var METRIC_UNITS = { 'pop': '000s per sq. mi.',
-  'tot': '000s per sq. mi.',
-  'jobpop': '000s per sq. mi.' };
-var METRIC_DESC = { 'pop': 'Population', 'tot': 'Jobs',
-  'jobpop': 'Jobs+Population'
-};
-var METRIC_DESC_SHORT = { 'min': 'Minority Pop', 'linc': 'Low-Income Pop', 'o75': 'Over 75 yrs Pop', 'disab': 'Disabled Pop',
-  'lep': 'Low English Pop', 'zvhh': 'Zero-Veh HH', 'spfam': 'Single-Parent Fam', 'rentb': 'Rent-Burdened HH'
-};
-var VARMAP = [{ 'min': 'pct_minori', 'linc': 'pct_below2', 'o75': 'pct_over75', 'disab': 'pct_disab',
-  'lep': 'pct_lep', 'zvhh': 'pct_zvhhs', 'spfam': 'pct_spfam', 'rentb': 'pct_hus_re' }, { 'min': 'pct_mino_1', 'linc': 'pct_lowinc', 'o75': 'pct_over_1', 'disab': 'pct_disab_',
-  'lep': 'pct_lep_1', 'zvhh': 'pct_zvhh', 'spfam': 'pct_spfam_', 'rentb': 'pct_rent50' }];
+var METRIC_UNITS = { 'avg_time': 'minutes', 'num_tours': 'tours' }; // needed?
 
 var sel_colorvals = void 0,
     sel_colors = void 0,
     sel_binsflag = void 0;
 
-var chart_deftitle = 'All ' + GEOTYPE + 's Combined';
+var chart_deftitle = 'All Segments Combined';
 
 var geoLayer = void 0,
     mapLegend = void 0;
@@ -14350,11 +15475,42 @@ infoPanel.onAdd = function (map) {
 };
 
 function getInfoHtml(geo) {
-  var retval = '<b>TRACT ID: </b>' + (geo['tract_id'] + '<br/>') + '<b>BLOCKGROUP ID: </b>' + (geo['bg_id'] + '<br/><hr>');
+  var metric_val = null;
+  var retval = '<b>TAZ: </b>' + (geo[GEOID_VAR] + '<br/>');
 
-  if (app.selected_metric != 'None') {
-    retval += '<b>' + METRIC_DESC_SHORT[app.selected_metric] + '</b>' + '<b> Percent: </b>' + ('' + geo['metric']) + '%';
+  retval += '<b>' + app.metric_options[0]['text'] + '</b><br/>';
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
+
+  try {
+    for (var _iterator4 = (0, _getIterator3.default)(YR_LIST), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var yr = _step4.value;
+
+      if (base_lookup[yr][app.selected_income][app.selected_importance].hasOwnProperty(geo[GEOID_VAR])) {
+        metric_val = base_lookup[yr][app.selected_income][app.selected_importance][geo[GEOID_VAR]][app.selected_metric];
+
+        if (metric_val !== null) {
+          metric_val = Math.round(metric_val * prec) / prec;
+        }
+      }
+      retval += yr + ': ' + metric_val + '<br/>';
+    }
+  } catch (err) {
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion4 && _iterator4.return) {
+        _iterator4.return();
+      }
+    } finally {
+      if (_didIteratorError4) {
+        throw _iteratorError4;
+      }
+    }
   }
+
   return retval;
 }
 
@@ -14368,13 +15524,13 @@ infoPanel.update = function (geo) {
     infoPanel._div.className = 'info-panel-hide';
     // and clear the hover too
     if (oldHoverTarget.feature[GEOID_VAR] != selGeoId) geoLayer.resetStyle(oldHoverTarget);
-  }, 2500);
+  }, 2000);
 };
 infoPanel.addTo(mymap);
 
 var base_lookup = void 0;
+var freq_dist_lookup = void 0;
 var map_vals = void 0;
-
 
 function updateColorScheme(colorvals) {
   if (colorvals[0] * colorvals[colorvals.length - 1] >= 0) {
@@ -14387,11 +15543,10 @@ function updateColorScheme(colorvals) {
 function styleByMetricColor(feat) {
   var color = getColorFromVal(feat['metric'], sel_colorvals, sel_colors, sel_binsflag);
   if (!color) color = MISSING_COLOR;
-  if (app.selected_metric == 'None') {
-    return { fillColor: '#baa0d2', opacity: 0, weight: 0, color: color, fillOpacity: 0.5 };
-  } else {
-    return { fillColor: color, opacity: 1, weight: 1, color: color, fillOpacity: 1 };
+  if (feat['metric'] == 0) {
+    color = MISSING_COLOR;
   }
+  return { fillColor: color, opacity: 1, weight: 1, color: color, fillOpacity: 1 };
 }
 
 var infoPanelTimeout = void 0;
@@ -14430,6 +15585,61 @@ function highlightSelectedSegment() {
   });
 }
 
+var distChart = {};
+var distLabels = void 0;
+
+function updateDistChart(data, xKey, yKeys, xLabels, yLabels, yMin, yMax, xFmt, yFmt) {
+  var el = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 'dist-chart';
+
+  distLabels = xLabels;
+  var colors = ['#31bfb9', '#f26e72', '#575b60'];
+  if (yKeys instanceof String) {
+    colors = colors.slice(0, 1);
+  } else {
+    colors = colors.slice(0, yKeys.length);
+  }
+  //console.log(colors)
+  if (distChart[el]) {
+    //distChart[el].ymin = yMin;
+    //distChart[el].ymax = yMax;
+    distChart[el].setData(data);
+  } else {
+    distChart[el] = new Morris.Line({
+      element: el,
+      data: data,
+      xkey: xKey,
+      ykeys: yKeys,
+      //ymin: yMin,
+      //ymax: yMax,
+      labels: yLabels,
+      lineColors: colors,
+      xLabels: xKey,
+      xLabelAngle: 25,
+      xLabelFormat: binFmt,
+      yLabelFormat: yFmt,
+      hideHover: true,
+      parseTime: false,
+      fillOpacity: 0.4,
+      pointSize: 1,
+      //behaveLikeLine: true,
+      eventStrokeWidth: 2,
+      eventLineColors: ['#009485']
+    });
+  }
+}
+
+function binFmt(x) {
+  return distLabels[x.x];
+}
+
+function yFmtInt(y) {
+  return Math.round(y);
+}
+
+function yFmtPct(y) {
+  return (Math.round(y * 1000) / 10).toString() + '%';
+}
+
 var selGeoId = void 0;
 var selectedGeo = void 0,
     prevSelectedGeo = void 0;
@@ -14447,11 +15657,11 @@ function clickedOnFeature(e) {
   }
   selectedGeo = e.target;
   var selfeat = selectedGeo.feature;
-  app.chartSubtitle = GEOTYPE + ' ' + selfeat[GEOID_VAR] + ' in ' + selfeat.nhood;
+  app.chartSubtitle = GEOTYPE + ' ' + selfeat[GEOID_VAR];
   selectedLatLng = e.latlng;
-  if (base_lookup.hasOwnProperty(selGeoId)) {
+  if (base_lookup[app.selected_year][app.selected_income][app.selected_importance].hasOwnProperty(selGeoId)) {
     showGeoDetails(selectedLatLng);
-    //buildChartHtmlFromData(selGeoId);
+    buildChartHtmlFromData(selGeoId);
   } else {
     resetPopGeo();
   }
@@ -14472,6 +15682,106 @@ function resetPopGeo() {
   geoLayer.resetStyle(selectedGeo);
   prevSelectedGeo = selectedGeo = selGeoId = null;
   app.chartSubtitle = chart_deftitle;
+  buildChartHtmlFromData();
+}
+
+var trendChart = null;
+function buildChartHtmlFromData() {
+  var geoid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+  document.getElementById('longchart').innerHTML = '';
+  if (geoid) {
+    var selgeodata = [];
+    var _iteratorNormalCompletion33 = true;
+    var _didIteratorError33 = false;
+    var _iteratorError33 = undefined;
+
+    try {
+      for (var _iterator33 = (0, _getIterator3.default)(YR_LIST), _step33; !(_iteratorNormalCompletion33 = (_step33 = _iterator33.next()).done); _iteratorNormalCompletion33 = true) {
+        var yr = _step33.value;
+
+        var row = {};
+        row['year'] = yr.toString();
+        row[app.selected_metric] = base_lookup[yr][app.selected_importance][geoid][app.selected_metric];
+        selgeodata.push(row);
+      }
+    } catch (err) {
+      _didIteratorError33 = true;
+      _iteratorError33 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion33 && _iterator33.return) {
+          _iterator33.return();
+        }
+      } finally {
+        if (_didIteratorError33) {
+          throw _iteratorError33;
+        }
+      }
+    }
+
+    trendChart = new Morris.Line({
+      data: selgeodata,
+      element: 'longchart',
+      gridTextColor: '#aaa',
+      hideHover: true,
+      labels: [app.selected_metric.toUpperCase()],
+      lineColors: ['#f66'],
+      xkey: 'year',
+      smooth: false,
+      parseTime: false,
+      xLabelAngle: 45,
+      ykeys: [app.selected_metric]
+    });
+  } else {
+    trendChart = new Morris.Line({
+      data: _aggregateData[app.selected_importance],
+      element: 'longchart',
+      gridTextColor: '#aaa',
+      hideHover: true,
+      labels: [app.selected_metric.toUpperCase()],
+      lineColors: ['#f66'],
+      xkey: 'year',
+      smooth: false,
+      parseTime: false,
+      xLabelAngle: 45,
+      ykeys: [app.selected_metric]
+    });
+  }
+}
+
+function bp1Changed(thing) {
+  if (thing < app.bp0) app.bp1 = app.bp0;
+  if (thing > app.bp2) app.bp2 = thing;
+  app.isUpdActive = true;
+}
+function bp2Changed(thing) {
+  if (thing < app.bp1) app.bp1 = thing;
+  if (thing > app.bp3) app.bp3 = thing;
+  app.isUpdActive = true;
+}
+function bp3Changed(thing) {
+  if (thing < app.bp2) app.bp2 = thing;
+  if (thing > app.bp4) app.bp4 = thing;
+  app.isUpdActive = true;
+}
+function bp4Changed(thing) {
+  if (thing < app.bp3) app.bp3 = thing;
+  if (thing > app.bp5) app.bp4 = app.bp5;
+  app.isUpdActive = true;
+}
+
+function customBreakPoints(thing) {
+  if (thing) {
+    app.isUpdActive = false;
+  } else {
+    drawMapFeatures();
+  }
+}
+
+function colorschemeChanged(thing) {
+  app.selected_colorscheme = thing;
+  drawMapFeatures(false);
 }
 
 function yrChanged(yr) {
@@ -14483,8 +15793,12 @@ function yrChanged(yr) {
   }
 }
 
-function metricChanged(metric) {
-  app.selected_metric = metric;
+function importanceChanged(importance) {
+  app.selected_importance = importance;
+}
+
+function incomeChanged(income) {
+  app.selected_income = income;
 }
 
 function getColorMode(cscheme) {
@@ -14499,38 +15813,110 @@ function showExtraLayers(e) {
   for (var lyr in addLayerStore) {
     mymap.removeLayer(addLayerStore[lyr]);
   }
-  var _iteratorNormalCompletion13 = true;
-  var _didIteratorError13 = false;
-  var _iteratorError13 = undefined;
+  var _iteratorNormalCompletion34 = true;
+  var _didIteratorError34 = false;
+  var _iteratorError34 = undefined;
 
   try {
-    for (var _iterator13 = (0, _getIterator3.default)(app.addLayers), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-      var _lyr = _step13.value;
+    for (var _iterator34 = (0, _getIterator3.default)(app.addLayers), _step34; !(_iteratorNormalCompletion34 = (_step34 = _iterator34.next()).done); _iteratorNormalCompletion34 = true) {
+      var _lyr = _step34.value;
 
       addLayerStore[_lyr].addTo(mymap);
     }
   } catch (err) {
-    _didIteratorError13 = true;
-    _iteratorError13 = err;
+    _didIteratorError34 = true;
+    _iteratorError34 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion13 && _iterator13.return) {
-        _iterator13.return();
+      if (!_iteratorNormalCompletion34 && _iterator34.return) {
+        _iterator34.return();
       }
     } finally {
-      if (_didIteratorError13) {
-        throw _iteratorError13;
+      if (_didIteratorError34) {
+        throw _iteratorError34;
       }
     }
   }
 }
 
+function setCookie(cname, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + d.getTime() + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  var username = getCookie("username");
+  if (username == "") {
+    setCookie("username", 365);
+  }
+}
+
+var comment = {
+  vizname: VIZNAME,
+  select_year: '',
+  select_metric: '',
+  add_layer: '',
+  comment_user: '',
+  comment_time: new Date(),
+  comment_latitude: -999,
+  comment_longitude: -999,
+  comment_content: ''
+};
+
+function showPosition(position) {
+  comment.comment_latitude = position.coords.latitude;
+  comment.comment_longitude = position.coords.longitude;
+}
+
+function handleSubmit() {
+  var timestamp = new Date();
+  app.submit_loading = true;
+
+  setTimeout(function () {
+    if (app.comment == null | app.comment == '') {
+      app.submit_loading = false;
+    } else {
+      comment.select_year = app.selected_year;
+      comment.select_metric = app.selected_metric;
+      comment.add_layer = app.ADDLAYERS;
+      comment.comment_user = getCookie("username");
+      comment.comment_time = timestamp;
+      comment.comment_content = app.comment;
+      fetchComments(comment);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        console.log("Geolocation is not supported by this browser.");
+      }
+      console.log((0, _stringify2.default)(comment));
+      app.comment = "Thanks for submitting your comment!";
+      app.submit_loading = false;
+      app.submit_disabled = true;
+    }
+  }, 1000);
+}
+
 var app = new Vue({
   el: '#panel',
   delimiters: ['${', '}'],
-  components: {
-    'vue-recaptcha': VueRecaptcha
-  },
   data: {
     isPanelHidden: false,
     extraLayers: ADDLAYERS,
@@ -14542,16 +15928,30 @@ var app = new Vue({
     bp3: 0.0,
     bp4: 0.0,
     bp5: 0.0,
-    aggData: [{ pop: 0, tot: 0, jobpop: 0 }, { pop: 0, tot: 0, jobpop: 0 }],
 
-    year_options: [{ text: 'Year 2015', value: '2015' }, { text: 'Year 2050', value: '2050' }, { text: 'Change', value: 'diff' }],
     selected_year: '2015',
-    sliderValue: [YR_LIST[0], YR_LIST[0]],
+    year_options: [{ text: '2015', value: '2015' }, { text: '2050', value: '2050' }, { text: 'Change', value: 'diff' }],
 
-    selected_metric: 'None',
-    metric_options: [{ text: 'None', value: 'None' }, { text: 'Minority', value: 'min' }, { text: 'Low Income', value: 'linc' }, { text: 'Elderly', value: 'o75' }, { text: 'Disability', value: 'disab' }, { text: 'Low English Prof.', value: 'lep' }, { text: 'Zero-Veh HH', value: 'zvhh' }, { text: 'Single Parent', value: 'spfam' }, { text: 'Rent Burdened', value: 'rentb' }],
-    chartTitle: METRIC_DESC['pop'] + ' Trend',
+    selected_metric: 'avg_time',
+    metric_options: [{ text: 'Average Time', value: 'avg_time' }, { text: 'Tours', value: 'num_tours' }],
+
+    selected_chart_metric: 'avg_tours',
+    chart_metric_options: [{ text: 'Average Tours', value: 'avg_tours' }, { text: 'Percent Tours', value: 'pct_tours' }],
+
+    chartTitle: 'AVG_RIDE TREND',
     chartSubtitle: chart_deftitle,
+
+    selected_importance: 'mandatory',
+    importance_options: [{ text: 'Work / School', value: 'mandatory' }, { text: 'Other', value: 'discretionary' }],
+
+    selected_income: 'all',
+    income_options: [{ text: 'Low Income', value: 'below_200pct_poverty' }, { text: 'Not Low Income', value: 'above_200pct_poverty' }, { text: 'All Incomes', value: 'all' }],
+
+    bin_start: 0,
+    bin_stop: 120,
+    bin_step: 5,
+    distChartName: ['dist-chart'],
+    pctDistChartName: ['pct-dist-chart'],
 
     selected_colorscheme: COLORRAMP.SEQ,
     modeMap: {
@@ -14562,24 +15962,31 @@ var app = new Vue({
       '#fafa6e,#2A4858': 'lch'
     },
     comment: '',
-    comment_instruction: 'Please provide feedback. What do you think about this map? (800 maximum characters)',
+    addLayers: [],
+    selected_breaks: 5,
     submit_loading: false,
-    submit_disabled: false,
-    addLayers: []
+    submit_disabled: false
   },
   watch: {
-    sliderValue: selectionChanged,
+    selected_year: selectionChanged,
+    selected_importance: selectionChanged,
     selected_metric: selectionChanged,
-    addLayers: showExtraLayers
+    selected_income: selectionChanged,
+    addLayers: showExtraLayers,
+
+    bp1: bp1Changed,
+    bp2: bp2Changed,
+    bp3: bp3Changed,
+    bp4: bp4Changed
   },
   methods: {
-    clickToggleHelp: clickToggleHelp,
-    clickedShowHide: clickedShowHide,
     yrChanged: yrChanged,
-    metricChanged: metricChanged,
+    importanceChanged: importanceChanged,
     handleSubmit: handleSubmit,
-    onCaptchaVerified: onCaptchaVerified,
-    onCaptchaExpired: onCaptchaExpired
+    incomeChanged: incomeChanged,
+    updateMap: updateMap,
+    clickToggleHelp: clickToggleHelp,
+    clickedShowHide: clickedShowHide
   }
 });
 
@@ -14639,122 +16046,9 @@ var helpPanel = new Vue({
   }
 });
 
-/* Cookie functions for comments*/
-function setCookie(cname, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + d.getTime() + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-function checkCookie() {
-  var username = getCookie("username");
-  if (username == "") {
-    setCookie("username", 365);
-  }
-}
-
-/* Code for storing comments*/
-var comment = {
-  select_metric: '',
-  add_layer: '',
-  comment_user: '',
-  comment_time: new Date(),
-  comment_latitude: -999,
-  comment_longitude: -999,
-  comment_content: ''
-};
-
-function showPosition(position) {
-  comment.comment_latitude = position.coords.latitude;
-  comment.comment_longitude = position.coords.longitude;
-}
-
-function handleSubmit() {
-  this.$refs.recaptcha.execute();
-  var timestamp = new Date();
-  app.submit_loading = true;
-
-  setTimeout(function () {
-    if (app.comment == null | app.comment == '') {
-      app.submit_loading = false;
-    } else {
-      comment.select_metric = app.selected_metric;
-      comment.add_layer = app.addLayers;
-      comment.comment_user = getCookie("username");
-      comment.comment_time = timestamp;
-      comment.comment_content = app.comment;
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-        console.log("Geolocation is not supported by this browser.");
-      }
-      postComments(comment);
-      app.comment_instruction = 'Thank you for your feedback!';
-      app.comment = '';
-      app.submit_loading = false;
-    }
-  }, 1000);
-}
-
-/* Captcha functions*/
-function onCaptchaVerified(recaptchaToken) {
-  var self = this;
-  self.$refs.recaptcha.reset();
-  if (!recaptchaToken) {
-    return console.log("recaptchaToken is required");
-  }
-
-  var verifyCaptchaOptions = {
-    secret: "6Leo_KMUAAAAAANqRfq4isW7Q50pAslnNdYbI8Pa",
-    response: recaptchaToken
-  };
-
-  fetch("https://www.google.com/recaptcha/api/siteverify", {
-    method: 'POST',
-    mode: 'no-cors',
-    body: (0, _stringify2.default)(verifyCaptchaOptions),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).catch(function (error) {
-    return console.error('Error:', error);
-  }).then(function (response) {
-    return function (response) {
-      // JSON.stringify(response)
-      console.log("Congratulations! We think you are human.");
-    };
-  });
-}
-
-function onCaptchaExpired() {
-  this.$refs.recaptcha.reset();
-}
-
 initialPrep();
 
 /***/ }),
-/* 493 */,
-/* 494 */,
-/* 495 */,
-/* 496 */,
-/* 497 */,
 /* 498 */,
 /* 499 */,
 /* 500 */,
@@ -14832,11 +16126,16 @@ initialPrep();
 /* 572 */,
 /* 573 */,
 /* 574 */,
-/* 575 */
+/* 575 */,
+/* 576 */,
+/* 577 */,
+/* 578 */,
+/* 579 */,
+/* 580 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(159);
-module.exports = __webpack_require__(492);
+module.exports = __webpack_require__(497);
 
 
 /***/ })

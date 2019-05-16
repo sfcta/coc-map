@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 575);
+/******/ 	return __webpack_require__(__webpack_require__.s = 586);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -12997,24 +12997,14 @@ $export($export.S + $export.F * !__webpack_require__(395)(function (iter) { Arra
 
 
 /***/ }),
-/* 432 */,
-/* 433 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = { "default": __webpack_require__(434), __esModule: true };
+!function(t,e){ true?module.exports=e():"function"==typeof define&&define.amd?define("vue-slider-component",[],e):"object"==typeof exports?exports["vue-slider-component"]=e():t["vue-slider-component"]=e()}(this,function(){return function(t){function e(s){if(i[s])return i[s].exports;var r=i[s]={i:s,l:!1,exports:{}};return t[s].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var i={};return e.m=t,e.c=i,e.i=function(t){return t},e.d=function(t,i,s){e.o(t,i)||Object.defineProperty(t,i,{configurable:!1,enumerable:!0,get:s})},e.n=function(t){var i=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(i,"a",i),i},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=2)}([function(t,e,i){i(7);var s=i(5)(i(1),i(6),null,null);t.exports=s.exports},function(t,e,i){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var s=function(){var t="undefined"!=typeof window?window.devicePixelRatio||1:1;return function(e){return Math.round(e*t)/t}}();e.default={name:"VueSliderComponent",props:{width:{type:[Number,String],default:"auto"},height:{type:[Number,String],default:6},data:{type:Array,default:null},dotSize:{type:Number,default:16},dotWidth:{type:Number,required:!1},dotHeight:{type:Number,required:!1},min:{type:Number,default:0},max:{type:Number,default:100},interval:{type:Number,default:1},show:{type:Boolean,default:!0},disabled:{type:Boolean,default:!1},piecewise:{type:Boolean,default:!1},tooltip:{type:[String,Boolean],default:"always"},eventType:{type:String,default:"auto"},direction:{type:String,default:"horizontal"},reverse:{type:Boolean,default:!1},lazy:{type:Boolean,default:!1},clickable:{type:Boolean,default:!0},speed:{type:Number,default:.5},realTime:{type:Boolean,default:!1},stopPropagation:{type:Boolean,default:!1},value:{type:[String,Number,Array,Object],default:0},piecewiseLabel:{type:Boolean,default:!1},debug:{type:Boolean,default:!0},fixed:{type:Boolean,default:!1},processDragable:{type:Boolean,default:!1},useKeyboard:{type:Boolean,default:!1},actionsKeyboard:{type:Array,default:function(){return[function(t){return t-1},function(t){return t+1}]}},tooltipMerge:{type:Boolean,default:!0},sliderStyle:[Array,Object,Function],focusStyle:[Array,Object,Function],tooltipDir:[Array,String],formatter:[String,Function],mergeFormatter:[String,Function],piecewiseStyle:Object,piecewiseActiveStyle:Object,processStyle:Object,bgStyle:Object,tooltipStyle:[Array,Object,Function],labelStyle:Object,labelActiveStyle:Object},data:function(){return{flag:!1,keydownFlag:null,focusFlag:!1,processFlag:!1,processSign:null,size:0,fixedValue:0,focusSlider:0,currentValue:0,currentSlider:0,isComponentExists:!0,isMounted:!1}},computed:{dotWidthVal:function(){return"number"==typeof this.dotWidth?this.dotWidth:this.dotSize},dotHeightVal:function(){return"number"==typeof this.dotHeight?this.dotHeight:this.dotSize},flowDirection:function(){return"vue-slider-"+this.direction+(this.reverse?"-reverse":"")},tooltipMergedPosition:function(){if(!this.isMounted)return{};var t=this.tooltipDirection[0];if(this.$refs.dot0){if("vertical"===this.direction){var e={};return e[t]="-"+(this.dotHeightVal/2-this.width/2+9)+"px",e}var i={};return i[t]="-"+(this.dotWidthVal/2-this.height/2+9)+"px",i.left="50%",i}},tooltipDirection:function(){var t=this.tooltipDir||("vertical"===this.direction?"left":"top");return Array.isArray(t)?this.isRange?t:t[1]:this.isRange?[t,t]:t},tooltipStatus:function(){return"hover"===this.tooltip&&this.flag?"vue-slider-always":this.tooltip?"vue-slider-"+this.tooltip:""},tooltipClass:function(){return["vue-slider-tooltip-"+this.tooltipDirection,"vue-slider-tooltip"]},isDisabled:function(){return"none"===this.eventType||this.disabled},disabledClass:function(){return this.disabled?"vue-slider-disabled":""},stateClass:function(){return{"vue-slider-state-process-drag":this.processFlag,"vue-slider-state-drag":this.flag&&!this.processFlag&&!this.keydownFlag,"vue-slider-state-focus":this.focusFlag}},isRange:function(){return Array.isArray(this.value)},slider:function(){return this.isRange?[this.$refs.dot0,this.$refs.dot1]:this.$refs.dot},minimum:function(){return this.data?0:this.min},val:{get:function(){return this.data?this.isRange?[this.data[this.currentValue[0]],this.data[this.currentValue[1]]]:this.data[this.currentValue]:this.currentValue},set:function(t){if(this.data)if(this.isRange){var e=this.data.indexOf(t[0]),i=this.data.indexOf(t[1]);e>-1&&i>-1&&(this.currentValue=[e,i])}else{var s=this.data.indexOf(t);s>-1&&(this.currentValue=s)}else this.currentValue=t}},currentIndex:function(){return this.isRange?this.data?this.currentValue:[this.getIndexByValue(this.currentValue[0]),this.getIndexByValue(this.currentValue[1])]:this.getIndexByValue(this.currentValue)},indexRange:function(){return this.isRange?this.currentIndex:[0,this.currentIndex]},maximum:function(){return this.data?this.data.length-1:this.max},multiple:function(){var t=(""+this.interval).split(".")[1];return t?Math.pow(10,t.length):1},spacing:function(){return this.data?1:this.interval},total:function(){return this.data?this.data.length-1:(Math.floor((this.maximum-this.minimum)*this.multiple)%(this.interval*this.multiple)!=0&&this.printError("Prop[interval] is illegal, Please make sure that the interval can be divisible"),(this.maximum-this.minimum)/this.interval)},gap:function(){return this.size/this.total},position:function(){return this.isRange?[(this.currentValue[0]-this.minimum)/this.spacing*this.gap,(this.currentValue[1]-this.minimum)/this.spacing*this.gap]:(this.currentValue-this.minimum)/this.spacing*this.gap},limit:function(){return this.isRange?this.fixed?[[0,(this.maximum-this.fixedValue*this.spacing)/this.spacing*this.gap],[(this.minimum+this.fixedValue*this.spacing)/this.spacing*this.gap,this.size]]:[[0,this.position[1]],[this.position[0],this.size]]:[0,this.size]},valueLimit:function(){return this.isRange?this.fixed?[[this.minimum,this.maximum-this.fixedValue*this.spacing],[this.minimum+this.fixedValue*this.spacing,this.maximum]]:[[this.minimum,this.currentValue[1]],[this.currentValue[0],this.maximum]]:[this.minimum,this.maximum]},idleSlider:function(){return 0===this.currentSlider?1:0},wrapStyles:function(){return"vertical"===this.direction?{height:"number"==typeof this.height?this.height+"px":this.height,padding:this.dotHeightVal/2+"px "+this.dotWidthVal/2+"px"}:{width:"number"==typeof this.width?this.width+"px":this.width,padding:this.dotHeightVal/2+"px "+this.dotWidthVal/2+"px"}},sliderStyles:function(){return Array.isArray(this.sliderStyle)?this.isRange?this.sliderStyle:this.sliderStyle[1]:"function"==typeof this.sliderStyle?this.sliderStyle(this.val,this.currentIndex):this.isRange?[this.sliderStyle,this.sliderStyle]:this.sliderStyle},focusStyles:function(){return Array.isArray(this.focusStyle)?this.isRange?this.focusStyle:this.focusStyle[1]:"function"==typeof this.focusStyle?this.focusStyle(this.val,this.currentIndex):this.isRange?[this.focusStyle,this.focusStyle]:this.focusStyle},tooltipStyles:function(){return Array.isArray(this.tooltipStyle)?this.isRange?this.tooltipStyle:this.tooltipStyle[1]:"function"==typeof this.tooltipStyle?this.tooltipStyle(this.val,this.currentIndex):this.isRange?[this.tooltipStyle,this.tooltipStyle]:this.tooltipStyle},elemStyles:function(){return"vertical"===this.direction?{width:this.width+"px",height:"100%"}:{height:this.height+"px"}},dotStyles:function(){return"vertical"===this.direction?{width:this.dotWidthVal+"px",height:this.dotHeightVal+"px",left:-(this.dotWidthVal-this.width)/2+"px"}:{width:this.dotWidthVal+"px",height:this.dotHeightVal+"px",top:-(this.dotHeightVal-this.height)/2+"px"}},piecewiseDotStyle:function(){return"vertical"===this.direction?{width:this.width+"px",height:this.width+"px"}:{width:this.height+"px",height:this.height+"px"}},piecewiseDotWrap:function(){if(!this.piecewise&&!this.piecewiseLabel)return!1;for(var t=[],e=0;e<=this.total;e++){var i="vertical"===this.direction?{bottom:this.gap*e-this.width/2+"px",left:0}:{left:this.gap*e-this.height/2+"px",top:0},s=this.reverse?this.total-e:e,r=this.data?this.data[s]:this.spacing*s+this.min;t.push({style:i,label:this.formatter?this.formatting(r):r,inRange:s>=this.indexRange[0]&&s<=this.indexRange[1]})}return t}},watch:{value:function(t){this.flag||this.setValue(t,!0)},max:function(t){if(t<this.min)return this.printError("The maximum value can not be less than the minimum value.");var e=this.limitValue(this.val);this.setValue(e),this.refresh()},min:function(t){if(t>this.max)return this.printError("The minimum value can not be greater than the maximum value.");var e=this.limitValue(this.val);this.setValue(e),this.refresh()},show:function(t){var e=this;t&&!this.size&&this.$nextTick(function(){e.refresh()})},fixed:function(){this.computedFixedValue()}},methods:{bindEvents:function(){document.addEventListener("touchmove",this.moving,{passive:!1}),document.addEventListener("touchend",this.moveEnd,{passive:!1}),document.addEventListener("mousedown",this.blurSlider),document.addEventListener("mousemove",this.moving),document.addEventListener("mouseup",this.moveEnd),document.addEventListener("mouseleave",this.moveEnd),document.addEventListener("keydown",this.handleKeydown),document.addEventListener("keyup",this.handleKeyup),window.addEventListener("resize",this.refresh),this.isRange&&this.tooltipMerge&&(this.$refs.dot0.addEventListener("transitionend",this.handleOverlapTooltip),this.$refs.dot1.addEventListener("transitionend",this.handleOverlapTooltip))},unbindEvents:function(){document.removeEventListener("touchmove",this.moving),document.removeEventListener("touchend",this.moveEnd),document.removeEventListener("mousedown",this.blurSlider),document.removeEventListener("mousemove",this.moving),document.removeEventListener("mouseup",this.moveEnd),document.removeEventListener("mouseleave",this.moveEnd),document.removeEventListener("keydown",this.handleKeydown),document.removeEventListener("keyup",this.handleKeyup),window.removeEventListener("resize",this.refresh),this.isRange&&this.tooltipMerge&&(this.$refs.dot0.removeEventListener("transitionend",this.handleOverlapTooltip),this.$refs.dot1.removeEventListener("transitionend",this.handleOverlapTooltip))},handleKeydown:function(t){if(!this.useKeyboard||!this.focusFlag)return!1;switch(t.keyCode){case 37:case 40:t.preventDefault(),this.keydownFlag=!0,this.flag=!0,this.changeFocusSlider(this.actionsKeyboard[0]);break;case 38:case 39:t.preventDefault(),this.keydownFlag=!0,this.flag=!0,this.changeFocusSlider(this.actionsKeyboard[1])}},handleKeyup:function(){this.keydownFlag&&(this.keydownFlag=!1,this.flag=!1)},changeFocusSlider:function(t){var e=this;if(this.isRange){var i=this.currentIndex.map(function(i,s){if(s===e.focusSlider||e.fixed){var r=t(i),o=e.fixed?e.valueLimit[s]:[0,e.total];if(r<=o[1]&&r>=o[0])return r}return i});i[0]>i[1]&&(this.focusSlider=0===this.focusSlider?1:0,i=i.reverse()),this.setIndex(i)}else this.setIndex(t(this.currentIndex))},blurSlider:function(t){var e=this.isRange?this.$refs["dot"+this.focusSlider]:this.$refs.dot;if(!e||e===t.target)return!1;this.focusFlag=!1},formatting:function(t){return"string"==typeof this.formatter?this.formatter.replace(/\{value\}/,t):this.formatter(t)},mergeFormatting:function(t,e){return"string"==typeof this.mergeFormatter?this.mergeFormatter.replace(/\{(value1|value2)\}/g,function(i,s){return"value1"===s?t:e}):this.mergeFormatter(t,e)},getPos:function(t){return this.realTime&&this.getStaticData(),"vertical"===this.direction?this.reverse?t.pageY-this.offset:this.size-(t.pageY-this.offset):this.reverse?this.size-(t.clientX-this.offset):t.clientX-this.offset},processClick:function(t){this.fixed&&t.stopPropagation()},wrapClick:function(t){if(this.isDisabled||!this.clickable||this.processFlag)return!1;var e=this.getPos(t);this.isRange&&(this.currentSlider=e>(this.position[1]-this.position[0])/2+this.position[0]?1:0),this.setValueOnPos(e)},moveStart:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,i=arguments[2];if(this.isDisabled)return!1;if(this.stopPropagation&&t.stopPropagation(),this.isRange&&(this.currentSlider=e,i)){if(!this.processDragable)return!1;this.processFlag=!0,this.processSign={pos:this.position,start:this.getPos(t.targetTouches&&t.targetTouches[0]?t.targetTouches[0]:t)}}!i&&this.useKeyboard&&(this.focusFlag=!0,this.focusSlider=e),this.flag=!0,this.$emit("drag-start",this)},moving:function(t){if(this.stopPropagation&&t.stopPropagation(),!this.flag)return!1;t.preventDefault(),t.targetTouches&&t.targetTouches[0]&&(t=t.targetTouches[0]),this.processFlag?(this.currentSlider=0,this.setValueOnPos(this.processSign.pos[0]+this.getPos(t)-this.processSign.start,!0),this.currentSlider=1,this.setValueOnPos(this.processSign.pos[1]+this.getPos(t)-this.processSign.start,!0)):this.setValueOnPos(this.getPos(t),!0),this.isRange&&this.tooltipMerge&&this.handleOverlapTooltip()},moveEnd:function(t){var e=this;if(this.stopPropagation&&t.stopPropagation(),!this.flag)return!1;this.$emit("drag-end",this),this.lazy&&this.isDiff(this.val,this.value)&&this.syncValue(),this.flag=!1,window.setTimeout(function(){e.processFlag=!1},0),this.setPosition()},setValueOnPos:function(t,e){var i=this.isRange?this.limit[this.currentSlider]:this.limit,s=this.isRange?this.valueLimit[this.currentSlider]:this.valueLimit;if(t>=i[0]&&t<=i[1]){this.setTransform(t);var r=this.getValueByIndex(Math.round(t/this.gap));this.setCurrentValue(r,e),this.isRange&&this.fixed&&(this.setTransform(t+this.fixedValue*this.gap*(0===this.currentSlider?1:-1),!0),this.setCurrentValue(r+this.fixedValue*this.spacing*(0===this.currentSlider?1:-1),e,!0))}else t<i[0]?(this.setTransform(i[0]),this.setCurrentValue(s[0]),this.isRange&&this.fixed?(this.setTransform(this.limit[this.idleSlider][0],!0),this.setCurrentValue(this.valueLimit[this.idleSlider][0],e,!0)):this.fixed||1!==this.currentSlider||(this.focusSlider=0,this.currentSlider=0)):(this.setTransform(i[1]),this.setCurrentValue(s[1]),this.isRange&&this.fixed?(this.setTransform(this.limit[this.idleSlider][1],!0),this.setCurrentValue(this.valueLimit[this.idleSlider][1],e,!0)):this.fixed||0!==this.currentSlider||(this.focusSlider=1,this.currentSlider=1))},isDiff:function(t,e){return Object.prototype.toString.call(t)!==Object.prototype.toString.call(e)||(Array.isArray(t)&&t.length===e.length?t.some(function(t,i){return t!==e[i]}):t!==e)},setCurrentValue:function(t,e,i){var s=i?this.idleSlider:this.currentSlider;if(t<this.minimum||t>this.maximum)return!1;this.isRange?this.isDiff(this.currentValue[s],t)&&(this.currentValue.splice(s,1,t),this.lazy&&this.flag||this.syncValue()):this.isDiff(this.currentValue,t)&&(this.currentValue=t,this.lazy&&this.flag||this.syncValue()),e||this.setPosition()},getValueByIndex:function(t){return(this.spacing*this.multiple*t+this.minimum*this.multiple)/this.multiple},getIndexByValue:function(t){return Math.round((t-this.minimum)*this.multiple)/(this.spacing*this.multiple)},setIndex:function(t){if(Array.isArray(t)&&this.isRange){var e=void 0;e=this.data?[this.data[t[0]],this.data[t[1]]]:[this.getValueByIndex(t[0]),this.getValueByIndex(t[1])],this.setValue(e)}else t=this.getValueByIndex(t),this.isRange&&(this.currentSlider=t>(this.currentValue[1]-this.currentValue[0])/2+this.currentValue[0]?1:0),this.setCurrentValue(t)},setValue:function(t,e,i){var s=this;if(this.isDiff(this.val,t)){var r=this.limitValue(t);this.val=this.isRange?r.concat():r,this.computedFixedValue(),this.syncValue(e)}this.$nextTick(function(){return s.setPosition(i)})},computedFixedValue:function(){if(!this.fixed)return this.fixedValue=0,!1;this.fixedValue=this.currentIndex[1]-this.currentIndex[0]},setPosition:function(t){this.flag||this.setTransitionTime(void 0===t?this.speed:t),this.isRange?(this.setTransform(this.position[0],1===this.currentSlider),this.setTransform(this.position[1],0===this.currentSlider)):this.setTransform(this.position),this.flag||this.setTransitionTime(0)},setTransform:function(t,e){var i=e?this.idleSlider:this.currentSlider,r=s(("vertical"===this.direction?this.dotHeightVal/2-t:t-this.dotWidthVal/2)*(this.reverse?-1:1)),o="vertical"===this.direction?"translateY("+r+"px)":"translateX("+r+"px)",n=this.fixed?this.fixedValue*this.gap+"px":(0===i?this.position[1]-t:t-this.position[0])+"px",l=this.fixed?(0===i?t:t-this.fixedValue*this.gap)+"px":(0===i?t:this.position[0])+"px";this.isRange?(this.slider[i].style.transform=o,this.slider[i].style.WebkitTransform=o,this.slider[i].style.msTransform=o,"vertical"===this.direction?(this.$refs.process.style.height=n,this.$refs.process.style[this.reverse?"top":"bottom"]=l):(this.$refs.process.style.width=n,this.$refs.process.style[this.reverse?"right":"left"]=l)):(this.slider.style.transform=o,this.slider.style.WebkitTransform=o,this.slider.style.msTransform=o,"vertical"===this.direction?(this.$refs.process.style.height=t+"px",this.$refs.process.style[this.reverse?"top":"bottom"]=0):(this.$refs.process.style.width=t+"px",this.$refs.process.style[this.reverse?"right":"left"]=0))},setTransitionTime:function(t){if(t||this.$refs.process.offsetWidth,this.isRange){for(var e=0;e<this.slider.length;e++)this.slider[e].style.transitionDuration=t+"s",this.slider[e].style.WebkitTransitionDuration=t+"s";this.$refs.process.style.transitionDuration=t+"s",this.$refs.process.style.WebkitTransitionDuration=t+"s"}else this.slider.style.transitionDuration=t+"s",this.slider.style.WebkitTransitionDuration=t+"s",this.$refs.process.style.transitionDuration=t+"s",this.$refs.process.style.WebkitTransitionDuration=t+"s"},limitValue:function(t){var e=this;if(this.data)return t;var i=function(i){return i<e.min?(e.printError("The value of the slider is "+t+", the minimum value is "+e.min+", the value of this slider can not be less than the minimum value"),e.min):i>e.max?(e.printError("The value of the slider is "+t+", the maximum value is "+e.max+", the value of this slider can not be greater than the maximum value"),e.max):i};return this.isRange?t.map(function(t){return i(t)}):i(t)},syncValue:function(t){var e=this.isRange?this.val.concat():this.val;this.$emit("input",e),t||this.$emit("callback",e)},getValue:function(){return this.val},getIndex:function(){return this.currentIndex},getStaticData:function(){this.$refs.elem&&(this.size="vertical"===this.direction?this.$refs.elem.offsetHeight:this.$refs.elem.offsetWidth,this.offset="vertical"===this.direction?this.$refs.elem.getBoundingClientRect().top+window.pageYOffset||document.documentElement.scrollTop:this.$refs.elem.getBoundingClientRect().left)},refresh:function(){this.$refs.elem&&(this.getStaticData(),this.computedFixedValue(),this.setPosition())},printError:function(t){this.debug&&console.error("[VueSlider error]: "+t)},handleOverlapTooltip:function(){var t=this.tooltipDirection[0]===this.tooltipDirection[1];if(this.isRange&&t){var e=this.$refs.tooltip0,i=this.$refs.tooltip1,s=e.getBoundingClientRect().right,r=i.getBoundingClientRect().left,o=e.getBoundingClientRect().y,n=i.getBoundingClientRect().y+i.getBoundingClientRect().height,l="horizontal"===this.direction&&s>r,a="vertical"===this.direction&&n>o;l||a?this.handleDisplayMergedTooltip(!0):this.handleDisplayMergedTooltip(!1)}},handleDisplayMergedTooltip:function(t){var e=this.$refs.tooltip0,i=this.$refs.tooltip1,s=this.$refs.process.getElementsByClassName("vue-merged-tooltip")[0];t?(e.style.visibility="hidden",i.style.visibility="hidden",s.style.visibility="visible"):(e.style.visibility="visible",i.style.visibility="visible",s.style.visibility="hidden")}},mounted:function(){var t=this;if(this.isComponentExists=!0,"undefined"==typeof window||"undefined"==typeof document)return this.printError("window or document is undefined, can not be initialization.");this.$nextTick(function(){t.isComponentExists&&(t.getStaticData(),t.setValue(t.limitValue(t.value),!0,0),t.bindEvents())}),this.isMounted=!0},beforeDestroy:function(){this.isComponentExists=!1,this.unbindEvents()}}},function(t,e,i){"use strict";var s=i(0);t.exports=s},function(t,e,i){e=t.exports=i(4)(),e.push([t.i,'.vue-slider-component{position:relative;box-sizing:border-box;-ms-user-select:none;user-select:none;-webkit-user-select:none;-moz-user-select:none;-o-user-select:none}.vue-slider-component.vue-slider-disabled{opacity:.5;cursor:not-allowed}.vue-slider-component.vue-slider-has-label{margin-bottom:15px}.vue-slider-component.vue-slider-disabled .vue-slider-dot{cursor:not-allowed}.vue-slider-component .vue-slider{position:relative;display:block;border-radius:15px;background-color:#ccc}.vue-slider-component .vue-slider:after{content:"";position:absolute;left:0;top:0;width:100%;height:100%;z-index:2}.vue-slider-component .vue-slider-process{position:absolute;border-radius:15px;background-color:#3498db;transition:all 0s;z-index:1}.vue-slider-component .vue-slider-process.vue-slider-process-dragable{cursor:pointer;z-index:3}.vue-slider-component.vue-slider-horizontal .vue-slider-process{width:0;height:100%;top:0;left:0;will-change:width}.vue-slider-component.vue-slider-vertical .vue-slider-process{width:100%;height:0;bottom:0;left:0;will-change:height}.vue-slider-component.vue-slider-horizontal-reverse .vue-slider-process{width:0;height:100%;top:0;right:0}.vue-slider-component.vue-slider-vertical-reverse .vue-slider-process{width:100%;height:0;top:0;left:0}.vue-slider-component .vue-slider-dot{position:absolute;border-radius:50%;background-color:#fff;box-shadow:.5px .5px 2px 1px rgba(0,0,0,.32);transition:all 0s;will-change:transform;cursor:pointer;z-index:4}.vue-slider-component .vue-slider-dot.vue-slider-dot-focus{box-shadow:0 0 2px 1px #3498db}.vue-slider-component .vue-slider-dot.vue-slider-dot-dragging{z-index:5}.vue-slider-component.vue-slider-horizontal .vue-slider-dot{left:0}.vue-slider-component.vue-slider-vertical .vue-slider-dot{bottom:0}.vue-slider-component.vue-slider-horizontal-reverse .vue-slider-dot{right:0}.vue-slider-component.vue-slider-vertical-reverse .vue-slider-dot{top:0}.vue-slider-component .vue-slider-tooltip-wrap{display:none;position:absolute;z-index:9}.vue-slider-component .vue-slider-tooltip{display:block;font-size:14px;white-space:nowrap;padding:2px 5px;min-width:20px;text-align:center;color:#fff;border-radius:5px;border:1px solid #3498db;background-color:#3498db}.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-top{top:-9px;left:50%;-webkit-transform:translate(-50%,-100%);transform:translate(-50%,-100%)}.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-bottom{bottom:-9px;left:50%;-webkit-transform:translate(-50%,100%);transform:translate(-50%,100%)}.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-left{top:50%;left:-9px;-webkit-transform:translate(-100%,-50%);transform:translate(-100%,-50%)}.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-right{top:50%;right:-9px;-webkit-transform:translate(100%,-50%);transform:translate(100%,-50%)}.vue-slider-component .vue-slider-tooltip-top .vue-merged-tooltip .vue-slider-tooltip:before,.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-top .vue-slider-tooltip:before{content:"";position:absolute;bottom:-10px;left:50%;width:0;height:0;border:5px solid transparent;border:6px solid transparent\\0;border-top-color:inherit;-webkit-transform:translate(-50%);transform:translate(-50%)}.vue-slider-component .vue-slider-tooltip-wrap.vue-merged-tooltip{display:block;visibility:hidden}.vue-slider-component .vue-slider-tooltip-bottom .vue-merged-tooltip .vue-slider-tooltip:before,.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-bottom .vue-slider-tooltip:before{content:"";position:absolute;top:-10px;left:50%;width:0;height:0;border:5px solid transparent;border:6px solid transparent\\0;border-bottom-color:inherit;-webkit-transform:translate(-50%);transform:translate(-50%)}.vue-slider-component .vue-slider-tooltip-left .vue-merged-tooltip .vue-slider-tooltip:before,.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-left .vue-slider-tooltip:before{content:"";position:absolute;top:50%;right:-10px;width:0;height:0;border:5px solid transparent;border:6px solid transparent\\0;border-left-color:inherit;-webkit-transform:translateY(-50%);transform:translateY(-50%)}.vue-slider-component .vue-slider-tooltip-right .vue-merged-tooltip .vue-slider-tooltip:before,.vue-slider-component .vue-slider-tooltip-wrap.vue-slider-tooltip-right .vue-slider-tooltip:before{content:"";position:absolute;top:50%;left:-10px;width:0;height:0;border:5px solid transparent;border:6px solid transparent\\0;border-right-color:inherit;-webkit-transform:translateY(-50%);transform:translateY(-50%)}.vue-slider-component .vue-slider-dot.vue-slider-hover:hover .vue-slider-tooltip-wrap{display:block}.vue-slider-component .vue-slider-dot.vue-slider-always .vue-slider-tooltip-wrap{display:block!important}.vue-slider-component .vue-slider-piecewise{position:absolute;width:100%;padding:0;margin:0;left:0;top:0;height:100%;list-style:none}.vue-slider-component .vue-slider-piecewise-item{position:absolute;width:8px;height:8px}.vue-slider-component .vue-slider-piecewise-dot{position:absolute;left:50%;top:50%;width:100%;height:100%;display:inline-block;background-color:rgba(0,0,0,.16);border-radius:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:2;transition:all .3s}.vue-slider-component .vue-slider-piecewise-item:first-child .vue-slider-piecewise-dot,.vue-slider-component .vue-slider-piecewise-item:last-child .vue-slider-piecewise-dot{visibility:hidden}.vue-slider-component.vue-slider-horizontal-reverse .vue-slider-piecewise-label,.vue-slider-component.vue-slider-horizontal .vue-slider-piecewise-label{position:absolute;display:inline-block;top:100%;left:50%;white-space:nowrap;font-size:12px;color:#333;-webkit-transform:translate(-50%,8px);transform:translate(-50%,8px);visibility:visible}.vue-slider-component.vue-slider-vertical-reverse .vue-slider-piecewise-label,.vue-slider-component.vue-slider-vertical .vue-slider-piecewise-label{position:absolute;display:inline-block;top:50%;left:100%;white-space:nowrap;font-size:12px;color:#333;-webkit-transform:translate(8px,-50%);transform:translate(8px,-50%);visibility:visible}.vue-slider-component .vue-slider-sr-only{clip:rect(1px,1px,1px,1px);height:1px;width:1px;overflow:hidden;position:absolute!important}',""])},function(t,e){t.exports=function(){var t=[];return t.toString=function(){for(var t=[],e=0;e<this.length;e++){var i=this[e];i[2]?t.push("@media "+i[2]+"{"+i[1]+"}"):t.push(i[1])}return t.join("")},t.i=function(e,i){"string"==typeof e&&(e=[[null,e,""]]);for(var s={},r=0;r<this.length;r++){var o=this[r][0];"number"==typeof o&&(s[o]=!0)}for(r=0;r<e.length;r++){var n=e[r];"number"==typeof n[0]&&s[n[0]]||(i&&!n[2]?n[2]=i:i&&(n[2]="("+n[2]+") and ("+i+")"),t.push(n))}},t}},function(t,e){t.exports=function(t,e,i,s){var r,o=t=t||{},n=typeof t.default;"object"!==n&&"function"!==n||(r=t,o=t.default);var l="function"==typeof o?o.options:o;if(e&&(l.render=e.render,l.staticRenderFns=e.staticRenderFns),i&&(l._scopeId=i),s){var a=Object.create(l.computed||null);Object.keys(s).forEach(function(t){var e=s[t];a[t]=function(){return e}}),l.computed=a}return{esModule:r,exports:o,options:l}}},function(t,e){t.exports={render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("div",{directives:[{name:"show",rawName:"v-show",value:t.show,expression:"show"}],ref:"wrap",class:["vue-slider-component",t.flowDirection,t.disabledClass,t.stateClass,{"vue-slider-has-label":t.piecewiseLabel}],style:t.wrapStyles,on:{click:t.wrapClick}},[i("div",{ref:"elem",staticClass:"vue-slider",style:[t.elemStyles,t.bgStyle],attrs:{"aria-hidden":"true"}},[t.isRange?[i("div",{key:"dot0",ref:"dot0",class:[t.tooltipStatus,"vue-slider-dot",{"vue-slider-dot-focus":t.focusFlag&&0===t.focusSlider,"vue-slider-dot-dragging":t.flag&&0===t.currentSlider}],style:[t.dotStyles,t.sliderStyles[0],t.focusFlag&&0===t.focusSlider?t.focusStyles[0]:null],on:{mousedown:function(e){t.moveStart(e,0)},touchstart:function(e){t.moveStart(e,0)}}},[i("div",{ref:"tooltip0",class:["vue-slider-tooltip-"+t.tooltipDirection[0],"vue-slider-tooltip-wrap"]},[t._t("tooltip",[i("span",{staticClass:"vue-slider-tooltip",style:t.tooltipStyles[0]},[t._v(t._s(t.formatter?t.formatting(t.val[0]):t.val[0]))])],{value:t.val[0],index:0})],2)]),t._v(" "),i("div",{key:"dot1",ref:"dot1",class:[t.tooltipStatus,"vue-slider-dot",{"vue-slider-dot-focus":t.focusFlag&&1===t.focusSlider,"vue-slider-dot-dragging":t.flag&&1===t.currentSlider}],style:[t.dotStyles,t.sliderStyles[1],t.focusFlag&&1===t.focusSlider?t.focusStyles[1]:null],on:{mousedown:function(e){t.moveStart(e,1)},touchstart:function(e){t.moveStart(e,1)}}},[i("div",{ref:"tooltip1",class:["vue-slider-tooltip-"+t.tooltipDirection[1],"vue-slider-tooltip-wrap"]},[t._t("tooltip",[i("span",{staticClass:"vue-slider-tooltip",style:t.tooltipStyles[1]},[t._v(t._s(t.formatter?t.formatting(t.val[1]):t.val[1]))])],{value:t.val[1],index:1})],2)])]:[i("div",{key:"dot",ref:"dot",class:[t.tooltipStatus,"vue-slider-dot",{"vue-slider-dot-focus":t.focusFlag&&0===t.focusSlider,"vue-slider-dot-dragging":t.flag&&0===t.currentSlider}],style:[t.dotStyles,t.sliderStyles,t.focusFlag&&0===t.focusSlider?t.focusStyles:null],on:{mousedown:t.moveStart,touchstart:t.moveStart}},[i("div",{class:["vue-slider-tooltip-"+t.tooltipDirection,"vue-slider-tooltip-wrap"]},[t._t("tooltip",[i("span",{staticClass:"vue-slider-tooltip",style:t.tooltipStyles},[t._v(t._s(t.formatter?t.formatting(t.val):t.val))])],{value:t.val})],2)])],t._v(" "),i("ul",{staticClass:"vue-slider-piecewise"},t._l(t.piecewiseDotWrap,function(e,s){return i("li",{key:s,staticClass:"vue-slider-piecewise-item",style:[t.piecewiseDotStyle,e.style]},[t._t("piecewise",[t.piecewise?i("span",{staticClass:"vue-slider-piecewise-dot",style:[t.piecewiseStyle,e.inRange?t.piecewiseActiveStyle:null]}):t._e()],{label:e.label,index:s,first:0===s,last:s===t.piecewiseDotWrap.length-1,active:e.inRange}),t._v(" "),t._t("label",[t.piecewiseLabel?i("span",{staticClass:"vue-slider-piecewise-label",style:[t.labelStyle,e.inRange?t.labelActiveStyle:null]},[t._v("\n            "+t._s(e.label)+"\n          ")]):t._e()],{label:e.label,index:s,first:0===s,last:s===t.piecewiseDotWrap.length-1,active:e.inRange})],2)})),t._v(" "),i("div",{ref:"process",class:["vue-slider-process",{"vue-slider-process-dragable":t.isRange&&t.processDragable}],style:t.processStyle,on:{click:t.processClick,mousedown:function(e){t.moveStart(e,0,!0)},touchstart:function(e){t.moveStart(e,0,!0)}}},[i("div",{ref:"mergedTooltip",staticClass:"vue-merged-tooltip",class:["vue-slider-tooltip-"+t.tooltipDirection[0],"vue-slider-tooltip-wrap"],style:t.tooltipMergedPosition},[t._t("tooltip",[i("span",{staticClass:"vue-slider-tooltip",style:t.tooltipStyles},[t._v("\n            "+t._s(t.mergeFormatter?t.mergeFormatting(t.val[0],t.val[1]):t.formatter?t.formatting(t.val[0])+" - "+t.formatting(t.val[1]):t.val[0]+" - "+t.val[1])+"\n          ")])])],2)]),t._v(" "),t.isRange||t.data?t._e():i("input",{directives:[{name:"model",rawName:"v-model",value:t.val,expression:"val"}],staticClass:"vue-slider-sr-only",attrs:{type:"range",min:t.min,max:t.max},domProps:{value:t.val},on:{__r:function(e){t.val=e.target.value}}})],2)])},staticRenderFns:[]}},function(t,e,i){var s=i(3);"string"==typeof s&&(s=[[t.i,s,""]]),s.locals&&(t.exports=s.locals);i(8)("743d98f5",s,!0)},function(t,e,i){function s(t){for(var e=0;e<t.length;e++){var i=t[e],s=d[i.id];if(s){s.refs++;for(var r=0;r<s.parts.length;r++)s.parts[r](i.parts[r]);for(;r<i.parts.length;r++)s.parts.push(o(i.parts[r]));s.parts.length>i.parts.length&&(s.parts.length=i.parts.length)}else{for(var n=[],r=0;r<i.parts.length;r++)n.push(o(i.parts[r]));d[i.id]={id:i.id,refs:1,parts:n}}}}function r(){var t=document.createElement("style");return t.type="text/css",h.appendChild(t),t}function o(t){var e,i,s=document.querySelector('style[data-vue-ssr-id~="'+t.id+'"]');if(s){if(f)return v;s.parentNode.removeChild(s)}if(m){var o=p++;s=c||(c=r()),e=n.bind(null,s,o,!1),i=n.bind(null,s,o,!0)}else s=r(),e=l.bind(null,s),i=function(){s.parentNode.removeChild(s)};return e(t),function(s){if(s){if(s.css===t.css&&s.media===t.media&&s.sourceMap===t.sourceMap)return;e(t=s)}else i()}}function n(t,e,i,s){var r=i?"":s.css;if(t.styleSheet)t.styleSheet.cssText=g(e,r);else{var o=document.createTextNode(r),n=t.childNodes;n[e]&&t.removeChild(n[e]),n.length?t.insertBefore(o,n[e]):t.appendChild(o)}}function l(t,e){var i=e.css,s=e.media,r=e.sourceMap;if(s&&t.setAttribute("media",s),r&&(i+="\n/*# sourceURL="+r.sources[0]+" */",i+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(r))))+" */"),t.styleSheet)t.styleSheet.cssText=i;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(i))}}var a="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!a)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var u=i(9),d={},h=a&&(document.head||document.getElementsByTagName("head")[0]),c=null,p=0,f=!1,v=function(){},m="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());t.exports=function(t,e,i){f=i;var r=u(t,e);return s(r),function(e){for(var i=[],o=0;o<r.length;o++){var n=r[o],l=d[n.id];l.refs--,i.push(l)}e?(r=u(t,e),s(r)):r=[];for(var o=0;o<i.length;o++){var l=i[o];if(0===l.refs){for(var a=0;a<l.parts.length;a++)l.parts[a]();delete d[l.id]}}}};var g=function(){var t=[];return function(e,i){return t[e]=i,t.filter(Boolean).join("\n")}}()},function(t,e){t.exports=function(t,e){for(var i=[],s={},r=0;r<e.length;r++){var o=e[r],n=o[0],l=o[1],a=o[2],u=o[3],d={id:t+":"+r,css:l,media:a,sourceMap:u};s[n]?s[n].parts.push(d):i.push(s[n]={id:n,parts:[d]})}return i}}])});
 
 /***/ }),
-/* 434 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var core = __webpack_require__(31);
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-
-
-/***/ }),
+/* 433 */,
+/* 434 */,
 /* 435 */,
 /* 436 */,
 /* 437 */,
@@ -13072,7 +13062,18 @@ module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 /* 489 */,
 /* 490 */,
 /* 491 */,
-/* 492 */
+/* 492 */,
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
+/* 500 */,
+/* 501 */,
+/* 502 */,
+/* 503 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13099,9 +13100,9 @@ this program. If not, see <https://www.apache.org/licenses/LICENSE-2.0>.
 
 // Must use npm and babel to support IE11/Safari
 
-var _stringify = __webpack_require__(433);
+var _getIterator2 = __webpack_require__(259);
 
-var _stringify2 = _interopRequireDefault(_stringify);
+var _getIterator3 = _interopRequireDefault(_getIterator2);
 
 var _set = __webpack_require__(412);
 
@@ -13110,10 +13111,6 @@ var _set2 = _interopRequireDefault(_set);
 var _from = __webpack_require__(428);
 
 var _from2 = _interopRequireDefault(_from);
-
-var _getIterator2 = __webpack_require__(259);
-
-var _getIterator3 = _interopRequireDefault(_getIterator2);
 
 var _regenerator = __webpack_require__(411);
 
@@ -13146,19 +13143,13 @@ var initialPrep = function () {
 
             console.log('3... ');
             _context.next = 10;
-            return fetchAddLayers();
+            return buildChartHtmlFromData();
 
           case 10:
 
-            console.log('4... ');
-            _context.next = 13;
-            return checkCookie();
+            console.log('4 !!!');
 
-          case 13:
-
-            console.log('5 !!!');
-
-          case 14:
+          case 11:
           case 'end':
             return _context.stop();
         }
@@ -13173,86 +13164,149 @@ var initialPrep = function () {
 
 var fetchMapFeatures = function () {
   var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-    var geo_url, resp, features, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, feat;
+    var geo_url, trtmc_ids, resp, features, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, feat, feat_filtered, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, _feat;
 
     return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            geo_url = API_SERVER + GEO_VIEW + '?select=geoid_1,geometry';
+            geo_url = API_SERVER + GEO_VIEW + '?select=tmc,geometry,street,intersec,direction,dir2';
             _context2.prev = 1;
-            _context2.next = 4;
-            return fetch(geo_url);
 
-          case 4:
+            // get a list of valid TMCs
+            trtmc_ids = [];
+            _context2.next = 5;
+            return fetch(API_SERVER + DATA_VIEW + '?select=tmc');
+
+          case 5:
             resp = _context2.sent;
-            _context2.next = 7;
+            _context2.next = 8;
             return resp.json();
 
-          case 7:
+          case 8:
             features = _context2.sent;
-
-
-            // do some parsing and stuff
             _iteratorNormalCompletion = true;
             _didIteratorError = false;
             _iteratorError = undefined;
-            _context2.prev = 11;
+            _context2.prev = 12;
+
             for (_iterator = (0, _getIterator3.default)(features); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
               feat = _step.value;
 
-              feat['type'] = 'Feature';
-              feat['geometry'] = JSON.parse(feat.geometry);
-              feat = updateGeoType(feat);
+              trtmc_ids.push(feat.tmc);
             }
-            _context2.next = 19;
+            _context2.next = 20;
             break;
 
-          case 15:
-            _context2.prev = 15;
-            _context2.t0 = _context2['catch'](11);
+          case 16:
+            _context2.prev = 16;
+            _context2.t0 = _context2['catch'](12);
             _didIteratorError = true;
             _iteratorError = _context2.t0;
 
-          case 19:
-            _context2.prev = 19;
+          case 20:
             _context2.prev = 20;
+            _context2.prev = 21;
 
             if (!_iteratorNormalCompletion && _iterator.return) {
               _iterator.return();
             }
 
-          case 22:
-            _context2.prev = 22;
+          case 23:
+            _context2.prev = 23;
 
             if (!_didIteratorError) {
-              _context2.next = 25;
+              _context2.next = 26;
               break;
             }
 
             throw _iteratorError;
 
-          case 25:
-            return _context2.finish(22);
-
           case 26:
-            return _context2.finish(19);
+            return _context2.finish(23);
 
           case 27:
-            return _context2.abrupt('return', features);
+            return _context2.finish(20);
 
-          case 30:
-            _context2.prev = 30;
-            _context2.t1 = _context2['catch'](1);
+          case 28:
+            trtmc_ids = (0, _from2.default)(new _set2.default(trtmc_ids));
 
-            console.log('map feature error: ' + _context2.t1);
+            _context2.next = 31;
+            return fetch(geo_url);
 
-          case 33:
+          case 31:
+            resp = _context2.sent;
+            _context2.next = 34;
+            return resp.json();
+
+          case 34:
+            features = _context2.sent;
+
+
+            // do some parsing and stuff
+            feat_filtered = [];
+            _iteratorNormalCompletion2 = true;
+            _didIteratorError2 = false;
+            _iteratorError2 = undefined;
+            _context2.prev = 39;
+
+            for (_iterator2 = (0, _getIterator3.default)(features); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+              _feat = _step2.value;
+
+              if (trtmc_ids.includes(_feat.tmc)) {
+                _feat['type'] = 'Feature';
+                _feat['geometry'] = JSON.parse(_feat.geometry);
+                feat_filtered.push(_feat);
+              }
+            }
+            _context2.next = 47;
+            break;
+
+          case 43:
+            _context2.prev = 43;
+            _context2.t1 = _context2['catch'](39);
+            _didIteratorError2 = true;
+            _iteratorError2 = _context2.t1;
+
+          case 47:
+            _context2.prev = 47;
+            _context2.prev = 48;
+
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+              _iterator2.return();
+            }
+
+          case 50:
+            _context2.prev = 50;
+
+            if (!_didIteratorError2) {
+              _context2.next = 53;
+              break;
+            }
+
+            throw _iteratorError2;
+
+          case 53:
+            return _context2.finish(50);
+
+          case 54:
+            return _context2.finish(47);
+
+          case 55:
+            return _context2.abrupt('return', feat_filtered);
+
+          case 58:
+            _context2.prev = 58;
+            _context2.t2 = _context2['catch'](1);
+
+            console.log('map feature error: ' + _context2.t2);
+
+          case 61:
           case 'end':
             return _context2.stop();
         }
       }
-    }, _callee2, this, [[1, 30], [11, 15, 19, 27], [20,, 22, 26]]);
+    }, _callee2, this, [[1, 58], [12, 16, 20, 28], [21,, 23, 27], [39, 43, 47, 55], [48,, 50, 54]]);
   }));
 
   return function fetchMapFeatures() {
@@ -13260,614 +13314,514 @@ var fetchMapFeatures = function () {
   };
 }();
 
-var updateGeoType = function () {
-  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(obj) {
-    return _regenerator2.default.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            obj['bgflag'] = 0;
-
-            if (!(obj[GEOID_VAR].length == 11)) {
-              _context3.next = 6;
-              break;
-            }
-
-            obj['tract_id'] = obj[GEOID_VAR].substring(5, 11);
-            obj['bg_id'] = 'NA';
-            _context3.next = 13;
-            break;
-
-          case 6:
-            if (!(obj[GEOID_VAR].length == 19)) {
-              _context3.next = 12;
-              break;
-            }
-
-            obj['tract_id'] = obj[GEOID_VAR].substring(12, 18);
-            obj['bg_id'] = obj[GEOID_VAR].substring(18, 19);
-            obj['bgflag'] = 1;
-            _context3.next = 13;
-            break;
-
-          case 12:
-            throw 'ERROR: Unknown feature/geography!!!' + GEOID_VAR + ': ' + obj[GEOID_VAR];
-
-          case 13:
-            return _context3.abrupt('return', obj);
-
-          case 14:
-          case 'end':
-            return _context3.stop();
-        }
-      }
-    }, _callee3, this);
-  }));
-
-  return function updateGeoType(_x) {
-    return _ref3.apply(this, arguments);
-  };
-}();
-
-var fetchAddLayers = function () {
-  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-    var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, item, resp, features, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, feat, lyr;
-
-    return _regenerator2.default.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.prev = 0;
-            _iteratorNormalCompletion2 = true;
-            _didIteratorError2 = false;
-            _iteratorError2 = undefined;
-            _context4.prev = 4;
-            _iterator2 = (0, _getIterator3.default)(ADDLAYERS);
-
-          case 6:
-            if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context4.next = 39;
-              break;
-            }
-
-            item = _step2.value;
-            _context4.next = 10;
-            return fetch(API_SERVER + item.view);
-
-          case 10:
-            resp = _context4.sent;
-            _context4.next = 13;
-            return resp.json();
-
-          case 13:
-            features = _context4.sent;
-            _iteratorNormalCompletion3 = true;
-            _didIteratorError3 = false;
-            _iteratorError3 = undefined;
-            _context4.prev = 17;
-
-            for (_iterator3 = (0, _getIterator3.default)(features); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-              feat = _step3.value;
-
-              feat['type'] = 'Feature';
-              feat['geometry'] = JSON.parse(feat.geometry);
-            }
-            _context4.next = 25;
-            break;
-
-          case 21:
-            _context4.prev = 21;
-            _context4.t0 = _context4['catch'](17);
-            _didIteratorError3 = true;
-            _iteratorError3 = _context4.t0;
-
-          case 25:
-            _context4.prev = 25;
-            _context4.prev = 26;
-
-            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-              _iterator3.return();
-            }
-
-          case 28:
-            _context4.prev = 28;
-
-            if (!_didIteratorError3) {
-              _context4.next = 31;
-              break;
-            }
-
-            throw _iteratorError3;
-
-          case 31:
-            return _context4.finish(28);
-
-          case 32:
-            return _context4.finish(25);
-
-          case 33:
-            lyr = L.geoJSON(features, {
-              style: item.style,
-              pane: 'shadowPane'
-            }).addTo(mymap);
-
-            addLayerStore[item.view] = lyr;
-            mymap.removeLayer(lyr);
-
-          case 36:
-            _iteratorNormalCompletion2 = true;
-            _context4.next = 6;
-            break;
-
-          case 39:
-            _context4.next = 45;
-            break;
-
-          case 41:
-            _context4.prev = 41;
-            _context4.t1 = _context4['catch'](4);
-            _didIteratorError2 = true;
-            _iteratorError2 = _context4.t1;
-
-          case 45:
-            _context4.prev = 45;
-            _context4.prev = 46;
-
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-              _iterator2.return();
-            }
-
-          case 48:
-            _context4.prev = 48;
-
-            if (!_didIteratorError2) {
-              _context4.next = 51;
-              break;
-            }
-
-            throw _iteratorError2;
-
-          case 51:
-            return _context4.finish(48);
-
-          case 52:
-            return _context4.finish(45);
-
-          case 53:
-            _context4.next = 58;
-            break;
-
-          case 55:
-            _context4.prev = 55;
-            _context4.t2 = _context4['catch'](0);
-
-            console.log('additional layers error: ' + _context4.t2);
-
-          case 58:
-          case 'end':
-            return _context4.stop();
-        }
-      }
-    }, _callee4, this, [[0, 55], [4, 41, 45, 53], [17, 21, 25, 33], [26,, 28, 32], [46,, 48, 52]]);
-  }));
-
-  return function fetchAddLayers() {
-    return _ref4.apply(this, arguments);
-  };
-}();
-
 // hover panel -------------------
 
 
 var getMapData = function () {
-  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-    var data_url, resp, jsonData, tmp, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, yr, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, met, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, entry, _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _iterator8, _step8, _yr2, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, _met, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, _yr, row, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, _met2;
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+    var data_url, resp, jsonData, tmp, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, yr, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, _tod, _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _iterator8, _step8, met, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, entry, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, _met, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, tod, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, _yr, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, _tod2, row, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, _met2;
 
-    return _regenerator2.default.wrap(function _callee5$(_context5) {
+    return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             data_url = API_SERVER + DATA_VIEW;
-            _context5.next = 3;
+            _context3.next = 3;
             return fetch(data_url);
 
           case 3:
-            resp = _context5.sent;
-            _context5.next = 6;
+            resp = _context3.sent;
+            _context3.next = 6;
             return resp.json();
 
           case 6:
-            jsonData = _context5.sent;
+            jsonData = _context3.sent;
 
             base_lookup = {};
             tmp = {};
-            _iteratorNormalCompletion4 = true;
-            _didIteratorError4 = false;
-            _iteratorError4 = undefined;
-            _context5.prev = 12;
-            _iterator4 = (0, _getIterator3.default)(YR_LIST);
+            _iteratorNormalCompletion3 = true;
+            _didIteratorError3 = false;
+            _iteratorError3 = undefined;
+            _context3.prev = 12;
+            _iterator3 = (0, _getIterator3.default)(SCNYR_LIST);
 
           case 14:
-            if (_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done) {
-              _context5.next = 39;
+            if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
+              _context3.next = 66;
               break;
             }
 
-            yr = _step4.value;
+            yr = _step3.value;
 
             tmp[yr] = {};
+            base_lookup[yr] = {};
             _iteratorNormalCompletion7 = true;
             _didIteratorError7 = false;
             _iteratorError7 = undefined;
-            _context5.prev = 20;
-            for (_iterator7 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-              met = _step7.value;
+            _context3.prev = 21;
+            _iterator7 = (0, _getIterator3.default)(app.time_options);
 
-              tmp[yr][met.value] = 0;
-            }
-            _context5.next = 28;
-            break;
-
-          case 24:
-            _context5.prev = 24;
-            _context5.t0 = _context5['catch'](20);
-            _didIteratorError7 = true;
-            _iteratorError7 = _context5.t0;
-
-          case 28:
-            _context5.prev = 28;
-            _context5.prev = 29;
-
-            if (!_iteratorNormalCompletion7 && _iterator7.return) {
-              _iterator7.return();
-            }
-
-          case 31:
-            _context5.prev = 31;
-
-            if (!_didIteratorError7) {
-              _context5.next = 34;
+          case 23:
+            if (_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done) {
+              _context3.next = 49;
               break;
             }
 
-            throw _iteratorError7;
+            _tod = _step7.value;
 
-          case 34:
-            return _context5.finish(31);
-
-          case 35:
-            return _context5.finish(28);
-
-          case 36:
-            _iteratorNormalCompletion4 = true;
-            _context5.next = 14;
-            break;
-
-          case 39:
-            _context5.next = 45;
-            break;
-
-          case 41:
-            _context5.prev = 41;
-            _context5.t1 = _context5['catch'](12);
-            _didIteratorError4 = true;
-            _iteratorError4 = _context5.t1;
-
-          case 45:
-            _context5.prev = 45;
-            _context5.prev = 46;
-
-            if (!_iteratorNormalCompletion4 && _iterator4.return) {
-              _iterator4.return();
-            }
-
-          case 48:
-            _context5.prev = 48;
-
-            if (!_didIteratorError4) {
-              _context5.next = 51;
-              break;
-            }
-
-            throw _iteratorError4;
-
-          case 51:
-            return _context5.finish(48);
-
-          case 52:
-            return _context5.finish(45);
-
-          case 53:
-            _iteratorNormalCompletion5 = true;
-            _didIteratorError5 = false;
-            _iteratorError5 = undefined;
-            _context5.prev = 56;
-            _iterator5 = (0, _getIterator3.default)(jsonData);
-
-          case 58:
-            if (_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done) {
-              _context5.next = 107;
-              break;
-            }
-
-            entry = _step5.value;
-
-
-            base_lookup[entry[GEOID_VAR]] = entry;
-
+            tmp[yr][_tod.value] = {};
+            base_lookup[yr][_tod.value] = {};
             _iteratorNormalCompletion8 = true;
             _didIteratorError8 = false;
             _iteratorError8 = undefined;
-            _context5.prev = 64;
-            _iterator8 = (0, _getIterator3.default)(YR_LIST);
+            _context3.prev = 30;
+            for (_iterator8 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+              met = _step8.value;
 
-          case 66:
-            if (_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done) {
-              _context5.next = 90;
-              break;
+              tmp[yr][_tod.value][met.value] = 0;
             }
-
-            _yr2 = _step8.value;
-            _iteratorNormalCompletion9 = true;
-            _didIteratorError9 = false;
-            _iteratorError9 = undefined;
-            _context5.prev = 71;
-
-            for (_iterator9 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-              _met = _step9.value;
-
-              tmp[_yr2][_met.value] += entry[_met.value + _yr2];
-            }
-            _context5.next = 79;
+            _context3.next = 38;
             break;
 
-          case 75:
-            _context5.prev = 75;
-            _context5.t2 = _context5['catch'](71);
-            _didIteratorError9 = true;
-            _iteratorError9 = _context5.t2;
-
-          case 79:
-            _context5.prev = 79;
-            _context5.prev = 80;
-
-            if (!_iteratorNormalCompletion9 && _iterator9.return) {
-              _iterator9.return();
-            }
-
-          case 82:
-            _context5.prev = 82;
-
-            if (!_didIteratorError9) {
-              _context5.next = 85;
-              break;
-            }
-
-            throw _iteratorError9;
-
-          case 85:
-            return _context5.finish(82);
-
-          case 86:
-            return _context5.finish(79);
-
-          case 87:
-            _iteratorNormalCompletion8 = true;
-            _context5.next = 66;
-            break;
-
-          case 90:
-            _context5.next = 96;
-            break;
-
-          case 92:
-            _context5.prev = 92;
-            _context5.t3 = _context5['catch'](64);
+          case 34:
+            _context3.prev = 34;
+            _context3.t0 = _context3['catch'](30);
             _didIteratorError8 = true;
-            _iteratorError8 = _context5.t3;
+            _iteratorError8 = _context3.t0;
 
-          case 96:
-            _context5.prev = 96;
-            _context5.prev = 97;
+          case 38:
+            _context3.prev = 38;
+            _context3.prev = 39;
 
             if (!_iteratorNormalCompletion8 && _iterator8.return) {
               _iterator8.return();
             }
 
-          case 99:
-            _context5.prev = 99;
+          case 41:
+            _context3.prev = 41;
 
             if (!_didIteratorError8) {
-              _context5.next = 102;
+              _context3.next = 44;
               break;
             }
 
             throw _iteratorError8;
 
-          case 102:
-            return _context5.finish(99);
+          case 44:
+            return _context3.finish(41);
 
-          case 103:
-            return _context5.finish(96);
+          case 45:
+            return _context3.finish(38);
 
-          case 104:
-            _iteratorNormalCompletion5 = true;
-            _context5.next = 58;
+          case 46:
+            _iteratorNormalCompletion7 = true;
+            _context3.next = 23;
             break;
+
+          case 49:
+            _context3.next = 55;
+            break;
+
+          case 51:
+            _context3.prev = 51;
+            _context3.t1 = _context3['catch'](21);
+            _didIteratorError7 = true;
+            _iteratorError7 = _context3.t1;
+
+          case 55:
+            _context3.prev = 55;
+            _context3.prev = 56;
+
+            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+              _iterator7.return();
+            }
+
+          case 58:
+            _context3.prev = 58;
+
+            if (!_didIteratorError7) {
+              _context3.next = 61;
+              break;
+            }
+
+            throw _iteratorError7;
+
+          case 61:
+            return _context3.finish(58);
+
+          case 62:
+            return _context3.finish(55);
+
+          case 63:
+            _iteratorNormalCompletion3 = true;
+            _context3.next = 14;
+            break;
+
+          case 66:
+            _context3.next = 72;
+            break;
+
+          case 68:
+            _context3.prev = 68;
+            _context3.t2 = _context3['catch'](12);
+            _didIteratorError3 = true;
+            _iteratorError3 = _context3.t2;
+
+          case 72:
+            _context3.prev = 72;
+            _context3.prev = 73;
+
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
+            }
+
+          case 75:
+            _context3.prev = 75;
+
+            if (!_didIteratorError3) {
+              _context3.next = 78;
+              break;
+            }
+
+            throw _iteratorError3;
+
+          case 78:
+            return _context3.finish(75);
+
+          case 79:
+            return _context3.finish(72);
+
+          case 80:
+            _iteratorNormalCompletion4 = true;
+            _didIteratorError4 = false;
+            _iteratorError4 = undefined;
+            _context3.prev = 83;
+            _iterator4 = (0, _getIterator3.default)(jsonData);
+
+          case 85:
+            if (_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done) {
+              _context3.next = 110;
+              break;
+            }
+
+            entry = _step4.value;
+
+            base_lookup[entry[YR_VAR]][entry[TOD_VAR]][entry[GEOID_VAR]] = entry;
+            _iteratorNormalCompletion9 = true;
+            _didIteratorError9 = false;
+            _iteratorError9 = undefined;
+            _context3.prev = 91;
+            for (_iterator9 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+              _met = _step9.value;
+
+              tmp[entry[YR_VAR]][entry[TOD_VAR]][_met.value] += entry[_met.value];
+            }
+            _context3.next = 99;
+            break;
+
+          case 95:
+            _context3.prev = 95;
+            _context3.t3 = _context3['catch'](91);
+            _didIteratorError9 = true;
+            _iteratorError9 = _context3.t3;
+
+          case 99:
+            _context3.prev = 99;
+            _context3.prev = 100;
+
+            if (!_iteratorNormalCompletion9 && _iterator9.return) {
+              _iterator9.return();
+            }
+
+          case 102:
+            _context3.prev = 102;
+
+            if (!_didIteratorError9) {
+              _context3.next = 105;
+              break;
+            }
+
+            throw _iteratorError9;
+
+          case 105:
+            return _context3.finish(102);
+
+          case 106:
+            return _context3.finish(99);
 
           case 107:
-            _context5.next = 113;
+            _iteratorNormalCompletion4 = true;
+            _context3.next = 85;
             break;
 
-          case 109:
-            _context5.prev = 109;
-            _context5.t4 = _context5['catch'](56);
-            _didIteratorError5 = true;
-            _iteratorError5 = _context5.t4;
+          case 110:
+            _context3.next = 116;
+            break;
 
-          case 113:
-            _context5.prev = 113;
-            _context5.prev = 114;
+          case 112:
+            _context3.prev = 112;
+            _context3.t4 = _context3['catch'](83);
+            _didIteratorError4 = true;
+            _iteratorError4 = _context3.t4;
+
+          case 116:
+            _context3.prev = 116;
+            _context3.prev = 117;
+
+            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+              _iterator4.return();
+            }
+
+          case 119:
+            _context3.prev = 119;
+
+            if (!_didIteratorError4) {
+              _context3.next = 122;
+              break;
+            }
+
+            throw _iteratorError4;
+
+          case 122:
+            return _context3.finish(119);
+
+          case 123:
+            return _context3.finish(116);
+
+          case 124:
+            _aggregateData = {};
+            _iteratorNormalCompletion5 = true;
+            _didIteratorError5 = false;
+            _iteratorError5 = undefined;
+            _context3.prev = 128;
+            for (_iterator5 = (0, _getIterator3.default)(app.time_options); !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              tod = _step5.value;
+
+              _aggregateData[tod.value] = [];
+            }
+            _context3.next = 136;
+            break;
+
+          case 132:
+            _context3.prev = 132;
+            _context3.t5 = _context3['catch'](128);
+            _didIteratorError5 = true;
+            _iteratorError5 = _context3.t5;
+
+          case 136:
+            _context3.prev = 136;
+            _context3.prev = 137;
 
             if (!_iteratorNormalCompletion5 && _iterator5.return) {
               _iterator5.return();
             }
 
-          case 116:
-            _context5.prev = 116;
+          case 139:
+            _context3.prev = 139;
 
             if (!_didIteratorError5) {
-              _context5.next = 119;
+              _context3.next = 142;
               break;
             }
 
             throw _iteratorError5;
 
-          case 119:
-            return _context5.finish(116);
+          case 142:
+            return _context3.finish(139);
 
-          case 120:
-            return _context5.finish(113);
+          case 143:
+            return _context3.finish(136);
 
-          case 121:
-            _aggregateData = [];
+          case 144:
             _iteratorNormalCompletion6 = true;
             _didIteratorError6 = false;
             _iteratorError6 = undefined;
-            _context5.prev = 125;
-            _iterator6 = (0, _getIterator3.default)(YR_LIST);
+            _context3.prev = 147;
+            _iterator6 = (0, _getIterator3.default)(SCNYR_LIST);
 
-          case 127:
+          case 149:
             if (_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done) {
-              _context5.next = 154;
+              _context3.next = 200;
               break;
             }
 
             _yr = _step6.value;
-            row = {};
-
-            row['year'] = _yr.toString();
             _iteratorNormalCompletion10 = true;
             _didIteratorError10 = false;
             _iteratorError10 = undefined;
-            _context5.prev = 134;
-            for (_iterator10 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-              _met2 = _step10.value;
+            _context3.prev = 154;
+            _iterator10 = (0, _getIterator3.default)(app.time_options);
 
-              row[_met2.value] = tmp[_yr][_met2.value];
+          case 156:
+            if (_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done) {
+              _context3.next = 183;
+              break;
             }
-            _context5.next = 142;
+
+            _tod2 = _step10.value;
+            row = {};
+
+            row['year'] = _yr.toString();
+            _iteratorNormalCompletion11 = true;
+            _didIteratorError11 = false;
+            _iteratorError11 = undefined;
+            _context3.prev = 163;
+            for (_iterator11 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+              _met2 = _step11.value;
+
+              row[_met2.value] = Math.round(tmp[_yr][_tod2.value][_met2.value] * prec) / prec;
+            }
+            _context3.next = 171;
             break;
 
-          case 138:
-            _context5.prev = 138;
-            _context5.t5 = _context5['catch'](134);
-            _didIteratorError10 = true;
-            _iteratorError10 = _context5.t5;
+          case 167:
+            _context3.prev = 167;
+            _context3.t6 = _context3['catch'](163);
+            _didIteratorError11 = true;
+            _iteratorError11 = _context3.t6;
 
-          case 142:
-            _context5.prev = 142;
-            _context5.prev = 143;
+          case 171:
+            _context3.prev = 171;
+            _context3.prev = 172;
+
+            if (!_iteratorNormalCompletion11 && _iterator11.return) {
+              _iterator11.return();
+            }
+
+          case 174:
+            _context3.prev = 174;
+
+            if (!_didIteratorError11) {
+              _context3.next = 177;
+              break;
+            }
+
+            throw _iteratorError11;
+
+          case 177:
+            return _context3.finish(174);
+
+          case 178:
+            return _context3.finish(171);
+
+          case 179:
+            _aggregateData[_tod2.value].push(row);
+
+          case 180:
+            _iteratorNormalCompletion10 = true;
+            _context3.next = 156;
+            break;
+
+          case 183:
+            _context3.next = 189;
+            break;
+
+          case 185:
+            _context3.prev = 185;
+            _context3.t7 = _context3['catch'](154);
+            _didIteratorError10 = true;
+            _iteratorError10 = _context3.t7;
+
+          case 189:
+            _context3.prev = 189;
+            _context3.prev = 190;
 
             if (!_iteratorNormalCompletion10 && _iterator10.return) {
               _iterator10.return();
             }
 
-          case 145:
-            _context5.prev = 145;
+          case 192:
+            _context3.prev = 192;
 
             if (!_didIteratorError10) {
-              _context5.next = 148;
+              _context3.next = 195;
               break;
             }
 
             throw _iteratorError10;
 
-          case 148:
-            return _context5.finish(145);
+          case 195:
+            return _context3.finish(192);
 
-          case 149:
-            return _context5.finish(142);
+          case 196:
+            return _context3.finish(189);
 
-          case 150:
-            _aggregateData.push(row);
-
-          case 151:
+          case 197:
             _iteratorNormalCompletion6 = true;
-            _context5.next = 127;
+            _context3.next = 149;
             break;
 
-          case 154:
-            _context5.next = 160;
+          case 200:
+            _context3.next = 206;
             break;
 
-          case 156:
-            _context5.prev = 156;
-            _context5.t6 = _context5['catch'](125);
+          case 202:
+            _context3.prev = 202;
+            _context3.t8 = _context3['catch'](147);
             _didIteratorError6 = true;
-            _iteratorError6 = _context5.t6;
+            _iteratorError6 = _context3.t8;
 
-          case 160:
-            _context5.prev = 160;
-            _context5.prev = 161;
+          case 206:
+            _context3.prev = 206;
+            _context3.prev = 207;
 
             if (!_iteratorNormalCompletion6 && _iterator6.return) {
               _iterator6.return();
             }
 
-          case 163:
-            _context5.prev = 163;
+          case 209:
+            _context3.prev = 209;
 
             if (!_didIteratorError6) {
-              _context5.next = 166;
+              _context3.next = 212;
               break;
             }
 
             throw _iteratorError6;
 
-          case 166:
-            return _context5.finish(163);
+          case 212:
+            return _context3.finish(209);
 
-          case 167:
-            return _context5.finish(160);
+          case 213:
+            return _context3.finish(206);
 
-          case 168:
+          case 214:
           case 'end':
-            return _context5.stop();
+            return _context3.stop();
         }
       }
-    }, _callee5, this, [[12, 41, 45, 53], [20, 24, 28, 36], [29,, 31, 35], [46,, 48, 52], [56, 109, 113, 121], [64, 92, 96, 104], [71, 75, 79, 87], [80,, 82, 86], [97,, 99, 103], [114,, 116, 120], [125, 156, 160, 168], [134, 138, 142, 150], [143,, 145, 149], [161,, 163, 167]]);
+    }, _callee3, this, [[12, 68, 72, 80], [21, 51, 55, 63], [30, 34, 38, 46], [39,, 41, 45], [56,, 58, 62], [73,, 75, 79], [83, 112, 116, 124], [91, 95, 99, 107], [100,, 102, 106], [117,, 119, 123], [128, 132, 136, 144], [137,, 139, 143], [147, 202, 206, 214], [154, 185, 189, 197], [163, 167, 171, 179], [172,, 174, 178], [190,, 192, 196], [207,, 209, 213]]);
   }));
 
   return function getMapData() {
-    return _ref5.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 }();
 
 var drawMapFeatures = function () {
-  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
+  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
     var queryMapData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
-    var cleanFeatures, sel_metric, base_metric, comp_metric, map_metric, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, feat, feat_entry, color_func, sel_colorvals2, bp, mode, custom_bps, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, i;
+    var cleanFeatures, sel_metric, base_scnyr, comp_scnyr, map_metric, bwidth_metric, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, feat, color_func, sel_colorvals2, bp, dist_vals, x, numticks, histogram, mode, custom_bps, i, bw_widths, _iteratorNormalCompletion13, _didIteratorError13, _iteratorError13, _iterator13, _step13, _feat2, _iteratorNormalCompletion14, _didIteratorError14, _iteratorError14, _iterator14, _step14, _i;
 
-    return _regenerator2.default.wrap(function _callee6$(_context6) {
+    return _regenerator2.default.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
             if (_featJson) {
-              _context6.next = 2;
+              _context4.next = 2;
               break;
             }
 
-            return _context6.abrupt('return');
+            return _context4.abrupt('return');
 
           case 2:
             cleanFeatures = _featJson.slice();
             sel_metric = app.selected_metric;
-            base_metric = sel_metric + app.sliderValue[0];
-            comp_metric = sel_metric + app.sliderValue[1];
+            base_scnyr = app.sliderValue[0];
+            comp_scnyr = app.sliderValue[1];
 
-            if (base_metric == comp_metric) {
+            if (base_scnyr == comp_scnyr) {
               app.comp_check = false;
               app.pct_check = false;
             } else {
@@ -13875,100 +13829,112 @@ var drawMapFeatures = function () {
             }
             prec = FRAC_COLS.includes(sel_metric) ? 100 : 1;
 
-            _context6.prev = 8;
+            _context4.prev = 8;
 
             if (!queryMapData) {
-              _context6.next = 35;
+              _context4.next = 38;
               break;
             }
 
             if (!(base_lookup == undefined)) {
-              _context6.next = 13;
+              _context4.next = 13;
               break;
             }
 
-            _context6.next = 13;
+            _context4.next = 13;
             return getMapData();
 
           case 13:
             map_metric = void 0;
+            bwidth_metric = void 0;
 
             map_vals = [];
-            _iteratorNormalCompletion11 = true;
-            _didIteratorError11 = false;
-            _iteratorError11 = undefined;
-            _context6.prev = 18;
-            for (_iterator11 = (0, _getIterator3.default)(cleanFeatures); !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-              feat = _step11.value;
+            bwidth_vals = [];
+            _iteratorNormalCompletion12 = true;
+            _didIteratorError12 = false;
+            _iteratorError12 = undefined;
+            _context4.prev = 20;
+            for (_iterator12 = (0, _getIterator3.default)(cleanFeatures); !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+              feat = _step12.value;
+
+              bwidth_metric = null;
+              if (base_lookup[base_scnyr][app.selected_timep].hasOwnProperty(feat[GEOID_VAR])) {
+                bwidth_metric = Math.round(base_lookup[base_scnyr][app.selected_timep][feat[GEOID_VAR]][app.selected_bwidth]);
+                if (bwidth_metric !== null) bwidth_vals.push(bwidth_metric);
+              }
+              feat['bwmetric'] = bwidth_metric;
 
               map_metric = null;
-
               if (app.comp_check) {
-                if (base_lookup.hasOwnProperty(feat[GEOID_VAR])) {
-                  feat_entry = base_lookup[feat[GEOID_VAR]];
-
-                  map_metric = Math.round(feat_entry[comp_metric] / (feat['sq_mile'] * 1000)) - Math.round(feat_entry[base_metric] / (feat['sq_mile'] * 1000));
-                  feat['base'] = feat_entry[base_metric];
-                  feat['comp'] = feat_entry[comp_metric];
-                  if (app.pct_check && app.comp_check) {
-                    if (feat_entry[base_metric] > 0) {
-                      map_metric = map_metric * 100 / feat_entry[base_metric];
+                if (base_lookup[base_scnyr][app.selected_timep].hasOwnProperty(feat[GEOID_VAR])) {
+                  if (base_lookup[comp_scnyr][app.selected_timep].hasOwnProperty(feat[GEOID_VAR])) {
+                    feat['base'] = base_lookup[base_scnyr][app.selected_timep][feat[GEOID_VAR]][sel_metric];
+                    feat['comp'] = base_lookup[comp_scnyr][app.selected_timep][feat[GEOID_VAR]][sel_metric];
+                    map_metric = feat['comp'] - feat['base'];
+                    if (app.pct_check && app.comp_check) {
+                      if (feat['base'] > 0) {
+                        map_metric = map_metric * 100 / feat['base'];
+                      } else {
+                        map_metric = 0;
+                      }
                     }
                   }
                 }
               } else {
-                if (base_lookup.hasOwnProperty(feat[GEOID_VAR])) {
-                  map_metric = base_lookup[feat[GEOID_VAR]][VARMAP[feat['bgflag']][sel_metric]] * 100;
+                if (base_lookup[base_scnyr][app.selected_timep].hasOwnProperty(feat[GEOID_VAR])) {
+                  map_metric = base_lookup[base_scnyr][app.selected_timep][feat[GEOID_VAR]][sel_metric];
                 }
               }
-
               if (map_metric !== null) {
                 map_metric = Math.round(map_metric * prec) / prec;
                 map_vals.push(map_metric);
               }
               feat['metric'] = map_metric;
             }
-            _context6.next = 26;
+            _context4.next = 28;
             break;
 
-          case 22:
-            _context6.prev = 22;
-            _context6.t0 = _context6['catch'](18);
-            _didIteratorError11 = true;
-            _iteratorError11 = _context6.t0;
+          case 24:
+            _context4.prev = 24;
+            _context4.t0 = _context4['catch'](20);
+            _didIteratorError12 = true;
+            _iteratorError12 = _context4.t0;
 
-          case 26:
-            _context6.prev = 26;
-            _context6.prev = 27;
+          case 28:
+            _context4.prev = 28;
+            _context4.prev = 29;
 
-            if (!_iteratorNormalCompletion11 && _iterator11.return) {
-              _iterator11.return();
+            if (!_iteratorNormalCompletion12 && _iterator12.return) {
+              _iterator12.return();
             }
 
-          case 29:
-            _context6.prev = 29;
+          case 31:
+            _context4.prev = 31;
 
-            if (!_didIteratorError11) {
-              _context6.next = 32;
+            if (!_didIteratorError12) {
+              _context4.next = 34;
               break;
             }
 
-            throw _iteratorError11;
-
-          case 32:
-            return _context6.finish(29);
-
-          case 33:
-            return _context6.finish(26);
+            throw _iteratorError12;
 
           case 34:
+            return _context4.finish(31);
+
+          case 35:
+            return _context4.finish(28);
+
+          case 36:
             map_vals = map_vals.sort(function (a, b) {
               return a - b;
             });
+            bwidth_vals = bwidth_vals.sort(function (a, b) {
+              return a - b;
+            });
 
-          case 35:
+          case 38:
             if (!(map_vals.length > 0)) {
-              _context6.next = 81;
+              _context4.next = 124;
               break;
             }
 
@@ -13976,114 +13942,272 @@ var drawMapFeatures = function () {
             sel_colorvals2 = void 0;
             bp = void 0;
 
-            if (!queryMapData) {
-              _context6.next = 44;
-              break;
-            }
 
-            sel_colorvals = (0, _from2.default)(new _set2.default(map_vals)).sort(function (a, b) {
-              return a - b;
-            });
+            if (queryMapData) {
+              sel_colorvals = (0, _from2.default)(new _set2.default(map_vals)).sort(function (a, b) {
+                return a - b;
+              });
 
-            if (sel_colorvals.length <= DISCRETE_VAR_LIMIT || INT_COLS.includes(sel_metric)) {
-              sel_binsflag = false;
-              color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals.concat([sel_colorvals[sel_colorvals.length - 1] + 1]));
-              sel_colorvals2 = sel_colorvals.slice(0);
+              //calculate distribution
+              dist_vals = app.comp_check && app.pct_check ? map_vals.filter(function (entry) {
+                return entry <= MAX_PCTDIFF;
+              }) : map_vals;
+              x = d3.scaleLinear().domain([dist_vals[0], dist_vals[dist_vals.length - 1]]);
+              numticks = 20;
 
-              app.bp0 = 0;
-              app.bp1 = 0;
-              app.bp2 = 0;
-              app.bp3 = 0;
-              app.bp4 = 0;
-              app.bp5 = 1;
-            } else {
-              mode = 'base';
+              if (sel_colorvals.length <= DISCRETE_VAR_LIMIT || INT_COLS.includes(sel_metric)) numticks = sel_colorvals.length;
+              histogram = d3.histogram().domain(x.domain()).thresholds(x.ticks(numticks));
 
-              if (app.comp_check) {
-                if (app.pct_check) {
-                  mode = 'pctdiff';
-                } else {
-                  mode = 'diff';
+              updateDistChart(histogram(dist_vals));
+
+              if (sel_colorvals.length <= DISCRETE_VAR_LIMIT || INT_COLS.includes(sel_metric)) {
+                sel_binsflag = false;
+                color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals.concat([sel_colorvals[sel_colorvals.length - 1] + 1]));
+                sel_colorvals2 = sel_colorvals.slice(0);
+
+                app.custom_disable = true;
+                app.bp0 = 0;
+                app.bp1 = 0;
+                app.bp2 = 0;
+                app.bp3 = 0;
+                app.bp4 = 0;
+                app.bp5 = 1;
+              } else {
+                app.custom_disable = false;
+
+                mode = 'base';
+
+                if (app.comp_check) {
+                  if (app.pct_check) {
+                    mode = 'pctdiff';
+                  } else {
+                    mode = 'diff';
+                  }
                 }
+                custom_bps = void 0;
+
+                if (CUSTOM_BP_DICT.hasOwnProperty(sel_metric)) {
+                  custom_bps = CUSTOM_BP_DICT[sel_metric][mode];
+                  sel_colorvals = [map_vals[0]];
+                  for (i = 0; i < custom_bps.length; i++) {
+                    if (custom_bps[i] > map_vals[0] && custom_bps[i] < map_vals[map_vals.length - 1]) sel_colorvals.push(custom_bps[i]);
+                  }
+                  sel_colorvals.push(map_vals[map_vals.length - 1]);
+                } else {
+                  sel_colorvals = getQuantiles(map_vals, app.selected_breaks);
+                }
+                bp = (0, _from2.default)(sel_colorvals).sort(function (a, b) {
+                  return a - b;
+                });
+                app.bp0 = bp[0];
+                app.bp5 = bp[bp.length - 1];
+                if (CUSTOM_BP_DICT.hasOwnProperty(sel_metric)) {
+                  app.bp1 = custom_bps[0];
+                  app.bp2 = custom_bps[1];
+                  app.bp3 = custom_bps[2];
+                  app.bp4 = custom_bps[3];
+                  if (custom_bps[0] < app.bp0) app.bp1 = app.bp0;
+                } else {
+                  app.bp1 = bp[1];
+                  app.bp4 = bp[bp.length - 2];
+                  if (app.selected_breaks == 3) {
+                    app.bp2 = app.bp3 = bp[2];
+                  } else {
+                    app.bp2 = bp[2];
+                    app.bp3 = bp[3];
+                  }
+                }
+
+                sel_colorvals = (0, _from2.default)(new _set2.default(sel_colorvals)).sort(function (a, b) {
+                  return a - b;
+                });
+                updateColorScheme(sel_colorvals);
+                sel_binsflag = true;
+                color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals);
+                sel_colorvals2 = sel_colorvals.slice(0, sel_colorvals.length - 1);
               }
 
-              custom_bps = CUSTOM_BP_DICT[sel_metric][mode];
-
-              sel_colorvals = [map_vals[0]].concat(custom_bps);
-              map_vals[map_vals.length - 1] > custom_bps[custom_bps.length - 1] ? sel_colorvals.push(map_vals[map_vals.length - 1]) : sel_colorvals.push(custom_bps[custom_bps.length - 1] + 1);
-
-              bp = (0, _from2.default)(sel_colorvals).sort(function (a, b) {
+              app.bwcustom_disable = false;
+              sel_bwvals = getQuantiles(bwidth_vals, 5);
+              bp = (0, _from2.default)(sel_bwvals).sort(function (a, b) {
                 return a - b;
               });
-              app.bp0 = bp[0];
-              app.bp5 = bp[bp.length - 1];
-              app.bp1 = custom_bps[0];
-              app.bp2 = custom_bps[1];
-              app.bp3 = custom_bps[2];
-              app.bp4 = custom_bps[3];
-              if (custom_bps[0] < app.bp0) app.bp1 = app.bp0;
-
-              sel_colorvals = (0, _from2.default)(new _set2.default(sel_colorvals)).sort(function (a, b) {
+              app.bwbp0 = bp[0];
+              app.bwbp1 = bp[1];
+              app.bwbp2 = bp[2];
+              app.bwbp3 = bp[3];
+              app.bwbp4 = bp[4];
+              app.bwbp5 = bp[5];
+              sel_bwvals = (0, _from2.default)(new _set2.default(sel_bwvals)).sort(function (a, b) {
                 return a - b;
               });
-              //updateColorScheme(sel_colorvals);
+            } else {
+              sel_colorvals = new _set2.default([app.bp0, app.bp1, app.bp2, app.bp3, app.bp4, app.bp5]);
+              sel_colorvals = (0, _from2.default)(sel_colorvals).sort(function (a, b) {
+                return a - b;
+              });
+              updateColorScheme(sel_colorvals);
               sel_binsflag = true;
               color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals);
               sel_colorvals2 = sel_colorvals.slice(0, sel_colorvals.length - 1);
-            }
-            _context6.next = 45;
-            break;
 
-          case 44:
-            throw 'ERROR: This step should not be occurring!!!';
-
-          case 45:
-
-            sel_colors = [];
-            _iteratorNormalCompletion12 = true;
-            _didIteratorError12 = false;
-            _iteratorError12 = undefined;
-            _context6.prev = 49;
-            for (_iterator12 = (0, _getIterator3.default)(sel_colorvals2); !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-              i = _step12.value;
-
-              sel_colors.push(color_func(i).hex());
+              sel_bwvals = new _set2.default([app.bwbp0, app.bwbp1, app.bwbp2, app.bwbp3, app.bwbp4, app.bwbp5]);
+              sel_bwvals = (0, _from2.default)(sel_bwvals).sort(function (a, b) {
+                return a - b;
+              });
             }
 
-            _context6.next = 57;
-            break;
+            bw_widths = void 0;
 
-          case 53:
-            _context6.prev = 53;
-            _context6.t1 = _context6['catch'](49);
-            _didIteratorError12 = true;
-            _iteratorError12 = _context6.t1;
-
-          case 57:
-            _context6.prev = 57;
-            _context6.prev = 58;
-
-            if (!_iteratorNormalCompletion12 && _iterator12.return) {
-              _iterator12.return();
-            }
-
-          case 60:
-            _context6.prev = 60;
-
-            if (!_didIteratorError12) {
-              _context6.next = 63;
+            if (!app.bwidth_check) {
+              _context4.next = 86;
               break;
             }
 
-            throw _iteratorError12;
+            bw_widths = BWIDTH_MAP[sel_bwvals.length];
+            _iteratorNormalCompletion13 = true;
+            _didIteratorError13 = false;
+            _iteratorError13 = undefined;
+            _context4.prev = 49;
+            _iterator13 = (0, _getIterator3.default)(cleanFeatures);
+
+          case 51:
+            if (_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done) {
+              _context4.next = 72;
+              break;
+            }
+
+            _feat2 = _step13.value;
+
+            if (!(_feat2['bwmetric'] !== null)) {
+              _context4.next = 68;
+              break;
+            }
+
+            if (!(sel_bwvals.length <= 2)) {
+              _context4.next = 58;
+              break;
+            }
+
+            _feat2['bwmetric_scaled'] = bw_widths;
+            _context4.next = 66;
+            break;
+
+          case 58:
+            i = 0;
+
+          case 59:
+            if (!(i < sel_bwvals.length - 1)) {
+              _context4.next = 66;
+              break;
+            }
+
+            if (!(_feat2['bwmetric'] <= sel_bwvals[i + 1])) {
+              _context4.next = 63;
+              break;
+            }
+
+            _feat2['bwmetric_scaled'] = bw_widths[i];
+            return _context4.abrupt('break', 66);
 
           case 63:
-            return _context6.finish(60);
+            i++;
+            _context4.next = 59;
+            break;
 
-          case 64:
-            return _context6.finish(57);
+          case 66:
+            _context4.next = 69;
+            break;
 
-          case 65:
+          case 68:
+            _feat2['bwmetric_scaled'] = null;
+
+          case 69:
+            _iteratorNormalCompletion13 = true;
+            _context4.next = 51;
+            break;
+
+          case 72:
+            _context4.next = 78;
+            break;
+
+          case 74:
+            _context4.prev = 74;
+            _context4.t1 = _context4['catch'](49);
+            _didIteratorError13 = true;
+            _iteratorError13 = _context4.t1;
+
+          case 78:
+            _context4.prev = 78;
+            _context4.prev = 79;
+
+            if (!_iteratorNormalCompletion13 && _iterator13.return) {
+              _iterator13.return();
+            }
+
+          case 81:
+            _context4.prev = 81;
+
+            if (!_didIteratorError13) {
+              _context4.next = 84;
+              break;
+            }
+
+            throw _iteratorError13;
+
+          case 84:
+            return _context4.finish(81);
+
+          case 85:
+            return _context4.finish(78);
+
+          case 86:
+
+            sel_colors = [];
+            _iteratorNormalCompletion14 = true;
+            _didIteratorError14 = false;
+            _iteratorError14 = undefined;
+            _context4.prev = 90;
+            for (_iterator14 = (0, _getIterator3.default)(sel_colorvals2); !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
+              _i = _step14.value;
+
+              sel_colors.push(color_func(_i).hex());
+            }
+
+            _context4.next = 98;
+            break;
+
+          case 94:
+            _context4.prev = 94;
+            _context4.t2 = _context4['catch'](90);
+            _didIteratorError14 = true;
+            _iteratorError14 = _context4.t2;
+
+          case 98:
+            _context4.prev = 98;
+            _context4.prev = 99;
+
+            if (!_iteratorNormalCompletion14 && _iterator14.return) {
+              _iterator14.return();
+            }
+
+          case 101:
+            _context4.prev = 101;
+
+            if (!_didIteratorError14) {
+              _context4.next = 104;
+              break;
+            }
+
+            throw _iteratorError14;
+
+          case 104:
+            return _context4.finish(101);
+
+          case 105:
+            return _context4.finish(98);
+
+          case 106:
             if (geoLayer) mymap.removeLayer(geoLayer);
             if (mapLegend) mymap.removeControl(mapLegend);
             geoLayer = L.geoJSON(cleanFeatures, {
@@ -14099,81 +14223,86 @@ var drawMapFeatures = function () {
 
             mapLegend = L.control({ position: 'bottomright' });
             mapLegend.onAdd = function (map) {
-              var div = L.DomUtil.create('div', 'legend');
-              var legHTML = getLegHTML(sel_colorvals, sel_colors, sel_binsflag, '%');
-
-              legHTML = '<h4>' + METRIC_DESC_SHORT[sel_metric] + (app.pct_check ? ' % Diff' : METRIC_UNITS.hasOwnProperty(sel_metric) ? '<br>(' + METRIC_UNITS[sel_metric] + ')' : '') + '</h4>' + legHTML;
+              var div = L.DomUtil.create('div', 'info legend');
+              var legHTML = getLegHTML(sel_colorvals, sel_colors, sel_binsflag, app.pct_check && app.comp_check ? '%' : '');
+              legHTML = '<h4>' + sel_metric.toUpperCase() + (app.pct_check ? ' % Diff' : METRIC_UNITS.hasOwnProperty(sel_metric) ? ' (' + METRIC_UNITS[sel_metric] + ')' : '') + '</h4>' + legHTML;
+              if (app.bwidth_check) {
+                legHTML += '<hr/>' + '<h4>' + app.selected_bwidth.toUpperCase() + '</h4>';
+                legHTML += getBWLegHTML(sel_bwvals, bw_widths);
+              }
               div.innerHTML = legHTML;
               return div;
             };
-            if (app.selected_metric != 'None') mapLegend.addTo(mymap);
+            mapLegend.addTo(mymap);
 
             if (!selectedGeo) {
-              _context6.next = 80;
+              _context4.next = 122;
               break;
             }
 
-            if (!base_lookup.hasOwnProperty(selectedGeo.feature[GEOID_VAR])) {
-              _context6.next = 77;
+            if (!base_lookup[base_scnyr][app.selected_timep].hasOwnProperty(selectedGeo.feature[GEOID_VAR])) {
+              _context4.next = 119;
               break;
             }
 
-            return _context6.abrupt('return', cleanFeatures.filter(function (entry) {
+            buildChartHtmlFromData(selectedGeo.feature[GEOID_VAR]);
+            return _context4.abrupt('return', cleanFeatures.filter(function (entry) {
               return entry[GEOID_VAR] == selectedGeo.feature[GEOID_VAR];
             })[0]);
 
-          case 77:
+          case 119:
             resetPopGeo();
 
-          case 78:
-            _context6.next = 81;
+          case 120:
+            _context4.next = 124;
             break;
 
-          case 80:
-            return _context6.abrupt('return', null);
+          case 122:
+            buildChartHtmlFromData();
+            return _context4.abrupt('return', null);
 
-          case 81:
-            _context6.next = 86;
+          case 124:
+            _context4.next = 129;
             break;
 
-          case 83:
-            _context6.prev = 83;
-            _context6.t2 = _context6['catch'](8);
+          case 126:
+            _context4.prev = 126;
+            _context4.t3 = _context4['catch'](8);
 
-            console.log(_context6.t2);
+            console.log(_context4.t3);
 
-          case 86:
+          case 129:
           case 'end':
-            return _context6.stop();
+            return _context4.stop();
         }
       }
-    }, _callee6, this, [[8, 83], [18, 22, 26, 34], [27,, 29, 33], [49, 53, 57, 65], [58,, 60, 64]]);
+    }, _callee4, this, [[8, 126], [20, 24, 28, 36], [29,, 31, 35], [49, 74, 78, 86], [79,, 81, 85], [90, 94, 98, 106], [99,, 101, 105]]);
   }));
 
   return function drawMapFeatures() {
-    return _ref6.apply(this, arguments);
+    return _ref4.apply(this, arguments);
   };
 }();
 
 var selectionChanged = function () {
-  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(thing) {
+  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(thing) {
     var selfeat;
-    return _regenerator2.default.wrap(function _callee7$(_context7) {
+    return _regenerator2.default.wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            app.chartTitle = METRIC_DESC[app.selected_metric] + ' Trend';
+            app.chartTitle = app.selected_metric.toUpperCase() + ' TREND';
 
-            if (!(app.sliderValue && app.selected_metric)) {
-              _context7.next = 6;
+            if (!(app.sliderValue && app.selected_metric && app.selected_timep)) {
+              _context5.next = 6;
               break;
             }
 
-            _context7.next = 4;
+            _context5.next = 4;
             return drawMapFeatures();
 
           case 4:
-            selfeat = _context7.sent;
+            selfeat = _context5.sent;
 
             if (selfeat) {
               highlightSelectedSegment();
@@ -14182,61 +14311,54 @@ var selectionChanged = function () {
 
           case 6:
           case 'end':
-            return _context7.stop();
+            return _context5.stop();
         }
       }
-    }, _callee7, this);
+    }, _callee5, this);
   }));
 
   return function selectionChanged(_x3) {
-    return _ref7.apply(this, arguments);
+    return _ref5.apply(this, arguments);
   };
 }();
 
-var postComments = function () {
-  var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(comment) {
-    var comment_url;
-    return _regenerator2.default.wrap(function _callee8$(_context8) {
+var updateMap = function () {
+  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(thing) {
+    var selfeat;
+    return _regenerator2.default.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            comment_url = COMMENT_SERVER + COMMENT_VIEW;
-            // console.log(JSON.stringify(comment))
+            app.isUpdActive = false;
+            _context6.next = 3;
+            return drawMapFeatures(false);
 
-            _context8.prev = 1;
-            _context8.next = 4;
-            return fetch(comment_url, {
-              method: 'POST',
-              body: (0, _stringify2.default)(comment),
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
+          case 3:
+            selfeat = _context6.sent;
 
-          case 4:
-            _context8.next = 9;
-            break;
+            if (selfeat) {
+              highlightSelectedSegment();
+              popSelGeo.setContent(getInfoHtml(selfeat));
+            }
 
-          case 6:
-            _context8.prev = 6;
-            _context8.t0 = _context8['catch'](1);
-
-            console.log('comment error: ' + _context8.t0);
-
-          case 9:
+          case 5:
           case 'end':
-            return _context8.stop();
+            return _context6.stop();
         }
       }
-    }, _callee8, this, [[1, 6]]);
+    }, _callee6, this);
   }));
 
-  return function postComments(_x4) {
-    return _ref8.apply(this, arguments);
+  return function updateMap(_x4) {
+    return _ref6.apply(this, arguments);
   };
 }();
 
 __webpack_require__(384);
+
+var _vueSliderComponent = __webpack_require__(432);
+
+var _vueSliderComponent2 = _interopRequireDefault(_vueSliderComponent);
 
 var _jsCookie = __webpack_require__(398);
 
@@ -14248,98 +14370,61 @@ var maplib = __webpack_require__(394);
 var styles = maplib.styles;
 var getLegHTML = maplib.getLegHTML2;
 var getColorFromVal = maplib.getColorFromVal2;
-
-var baseLayer = maplib.baseLayer;
+var getBWLegHTML = maplib.getBWLegHTML;
+var getQuantiles = maplib.getQuantiles;
 var mymap = maplib.sfmap;
 mymap.setView([37.76889, -122.440997], 13);
-mymap.removeLayer(baseLayer);
-var url = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token={accessToken}';
-var token = 'pk.eyJ1Ijoic2ZjdGEiLCJhIjoiY2ozdXBhNm1mMDFkaTJ3dGRmZHFqanRuOCJ9.KDmACTJBGNA6l0CyPi1Luw';
-var attribution = '<a href="http://openstreetmap.org">OpenStreetMap</a> | ' + '<a href="http://mapbox.com">Mapbox</a>';
-baseLayer = L.tileLayer(url, {
-  attribution: attribution,
-  maxZoom: 18,
-  accessToken: token
-}).addTo(mymap);
-
-var url2 = 'https://api.mapbox.com/styles/v1/sfcta/cjscclu2q07qn1fpimxuf2wbd/tiles/256/{z}/{x}/{y}?access_token={accessToken}';
-var streetLayer = L.tileLayer(url2, {
-  attribution: attribution,
-  maxZoom: 18,
-  accessToken: token,
-  pane: 'shadowPane'
-});
-streetLayer.addTo(mymap);
-
-var stripes = new L.StripePattern({ weight: 3, spaceWeight: 3, opacity: 0.6, angle: 135 });stripes.addTo(mymap);
-
-var ADDLAYERS = [{
-  view: 'sup_district_boundaries', name: 'Supervisorial District Boundaries',
-  style: { opacity: 1, weight: 3, color: '#730073', fillOpacity: 0, interactive: false }
-}, {
-  view: 'sfparks', name: 'Major Parks',
-  style: { opacity: 1, weight: 2, color: 'grey', fillPattern: stripes, interactive: false }
-}, {
-  view: 'hin2017', name: 'High Injury Network',
-  style: { opacity: 1, weight: 3, color: '#FF8C00', interactive: false }
-}];
 
 // some important global variables.
 var API_SERVER = 'https://api.sfcta.org/api/';
-var GEO_VIEW = 'coc2017';
-var DATA_VIEW = 'coc2017';
-var COMMENT_SERVER = 'https://api.sfcta.org/commapi/';
-var COMMENT_VIEW = 'coc_comment';
+var GEO_VIEW = 'tmc_transit';
+var DATA_VIEW = 'tnctr_bus';
 
-var GEOTYPE = 'CoC';
-var GEOID_VAR = 'geoid_1';
+var GEOTYPE = 'Segment';
+var GEOID_VAR = 'tmc';
+var YR_VAR = 'year';
+var TOD_VAR = 'tod';
 
-var FRAC_COLS = [];
-var YR_LIST = [2015, 2050];
+var FRAC_COLS = ['freq_s', 'avg_ride', 'ontime5', 'ons', 'offs', 'shr_hh_0veh', 'crowded', 'hh_den_acs', 'pop_den_acs', 'veh_per_hh', 'avg_hh_size'];
+var SCNYR_LIST = [2010, 2015];
 
-var INT_COLS = [];
+var INT_COLS = [''];
 var DISCRETE_VAR_LIMIT = 10;
-var MISSING_COLOR = '#ffffcc';
-var COLORRAMP = { SEQ: ['#fceca8', '#f6c558', '#dc9e48', '#8f5448'],
+var MISSING_COLOR = '#ccd';
+var COLORRAMP = { SEQ: ['#ffffcc', '#3f324f'],
   DIV: ['#d7191c', '#fdae61', '#ffffbf', '#a6d96a', '#1a9641'] };
 
+var MIN_BWIDTH = 2;
+var MAX_BWIDTH = 10;
+var DEF_BWIDTH = 4;
+var BWIDTH_MAP = {
+  1: DEF_BWIDTH,
+  2: DEF_BWIDTH,
+  3: [2.5, 5],
+  4: [1.6, 3.2, 4.8],
+  5: [1.25, 2.5, 3.75, 5],
+  6: [1, 2, 3, 4, 5]
+};
 var MAX_PCTDIFF = 200;
 var CUSTOM_BP_DICT = {
-  'min': { 'base': [50, 70, 90] },
-  'linc': { 'base': [25, 30, 35] },
-  'o75': { 'base': [5, 10, 15] },
-  'disab': { 'base': [10, 25, 40] },
-  'lep': { 'base': [10, 20, 30] },
-  'zvhh': { 'base': [5, 10, 15] },
-  'spfam': { 'base': [10, 20, 30] },
-  'rentb': { 'base': [5, 15, 25] }
+  'hh': { 'base': [250, 500, 750, 1000], 'diff': [-100, -5, 5, 100], 'pctdiff': [-20, -5, 5, 20] }
 };
 
-var METRIC_UNITS = { 'pop': '000s per sq. mi.',
-  'tot': '000s per sq. mi.',
-  'jobpop': '000s per sq. mi.' };
-var METRIC_DESC = { 'pop': 'Population', 'tot': 'Jobs',
-  'jobpop': 'Jobs+Population'
-};
-var METRIC_DESC_SHORT = { 'min': 'Minority Pop', 'linc': 'Low-Income Pop', 'o75': 'Over 75 yrs Pop', 'disab': 'Disabled Pop',
-  'lep': 'Low English Pop', 'zvhh': 'Zero-Veh HH', 'spfam': 'Single-Parent Fam', 'rentb': 'Rent-Burdened HH'
-};
-var VARMAP = [{ 'min': 'pct_minori', 'linc': 'pct_below2', 'o75': 'pct_over75', 'disab': 'pct_disab',
-  'lep': 'pct_lep', 'zvhh': 'pct_zvhhs', 'spfam': 'pct_spfam', 'rentb': 'pct_hus_re' }, { 'min': 'pct_mino_1', 'linc': 'pct_lowinc', 'o75': 'pct_over_1', 'disab': 'pct_disab_',
-  'lep': 'pct_lep_1', 'zvhh': 'pct_zvhh', 'spfam': 'pct_spfam_', 'rentb': 'pct_rent50' }];
+var METRIC_UNITS = { 'speed': 'mph', 'tot': 'jobs' };
 
 var sel_colorvals = void 0,
     sel_colors = void 0,
     sel_binsflag = void 0;
+var sel_bwvals = void 0;
+var bwidth_metric_list = [''];
 
-var chart_deftitle = 'All ' + GEOTYPE + 's Combined';
+var chart_deftitle = 'All Segments Combined';
 
 var geoLayer = void 0,
     mapLegend = void 0;
 var _featJson = void 0;
 var _aggregateData = void 0;
 var prec = void 0;
-var addLayerStore = {};
 
 var infoPanel = L.control();
 
@@ -14350,11 +14435,19 @@ infoPanel.onAdd = function (map) {
 };
 
 function getInfoHtml(geo) {
-  var retval = '<b>TRACT ID: </b>' + (geo['tract_id'] + '<br/>') + '<b>BLOCKGROUP ID: </b>' + (geo['bg_id'] + '<br/><hr>');
-
-  if (app.selected_metric != 'None') {
-    retval += '<b>' + METRIC_DESC_SHORT[app.selected_metric] + '</b>' + '<b> Percent: </b>' + ('' + geo['metric']) + '%';
+  var metric_val = null;
+  if (geo.metric !== null) metric_val = (Math.round(geo.metric * 100) / 100).toLocaleString();
+  var base_val = null;
+  if (geo.base !== null) base_val = (Math.round(geo.base * 100) / 100).toLocaleString();
+  var comp_val = null;
+  if (geo.comp !== null) comp_val = (Math.round(geo.comp * 100) / 100).toLocaleString();
+  var bwmetric_val = null;
+  if (geo.bwmetric !== null) bwmetric_val = (Math.round(geo.bwmetric * 100) / 100).toLocaleString();
+  var retval = '<b>TMC: </b>' + (geo[GEOID_VAR] + '<br/>') + '<b>STREET: </b>' + (geo.street + '<br/>') + '<b>DIRECTION: </b>' + (geo.direction + '<br/>') + '<b>INTERSECTION: </b>' + (geo.intersec + '<br/><hr>');
+  if (app.comp_check) {
+    retval += '<b>' + app.sliderValue[0] + '</b> ' + ('<b>' + app.selected_metric.toUpperCase() + ': </b>') + (base_val + '<br/>') + ('<b>' + app.sliderValue[1] + '</b> ') + ('<b>' + app.selected_metric.toUpperCase() + ': </b>') + (comp_val + '<br/>');
   }
+  retval += '<b>' + app.selected_metric.toUpperCase() + '</b>' + (app.pct_check ? '<b> %</b>' : '') + (app.comp_check ? '<b> Diff: </b>' : '<b>: </b>') + ('' + metric_val) + (app.pct_check && app.comp_check && metric_val !== null ? '%' : '');
   return retval;
 }
 
@@ -14368,12 +14461,13 @@ infoPanel.update = function (geo) {
     infoPanel._div.className = 'info-panel-hide';
     // and clear the hover too
     if (oldHoverTarget.feature[GEOID_VAR] != selGeoId) geoLayer.resetStyle(oldHoverTarget);
-  }, 2500);
+  }, 2000);
 };
 infoPanel.addTo(mymap);
 
 var base_lookup = void 0;
 var map_vals = void 0;
+var bwidth_vals = void 0;
 
 
 function updateColorScheme(colorvals) {
@@ -14387,10 +14481,10 @@ function updateColorScheme(colorvals) {
 function styleByMetricColor(feat) {
   var color = getColorFromVal(feat['metric'], sel_colorvals, sel_colors, sel_binsflag);
   if (!color) color = MISSING_COLOR;
-  if (app.selected_metric == 'None') {
-    return { fillColor: '#baa0d2', opacity: 0, weight: 0, color: color, fillOpacity: 0.5 };
+  if (!app.bwidth_check) {
+    return { color: color, weight: DEF_BWIDTH, opacity: 1.0 };
   } else {
-    return { fillColor: color, opacity: 1, weight: 1, color: color, fillOpacity: 1 };
+    return { color: color, weight: feat['bwmetric_scaled'], opacity: 1.0 };
   }
 }
 
@@ -14430,6 +14524,68 @@ function highlightSelectedSegment() {
   });
 }
 
+var distChart = null;
+var distLabels = void 0;
+function updateDistChart(bins) {
+  var data = [];
+  distLabels = [];
+  var _iteratorNormalCompletion15 = true;
+  var _didIteratorError15 = false;
+  var _iteratorError15 = undefined;
+
+  try {
+    for (var _iterator15 = (0, _getIterator3.default)(bins), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
+      var b = _step15.value;
+
+      var x0 = Math.round(b.x0 * prec) / prec;
+      var x1 = Math.round(b.x1 * prec) / prec;
+      data.push({ x: x0, y: b.length });
+      distLabels.push(x0 + '-' + x1);
+    }
+  } catch (err) {
+    _didIteratorError15 = true;
+    _iteratorError15 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion15 && _iterator15.return) {
+        _iterator15.return();
+      }
+    } finally {
+      if (_didIteratorError15) {
+        throw _iteratorError15;
+      }
+    }
+  }
+
+  if (distChart) {
+    distChart.setData(data);
+  } else {
+    distChart = new Morris.Area({
+      element: 'dist-chart',
+      data: data,
+      xkey: 'x',
+      ykeys: 'y',
+      ymin: 0,
+      labels: ['Freq'],
+      lineColors: ['#1fc231'],
+      xLabels: 'x',
+      xLabelAngle: 25,
+      xLabelFormat: binFmt,
+      hideHover: true,
+      parseTime: false,
+      fillOpacity: 0.4,
+      pointSize: 1,
+      behaveLikeLine: false,
+      eventStrokeWidth: 2,
+      eventLineColors: ['#ccc']
+    });
+  }
+}
+
+function binFmt(x) {
+  return distLabels[x.x] + (app.pct_check && app.comp_check ? '%' : '');
+}
+
 var selGeoId = void 0;
 var selectedGeo = void 0,
     prevSelectedGeo = void 0;
@@ -14447,11 +14603,11 @@ function clickedOnFeature(e) {
   }
   selectedGeo = e.target;
   var selfeat = selectedGeo.feature;
-  app.chartSubtitle = GEOTYPE + ' ' + selfeat[GEOID_VAR] + ' in ' + selfeat.nhood;
+  app.chartSubtitle = GEOTYPE + ' ' + selfeat[GEOID_VAR];
   selectedLatLng = e.latlng;
-  if (base_lookup.hasOwnProperty(selGeoId)) {
+  if (base_lookup[app.sliderValue[0]][app.selected_timep].hasOwnProperty(selGeoId)) {
     showGeoDetails(selectedLatLng);
-    //buildChartHtmlFromData(selGeoId);
+    buildChartHtmlFromData(selGeoId);
   } else {
     resetPopGeo();
   }
@@ -14472,19 +14628,163 @@ function resetPopGeo() {
   geoLayer.resetStyle(selectedGeo);
   prevSelectedGeo = selectedGeo = selGeoId = null;
   app.chartSubtitle = chart_deftitle;
+  buildChartHtmlFromData();
 }
 
-function yrChanged(yr) {
-  app.selected_year = yr;
-  if (yr == 'diff') {
-    app.sliderValue = YR_LIST;
+var trendChart = null;
+function buildChartHtmlFromData() {
+  var geoid = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+  document.getElementById('longchart').innerHTML = '';
+  if (geoid) {
+    var selgeodata = [];
+    var _iteratorNormalCompletion16 = true;
+    var _didIteratorError16 = false;
+    var _iteratorError16 = undefined;
+
+    try {
+      for (var _iterator16 = (0, _getIterator3.default)(SCNYR_LIST), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {
+        var yr = _step16.value;
+
+        var row = {};
+        row['year'] = yr.toString();
+        row[app.selected_metric] = base_lookup[yr][app.selected_timep][geoid][app.selected_metric];
+        selgeodata.push(row);
+      }
+    } catch (err) {
+      _didIteratorError16 = true;
+      _iteratorError16 = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion16 && _iterator16.return) {
+          _iterator16.return();
+        }
+      } finally {
+        if (_didIteratorError16) {
+          throw _iteratorError16;
+        }
+      }
+    }
+
+    trendChart = new Morris.Line({
+      data: selgeodata,
+      element: 'longchart',
+      gridTextColor: '#aaa',
+      hideHover: true,
+      labels: [app.selected_metric.toUpperCase()],
+      lineColors: ['#f66'],
+      xkey: 'year',
+      smooth: false,
+      parseTime: false,
+      xLabelAngle: 45,
+      ykeys: [app.selected_metric]
+    });
   } else {
-    app.sliderValue = [yr, yr];
+    trendChart = new Morris.Line({
+      data: _aggregateData[app.selected_timep],
+      element: 'longchart',
+      gridTextColor: '#aaa',
+      hideHover: true,
+      labels: [app.selected_metric.toUpperCase()],
+      lineColors: ['#f66'],
+      xkey: 'year',
+      smooth: false,
+      parseTime: false,
+      xLabelAngle: 45,
+      ykeys: [app.selected_metric]
+    });
   }
 }
 
-function metricChanged(metric) {
-  app.selected_metric = metric;
+// SLIDER ----
+var scnSlider = {
+  data: SCNYR_LIST,
+  //direction: 'vertical',
+  //reverse: true,
+  lazy: true,
+  height: 3,
+  //width: 'auto',
+  style: { marginTop: '10px' },
+  processDragable: true,
+  eventType: 'auto',
+  piecewise: true,
+  piecewiseLabel: true,
+  tooltip: 'always',
+  tooltipDir: 'bottom',
+  tooltipStyle: { backgroundColor: '#eaae00', borderColor: '#eaae00', marginLeft: '5px' },
+  processStyle: { backgroundColor: "#eaae00" },
+  labelStyle: { color: "#ccc", marginLeft: '5px', marginTop: '5px' },
+  piecewiseStyle: { backgroundColor: '#ccc', width: '8px', height: '8px', visibility: 'visible' }
+};
+
+function bp1Changed(thing) {
+  if (thing < app.bp0) app.bp1 = app.bp0;
+  if (thing > app.bp2) app.bp2 = thing;
+  app.isUpdActive = true;
+}
+function bp2Changed(thing) {
+  if (thing < app.bp1) app.bp1 = thing;
+  if (thing > app.bp3) app.bp3 = thing;
+  app.isUpdActive = true;
+}
+function bp3Changed(thing) {
+  if (thing < app.bp2) app.bp2 = thing;
+  if (thing > app.bp4) app.bp4 = thing;
+  app.isUpdActive = true;
+}
+function bp4Changed(thing) {
+  if (thing < app.bp3) app.bp3 = thing;
+  if (thing > app.bp5) app.bp4 = app.bp5;
+  app.isUpdActive = true;
+}
+function bwbp1Changed(thing) {
+  if (thing < app.bwbp0) app.bwbp1 = app.bwbp0;
+  if (thing > app.bwbp2) app.bwbp2 = thing;
+  app.isBWUpdActive = true;
+}
+function bwbp2Changed(thing) {
+  if (thing < app.bwbp1) app.bwbp1 = thing;
+  if (thing > app.bwbp3) app.bwbp3 = thing;
+  app.isBWUpdActive = true;
+}
+function bwbp3Changed(thing) {
+  if (thing < app.bwbp2) app.bwbp2 = thing;
+  if (thing > app.bwbp4) app.bwbp4 = thing;
+  app.isBWUpdActive = true;
+}
+function bwbp4Changed(thing) {
+  if (thing < app.bwbp3) app.bwbp3 = thing;
+  if (thing > app.bwbp5) app.bwbp4 = app.bwbp5;
+  app.isBWUpdActive = true;
+}
+
+function customBreakPoints(thing) {
+  if (thing) {
+    app.isUpdActive = false;
+  } else {
+    drawMapFeatures();
+  }
+}
+function customBWBreakPoints(thing) {
+  if (thing) {
+    app.isBWUpdActive = false;
+  } else {
+    drawMapFeatures();
+  }
+}
+
+function colorschemeChanged(thing) {
+  app.selected_colorscheme = thing;
+  drawMapFeatures(false);
+}
+
+function bwidthChanged(thing) {
+  app.bwcustom_disable = !thing;
+  drawMapFeatures(false);
+}
+function bwUpdateMap(thing) {
+  app.isBWUpdActive = false;
+  drawMapFeatures(false);
 }
 
 function getColorMode(cscheme) {
@@ -14495,91 +14795,90 @@ function getColorMode(cscheme) {
   }
 }
 
-function showExtraLayers(e) {
-  for (var lyr in addLayerStore) {
-    mymap.removeLayer(addLayerStore[lyr]);
-  }
-  var _iteratorNormalCompletion13 = true;
-  var _didIteratorError13 = false;
-  var _iteratorError13 = undefined;
-
-  try {
-    for (var _iterator13 = (0, _getIterator3.default)(app.addLayers), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-      var _lyr = _step13.value;
-
-      addLayerStore[_lyr].addTo(mymap);
-    }
-  } catch (err) {
-    _didIteratorError13 = true;
-    _iteratorError13 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion13 && _iterator13.return) {
-        _iterator13.return();
-      }
-    } finally {
-      if (_didIteratorError13) {
-        throw _iteratorError13;
-      }
-    }
-  }
-}
-
 var app = new Vue({
   el: '#panel',
   delimiters: ['${', '}'],
-  components: {
-    'vue-recaptcha': VueRecaptcha
-  },
   data: {
     isPanelHidden: false,
-    extraLayers: ADDLAYERS,
-    comp_check: false,
-    pct_check: false,
+    isUpdActive: false,
+    comp_check: true,
+    pct_check: true,
+    bwidth_check: false,
+    custom_check: true,
+    custom_disable: false,
     bp0: 0.0,
     bp1: 0.0,
     bp2: 0.0,
     bp3: 0.0,
     bp4: 0.0,
     bp5: 0.0,
-    aggData: [{ pop: 0, tot: 0, jobpop: 0 }, { pop: 0, tot: 0, jobpop: 0 }],
 
-    year_options: [{ text: 'Year 2015', value: '2015' }, { text: 'Year 2050', value: '2050' }, { text: 'Change', value: 'diff' }],
-    selected_year: '2015',
-    sliderValue: [YR_LIST[0], YR_LIST[0]],
+    isBWUpdActive: false,
+    bwcustom_check: false,
+    bwcustom_disable: true,
+    bwbp0: 0.0,
+    bwbp1: 0.0,
+    bwbp2: 0.0,
+    bwbp3: 0.0,
+    bwbp4: 0.0,
+    bwbp5: 0.0,
 
-    selected_metric: 'None',
-    metric_options: [{ text: 'None', value: 'None' }, { text: 'Minority', value: 'min' }, { text: 'Low Income', value: 'linc' }, { text: 'Elderly', value: 'o75' }, { text: 'Disability', value: 'disab' }, { text: 'Low English Prof.', value: 'lep' }, { text: 'Zero-Veh HH', value: 'zvhh' }, { text: 'Single Parent', value: 'spfam' }, { text: 'Rent Burdened', value: 'rentb' }],
-    chartTitle: METRIC_DESC['pop'] + ' Trend',
+    selected_metric: 'avg_ride',
+    metric_options: [{ text: 'avg_ride', value: 'avg_ride' }, { text: 'pickups', value: 'pickups' }, { text: 'dropoffs', value: 'dropoffs' }, { text: 'avg_ride_muni_rail', value: 'avg_ride_muni_rail' }, { text: 'ontime5', value: 'ontime5' }, { text: 'ons', value: 'ons' }, { text: 'offs', value: 'offs' },
+    //{text: 'dwell', value: 'dwell'},
+    { text: 'freq_s', value: 'freq_s' },
+    //{text: 'runspeed_s', value: 'runspeed_s'},
+    { text: 'num_stops', value: 'num_stops' },
+    //{text: 'capacity', value: 'capacity'},
+    //{text: 'crowded', value: 'crowded'},
+    //{text: 'crowdhours', value: 'crowdhours'},
+
+    { text: 'total_hh_acs', value: 'total_hh_acs' }, { text: 'total_pop_acs', value: 'total_pop_acs' }, { text: 'total_veh', value: 'total_veh' }, { text: 'veh_per_hh', value: 'veh_per_hh' }, { text: 'avg_hh_size', value: 'avg_hh_size' }, { text: 'edd_emp', value: 'edd_emp' }, { text: 'shr_hh_0veh', value: 'shr_hh_0veh' }, { text: 'emp_rac_30', value: 'emp_rac_30' }, { text: 'emp_rac_60', value: 'emp_rac_60' }, { text: 'emp_wac_30', value: 'emp_wac_30' }, { text: 'emp_wac_60', value: 'emp_wac_60' }, { text: 'housing_30', value: 'housing_30' }, { text: 'housing_60', value: 'housing_60' }, { text: 'pop_den_acs', value: 'pop_den_acs' }, { text: 'hh_den_acs', value: 'hh_den_acs' }],
+    chartTitle: 'AVG_RIDE TREND',
     chartSubtitle: chart_deftitle,
 
-    selected_colorscheme: COLORRAMP.SEQ,
+    scnSlider: scnSlider,
+    sliderValue: [SCNYR_LIST[0], SCNYR_LIST[SCNYR_LIST.length - 1]],
+
+    selected_timep: 'Daily',
+    time_options: [{ text: 'Daily', value: 'Daily' }, { text: '0300-0559', value: '0300-0559' }, { text: '0600-0859', value: '0600-0859' }, { text: '0900-1359', value: '0900-1359' }, { text: '1400-1559', value: '1400-1559' }, { text: '1600-1859', value: '1600-1859' }, { text: '1900-2159', value: '1900-2159' }, { text: '2200-0259', value: '2200-0259' }],
+
+    selected_bwidth: bwidth_metric_list[0],
+    bwidth_options: [],
+
+    selected_colorscheme: COLORRAMP.DIV,
     modeMap: {
-      '#ffffcc,#663399': 'lch',
-      '#ebbe5e,#3f324f': 'hsl',
-      '#ffffcc,#3f324f': 'hsl',
-      '#3f324f,#ffffcc': 'hsl',
-      '#fafa6e,#2A4858': 'lch'
+      '#ffffcc,#3f324f': 'hsl'
     },
-    comment: '',
-    comment_instruction: 'Please provide feedback. What do you think about this map? (800 maximum characters)',
-    submit_loading: false,
-    submit_disabled: false,
-    addLayers: []
+
+    selected_breaks: 5
   },
   watch: {
     sliderValue: selectionChanged,
+    selected_timep: selectionChanged,
     selected_metric: selectionChanged,
-    addLayers: showExtraLayers
+    pct_check: selectionChanged,
+
+    bp1: bp1Changed,
+    bp2: bp2Changed,
+    bp3: bp3Changed,
+    bp4: bp4Changed,
+    bwbp1: bwbp1Changed,
+    bwbp2: bwbp2Changed,
+    bwbp3: bwbp3Changed,
+    bwbp4: bwbp4Changed,
+    //custom_check: customBreakPoints,
+    bwcustom_check: customBWBreakPoints,
+    bwidth_check: bwidthChanged
   },
   methods: {
+    updateMap: updateMap,
+    bwUpdateMap: bwUpdateMap,
     clickToggleHelp: clickToggleHelp,
-    clickedShowHide: clickedShowHide,
-    yrChanged: yrChanged,
-    metricChanged: metricChanged,
-    handleSubmit: handleSubmit,
-    onCaptchaVerified: onCaptchaVerified,
-    onCaptchaExpired: onCaptchaExpired
+    clickedShowHide: clickedShowHide
+  },
+  components: {
+    vueSlider: _vueSliderComponent2.default
   }
 });
 
@@ -14599,8 +14898,8 @@ function clickedShowHide(e) {
   app.isPanelHidden = slideapp.isPanelHidden;
   // leaflet map needs to be force-recentered, and it is slow.
   var _arr = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var delay = _arr[_i];
+  for (var _i2 = 0; _i2 < _arr.length; _i2++) {
+    var delay = _arr[_i2];
     setTimeout(function () {
       mymap.invalidateSize();
     }, delay);
@@ -14639,128 +14938,9 @@ var helpPanel = new Vue({
   }
 });
 
-/* Cookie functions for comments*/
-function setCookie(cname, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + d.getTime() + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-function checkCookie() {
-  var username = getCookie("username");
-  if (username == "") {
-    setCookie("username", 365);
-  }
-}
-
-/* Code for storing comments*/
-var comment = {
-  select_metric: '',
-  add_layer: '',
-  comment_user: '',
-  comment_time: new Date(),
-  comment_latitude: -999,
-  comment_longitude: -999,
-  comment_content: ''
-};
-
-function showPosition(position) {
-  comment.comment_latitude = position.coords.latitude;
-  comment.comment_longitude = position.coords.longitude;
-}
-
-function handleSubmit() {
-  this.$refs.recaptcha.execute();
-  var timestamp = new Date();
-  app.submit_loading = true;
-
-  setTimeout(function () {
-    if (app.comment == null | app.comment == '') {
-      app.submit_loading = false;
-    } else {
-      comment.select_metric = app.selected_metric;
-      comment.add_layer = app.addLayers;
-      comment.comment_user = getCookie("username");
-      comment.comment_time = timestamp;
-      comment.comment_content = app.comment;
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-        console.log("Geolocation is not supported by this browser.");
-      }
-      postComments(comment);
-      app.comment_instruction = 'Thank you for your feedback!';
-      app.comment = '';
-      app.submit_loading = false;
-    }
-  }, 1000);
-}
-
-/* Captcha functions*/
-function onCaptchaVerified(recaptchaToken) {
-  var self = this;
-  self.$refs.recaptcha.reset();
-  if (!recaptchaToken) {
-    return console.log("recaptchaToken is required");
-  }
-
-  var verifyCaptchaOptions = {
-    secret: "6Leo_KMUAAAAAANqRfq4isW7Q50pAslnNdYbI8Pa",
-    response: recaptchaToken
-  };
-
-  fetch("https://www.google.com/recaptcha/api/siteverify", {
-    method: 'POST',
-    mode: 'no-cors',
-    body: (0, _stringify2.default)(verifyCaptchaOptions),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).catch(function (error) {
-    return console.error('Error:', error);
-  }).then(function (response) {
-    return function (response) {
-      // JSON.stringify(response)
-      console.log("Congratulations! We think you are human.");
-    };
-  });
-}
-
-function onCaptchaExpired() {
-  this.$refs.recaptcha.reset();
-}
-
 initialPrep();
 
 /***/ }),
-/* 493 */,
-/* 494 */,
-/* 495 */,
-/* 496 */,
-/* 497 */,
-/* 498 */,
-/* 499 */,
-/* 500 */,
-/* 501 */,
-/* 502 */,
-/* 503 */,
 /* 504 */,
 /* 505 */,
 /* 506 */,
@@ -14832,11 +15012,22 @@ initialPrep();
 /* 572 */,
 /* 573 */,
 /* 574 */,
-/* 575 */
+/* 575 */,
+/* 576 */,
+/* 577 */,
+/* 578 */,
+/* 579 */,
+/* 580 */,
+/* 581 */,
+/* 582 */,
+/* 583 */,
+/* 584 */,
+/* 585 */,
+/* 586 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(159);
-module.exports = __webpack_require__(492);
+module.exports = __webpack_require__(503);
 
 
 /***/ })

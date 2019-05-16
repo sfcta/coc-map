@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 575);
+/******/ 	return __webpack_require__(__webpack_require__.s = 583);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10926,76 +10926,8 @@ module.exports = function (exec, skipClosing) {
 
 
 /***/ }),
-/* 396 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var META = __webpack_require__(115)('meta');
-var isObject = __webpack_require__(46);
-var has = __webpack_require__(60);
-var setDesc = __webpack_require__(53).f;
-var id = 0;
-var isExtensible = Object.isExtensible || function () {
-  return true;
-};
-var FREEZE = !__webpack_require__(80)(function () {
-  return isExtensible(Object.preventExtensions({}));
-});
-var setMeta = function (it) {
-  setDesc(it, META, { value: {
-    i: 'O' + ++id, // object ID
-    w: {}          // weak collections IDs
-  } });
-};
-var fastKey = function (it, create) {
-  // return primitive with prefix
-  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if (!has(it, META)) {
-    // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return 'F';
-    // not necessary to add metadata
-    if (!create) return 'E';
-    // add missing metadata
-    setMeta(it);
-  // return object ID
-  } return it[META].i;
-};
-var getWeak = function (it, create) {
-  if (!has(it, META)) {
-    // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return true;
-    // not necessary to add metadata
-    if (!create) return false;
-    // add missing metadata
-    setMeta(it);
-  // return hash weak collections IDs
-  } return it[META].w;
-};
-// add metadata on freeze-family methods calling
-var onFreeze = function (it) {
-  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
-  return it;
-};
-var meta = module.exports = {
-  KEY: META,
-  NEED: false,
-  fastKey: fastKey,
-  getWeak: getWeak,
-  onFreeze: onFreeze
-};
-
-
-/***/ }),
-/* 397 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(46);
-module.exports = function (it, TYPE) {
-  if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
-  return it;
-};
-
-
-/***/ }),
+/* 396 */,
+/* 397 */,
 /* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11637,1384 +11569,33 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
 
 
 /***/ }),
-/* 408 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _promise = __webpack_require__(400);
-
-var _promise2 = _interopRequireDefault(_promise);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (fn) {
-  return function () {
-    var gen = fn.apply(this, arguments);
-    return new _promise2.default(function (resolve, reject) {
-      function step(key, arg) {
-        try {
-          var info = gen[key](arg);
-          var value = info.value;
-        } catch (error) {
-          reject(error);
-          return;
-        }
-
-        if (info.done) {
-          resolve(value);
-        } else {
-          return _promise2.default.resolve(value).then(function (value) {
-            step("next", value);
-          }, function (err) {
-            step("throw", err);
-          });
-        }
-      }
-
-      return step("next");
-    });
-  };
-};
-
-/***/ }),
-/* 409 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-// This method of obtaining a reference to the global object needs to be
-// kept identical to the way it is obtained in runtime.js
-var g = (function() { return this })() || Function("return this")();
-
-// Use `getOwnPropertyNames` because not all browsers support calling
-// `hasOwnProperty` on the global `self` object in a worker. See #183.
-var hadRuntime = g.regeneratorRuntime &&
-  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
-
-// Save the old regeneratorRuntime in case it needs to be restored later.
-var oldRuntime = hadRuntime && g.regeneratorRuntime;
-
-// Force reevalutation of runtime.js.
-g.regeneratorRuntime = undefined;
-
-module.exports = __webpack_require__(410);
-
-if (hadRuntime) {
-  // Restore the original runtime.
-  g.regeneratorRuntime = oldRuntime;
-} else {
-  // Remove the global property added by runtime.js.
-  try {
-    delete g.regeneratorRuntime;
-  } catch(e) {
-    g.regeneratorRuntime = undefined;
-  }
-}
-
-
-/***/ }),
-/* 410 */
-/***/ (function(module, exports) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-!(function(global) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  var inModule = typeof module === "object";
-  var runtime = global.regeneratorRuntime;
-  if (runtime) {
-    if (inModule) {
-      // If regeneratorRuntime is defined globally and we're in a module,
-      // make the exports object identical to regeneratorRuntime.
-      module.exports = runtime;
-    }
-    // Don't bother evaluating the rest of this file if the runtime was
-    // already defined globally.
-    return;
-  }
-
-  // Define the runtime globally (as expected by generated code) as either
-  // module.exports (if we're in a module) or a new, empty object.
-  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  runtime.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  runtime.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  runtime.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  runtime.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration. If the Promise is rejected, however, the
-          // result for this iteration will be rejected with the same
-          // reason. Note that rejections of yielded Promises are not
-          // thrown back into the generator function, as is the case
-          // when an awaited Promise is rejected. This difference in
-          // behavior between yield and await is important, because it
-          // allows the consumer to decide what to do with the yielded
-          // rejection (swallow it and continue, manually .throw it back
-          // into the generator, abandon iteration, whatever). With
-          // await, by contrast, there is no opportunity to examine the
-          // rejection reason outside the generator function, so the
-          // only option is to throw it from the await expression, and
-          // let the generator function handle the exception.
-          result.value = unwrapped;
-          resolve(result);
-        }, reject);
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  runtime.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
-    );
-
-    return runtime.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        if (delegate.iterator.return) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  runtime.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  runtime.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-})(
-  // In sloppy mode, unbound `this` refers to the global object, fallback to
-  // Function constructor if we're in global strict mode. That is sadly a form
-  // of indirect eval which violates Content Security Policy.
-  (function() { return this })() || Function("return this")()
-);
-
-
-/***/ }),
-/* 411 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(409);
-
-
-/***/ }),
-/* 412 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(413), __esModule: true };
-
-/***/ }),
-/* 413 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(393);
-__webpack_require__(113);
-__webpack_require__(125);
-__webpack_require__(424);
-__webpack_require__(427);
-__webpack_require__(426);
-__webpack_require__(425);
-module.exports = __webpack_require__(31).Set;
-
-
-/***/ }),
-/* 414 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var forOf = __webpack_require__(116);
-
-module.exports = function (iter, ITERATOR) {
-  var result = [];
-  forOf(iter, false, result.push, result, ITERATOR);
-  return result;
-};
-
-
-/***/ }),
-/* 415 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 0 -> Array#forEach
-// 1 -> Array#map
-// 2 -> Array#filter
-// 3 -> Array#some
-// 4 -> Array#every
-// 5 -> Array#find
-// 6 -> Array#findIndex
-var ctx = __webpack_require__(55);
-var IObject = __webpack_require__(162);
-var toObject = __webpack_require__(126);
-var toLength = __webpack_require__(110);
-var asc = __webpack_require__(417);
-module.exports = function (TYPE, $create) {
-  var IS_MAP = TYPE == 1;
-  var IS_FILTER = TYPE == 2;
-  var IS_SOME = TYPE == 3;
-  var IS_EVERY = TYPE == 4;
-  var IS_FIND_INDEX = TYPE == 6;
-  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-  var create = $create || asc;
-  return function ($this, callbackfn, that) {
-    var O = toObject($this);
-    var self = IObject(O);
-    var f = ctx(callbackfn, that, 3);
-    var length = toLength(self.length);
-    var index = 0;
-    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
-    var val, res;
-    for (;length > index; index++) if (NO_HOLES || index in self) {
-      val = self[index];
-      res = f(val, index, O);
-      if (TYPE) {
-        if (IS_MAP) result[index] = res;   // map
-        else if (res) switch (TYPE) {
-          case 3: return true;             // some
-          case 5: return val;              // find
-          case 6: return index;            // findIndex
-          case 2: result.push(val);        // filter
-        } else if (IS_EVERY) return false; // every
-      }
-    }
-    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
-  };
-};
-
-
-/***/ }),
-/* 416 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(46);
-var isArray = __webpack_require__(421);
-var SPECIES = __webpack_require__(28)('species');
-
-module.exports = function (original) {
-  var C;
-  if (isArray(original)) {
-    C = original.constructor;
-    // cross-realm fallback
-    if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;
-    if (isObject(C)) {
-      C = C[SPECIES];
-      if (C === null) C = undefined;
-    }
-  } return C === undefined ? Array : C;
-};
-
-
-/***/ }),
-/* 417 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-var speciesConstructor = __webpack_require__(416);
-
-module.exports = function (original, length) {
-  return new (speciesConstructor(original))(length);
-};
-
-
-/***/ }),
-/* 418 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var dP = __webpack_require__(53).f;
-var create = __webpack_require__(164);
-var redefineAll = __webpack_require__(166);
-var ctx = __webpack_require__(55);
-var anInstance = __webpack_require__(165);
-var forOf = __webpack_require__(116);
-var $iterDefine = __webpack_require__(114);
-var step = __webpack_require__(163);
-var setSpecies = __webpack_require__(392);
-var DESCRIPTORS = __webpack_require__(52);
-var fastKey = __webpack_require__(396).fastKey;
-var validate = __webpack_require__(397);
-var SIZE = DESCRIPTORS ? '_s' : 'size';
-
-var getEntry = function (that, key) {
-  // fast case
-  var index = fastKey(key);
-  var entry;
-  if (index !== 'F') return that._i[index];
-  // frozen object case
-  for (entry = that._f; entry; entry = entry.n) {
-    if (entry.k == key) return entry;
-  }
-};
-
-module.exports = {
-  getConstructor: function (wrapper, NAME, IS_MAP, ADDER) {
-    var C = wrapper(function (that, iterable) {
-      anInstance(that, C, NAME, '_i');
-      that._t = NAME;         // collection type
-      that._i = create(null); // index
-      that._f = undefined;    // first entry
-      that._l = undefined;    // last entry
-      that[SIZE] = 0;         // size
-      if (iterable != undefined) forOf(iterable, IS_MAP, that[ADDER], that);
-    });
-    redefineAll(C.prototype, {
-      // 23.1.3.1 Map.prototype.clear()
-      // 23.2.3.2 Set.prototype.clear()
-      clear: function clear() {
-        for (var that = validate(this, NAME), data = that._i, entry = that._f; entry; entry = entry.n) {
-          entry.r = true;
-          if (entry.p) entry.p = entry.p.n = undefined;
-          delete data[entry.i];
-        }
-        that._f = that._l = undefined;
-        that[SIZE] = 0;
-      },
-      // 23.1.3.3 Map.prototype.delete(key)
-      // 23.2.3.4 Set.prototype.delete(value)
-      'delete': function (key) {
-        var that = validate(this, NAME);
-        var entry = getEntry(that, key);
-        if (entry) {
-          var next = entry.n;
-          var prev = entry.p;
-          delete that._i[entry.i];
-          entry.r = true;
-          if (prev) prev.n = next;
-          if (next) next.p = prev;
-          if (that._f == entry) that._f = next;
-          if (that._l == entry) that._l = prev;
-          that[SIZE]--;
-        } return !!entry;
-      },
-      // 23.2.3.6 Set.prototype.forEach(callbackfn, thisArg = undefined)
-      // 23.1.3.5 Map.prototype.forEach(callbackfn, thisArg = undefined)
-      forEach: function forEach(callbackfn /* , that = undefined */) {
-        validate(this, NAME);
-        var f = ctx(callbackfn, arguments.length > 1 ? arguments[1] : undefined, 3);
-        var entry;
-        while (entry = entry ? entry.n : this._f) {
-          f(entry.v, entry.k, this);
-          // revert to the last existing entry
-          while (entry && entry.r) entry = entry.p;
-        }
-      },
-      // 23.1.3.7 Map.prototype.has(key)
-      // 23.2.3.7 Set.prototype.has(value)
-      has: function has(key) {
-        return !!getEntry(validate(this, NAME), key);
-      }
-    });
-    if (DESCRIPTORS) dP(C.prototype, 'size', {
-      get: function () {
-        return validate(this, NAME)[SIZE];
-      }
-    });
-    return C;
-  },
-  def: function (that, key, value) {
-    var entry = getEntry(that, key);
-    var prev, index;
-    // change existing entry
-    if (entry) {
-      entry.v = value;
-    // create new entry
-    } else {
-      that._l = entry = {
-        i: index = fastKey(key, true), // <- index
-        k: key,                        // <- key
-        v: value,                      // <- value
-        p: prev = that._l,             // <- previous entry
-        n: undefined,                  // <- next entry
-        r: false                       // <- removed
-      };
-      if (!that._f) that._f = entry;
-      if (prev) prev.n = entry;
-      that[SIZE]++;
-      // add to index
-      if (index !== 'F') that._i[index] = entry;
-    } return that;
-  },
-  getEntry: getEntry,
-  setStrong: function (C, NAME, IS_MAP) {
-    // add .keys, .values, .entries, [@@iterator]
-    // 23.1.3.4, 23.1.3.8, 23.1.3.11, 23.1.3.12, 23.2.3.5, 23.2.3.8, 23.2.3.10, 23.2.3.11
-    $iterDefine(C, NAME, function (iterated, kind) {
-      this._t = validate(iterated, NAME); // target
-      this._k = kind;                     // kind
-      this._l = undefined;                // previous
-    }, function () {
-      var that = this;
-      var kind = that._k;
-      var entry = that._l;
-      // revert to the last existing entry
-      while (entry && entry.r) entry = entry.p;
-      // get next entry
-      if (!that._t || !(that._l = entry = entry ? entry.n : that._t._f)) {
-        // or finish the iteration
-        that._t = undefined;
-        return step(1);
-      }
-      // return step by kind
-      if (kind == 'keys') return step(0, entry.k);
-      if (kind == 'values') return step(0, entry.v);
-      return step(0, [entry.k, entry.v]);
-    }, IS_MAP ? 'entries' : 'values', !IS_MAP, true);
-
-    // add [@@species], 23.1.2.2, 23.2.2.2
-    setSpecies(NAME);
-  }
-};
-
-
-/***/ }),
-/* 419 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-var classof = __webpack_require__(123);
-var from = __webpack_require__(414);
-module.exports = function (NAME) {
-  return function toJSON() {
-    if (classof(this) != NAME) throw TypeError(NAME + "#toJSON isn't generic");
-    return from(this);
-  };
-};
-
-
-/***/ }),
-/* 420 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var global = __webpack_require__(22);
-var $export = __webpack_require__(54);
-var meta = __webpack_require__(396);
-var fails = __webpack_require__(80);
-var hide = __webpack_require__(47);
-var redefineAll = __webpack_require__(166);
-var forOf = __webpack_require__(116);
-var anInstance = __webpack_require__(165);
-var isObject = __webpack_require__(46);
-var setToStringTag = __webpack_require__(79);
-var dP = __webpack_require__(53).f;
-var each = __webpack_require__(415)(0);
-var DESCRIPTORS = __webpack_require__(52);
-
-module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
-  var Base = global[NAME];
-  var C = Base;
-  var ADDER = IS_MAP ? 'set' : 'add';
-  var proto = C && C.prototype;
-  var O = {};
-  if (!DESCRIPTORS || typeof C != 'function' || !(IS_WEAK || proto.forEach && !fails(function () {
-    new C().entries().next();
-  }))) {
-    // create collection constructor
-    C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
-    redefineAll(C.prototype, methods);
-    meta.NEED = true;
-  } else {
-    C = wrapper(function (target, iterable) {
-      anInstance(target, C, NAME, '_c');
-      target._c = new Base();
-      if (iterable != undefined) forOf(iterable, IS_MAP, target[ADDER], target);
-    });
-    each('add,clear,delete,forEach,get,has,set,keys,values,entries,toJSON'.split(','), function (KEY) {
-      var IS_ADDER = KEY == 'add' || KEY == 'set';
-      if (KEY in proto && !(IS_WEAK && KEY == 'clear')) hide(C.prototype, KEY, function (a, b) {
-        anInstance(this, C, KEY);
-        if (!IS_ADDER && IS_WEAK && !isObject(a)) return KEY == 'get' ? undefined : false;
-        var result = this._c[KEY](a === 0 ? 0 : a, b);
-        return IS_ADDER ? this : result;
-      });
-    });
-    IS_WEAK || dP(C.prototype, 'size', {
-      get: function () {
-        return this._c.size;
-      }
-    });
-  }
-
-  setToStringTag(C, NAME);
-
-  O[NAME] = C;
-  $export($export.G + $export.W + $export.F, O);
-
-  if (!IS_WEAK) common.setStrong(C, NAME, IS_MAP);
-
-  return C;
-};
-
-
-/***/ }),
-/* 421 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.2.2 IsArray(argument)
-var cof = __webpack_require__(76);
-module.exports = Array.isArray || function isArray(arg) {
-  return cof(arg) == 'Array';
-};
-
-
-/***/ }),
-/* 422 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://tc39.github.io/proposal-setmap-offrom/
-var $export = __webpack_require__(54);
-var aFunction = __webpack_require__(77);
-var ctx = __webpack_require__(55);
-var forOf = __webpack_require__(116);
-
-module.exports = function (COLLECTION) {
-  $export($export.S, COLLECTION, { from: function from(source /* , mapFn, thisArg */) {
-    var mapFn = arguments[1];
-    var mapping, A, n, cb;
-    aFunction(this);
-    mapping = mapFn !== undefined;
-    if (mapping) aFunction(mapFn);
-    if (source == undefined) return new this();
-    A = [];
-    if (mapping) {
-      n = 0;
-      cb = ctx(mapFn, arguments[2], 2);
-      forOf(source, false, function (nextItem) {
-        A.push(cb(nextItem, n++));
-      });
-    } else {
-      forOf(source, false, A.push, A);
-    }
-    return new this(A);
-  } });
-};
-
-
-/***/ }),
-/* 423 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://tc39.github.io/proposal-setmap-offrom/
-var $export = __webpack_require__(54);
-
-module.exports = function (COLLECTION) {
-  $export($export.S, COLLECTION, { of: function of() {
-    var length = arguments.length;
-    var A = new Array(length);
-    while (length--) A[length] = arguments[length];
-    return new this(A);
-  } });
-};
-
-
-/***/ }),
-/* 424 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var strong = __webpack_require__(418);
-var validate = __webpack_require__(397);
-var SET = 'Set';
-
-// 23.2 Set Objects
-module.exports = __webpack_require__(420)(SET, function (get) {
-  return function Set() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
-}, {
-  // 23.2.3.1 Set.prototype.add(value)
-  add: function add(value) {
-    return strong.def(validate(this, SET), value = value === 0 ? 0 : value, value);
-  }
-}, strong);
-
-
-/***/ }),
-/* 425 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://tc39.github.io/proposal-setmap-offrom/#sec-set.from
-__webpack_require__(422)('Set');
-
-
-/***/ }),
-/* 426 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://tc39.github.io/proposal-setmap-offrom/#sec-set.of
-__webpack_require__(423)('Set');
-
-
-/***/ }),
-/* 427 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-var $export = __webpack_require__(54);
-
-$export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(419)('Set') });
-
-
-/***/ }),
-/* 428 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(429), __esModule: true };
-
-/***/ }),
-/* 429 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(113);
-__webpack_require__(431);
-module.exports = __webpack_require__(31).Array.from;
-
-
-/***/ }),
-/* 430 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $defineProperty = __webpack_require__(53);
-var createDesc = __webpack_require__(117);
-
-module.exports = function (object, index, value) {
-  if (index in object) $defineProperty.f(object, index, createDesc(0, value));
-  else object[index] = value;
-};
-
-
-/***/ }),
-/* 431 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ctx = __webpack_require__(55);
-var $export = __webpack_require__(54);
-var toObject = __webpack_require__(126);
-var call = __webpack_require__(391);
-var isArrayIter = __webpack_require__(390);
-var toLength = __webpack_require__(110);
-var createProperty = __webpack_require__(430);
-var getIterFn = __webpack_require__(124);
-
-$export($export.S + $export.F * !__webpack_require__(395)(function (iter) { Array.from(iter); }), 'Array', {
-  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
-    var O = toObject(arrayLike);
-    var C = typeof this == 'function' ? this : Array;
-    var aLen = arguments.length;
-    var mapfn = aLen > 1 ? arguments[1] : undefined;
-    var mapping = mapfn !== undefined;
-    var index = 0;
-    var iterFn = getIterFn(O);
-    var length, result, step, iterator;
-    if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
-    // if object isn't iterable or it's array with default iterator - use simple case
-    if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
-      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
-        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
-      }
-    } else {
-      length = toLength(O.length);
-      for (result = new C(length); length > index; index++) {
-        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
-      }
-    }
-    result.length = index;
-    return result;
-  }
-});
-
-
-/***/ }),
+/* 408 */,
+/* 409 */,
+/* 410 */,
+/* 411 */,
+/* 412 */,
+/* 413 */,
+/* 414 */,
+/* 415 */,
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */,
+/* 427 */,
+/* 428 */,
+/* 429 */,
+/* 430 */,
+/* 431 */,
 /* 432 */,
-/* 433 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(434), __esModule: true };
-
-/***/ }),
-/* 434 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var core = __webpack_require__(31);
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-
-
-/***/ }),
+/* 433 */,
+/* 434 */,
 /* 435 */,
 /* 436 */,
 /* 437 */,
@@ -13072,10 +11653,21 @@ module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 /* 489 */,
 /* 490 */,
 /* 491 */,
-/* 492 */
+/* 492 */,
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
+/* 500 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+//THIS IS THE TRAVEL DEMAND TOOL
 
 
 /*
@@ -13099,1142 +11691,17 @@ this program. If not, see <https://www.apache.org/licenses/LICENSE-2.0>.
 
 // Must use npm and babel to support IE11/Safari
 
-var _stringify = __webpack_require__(433);
+var _keys = __webpack_require__(508);
 
-var _stringify2 = _interopRequireDefault(_stringify);
-
-var _set = __webpack_require__(412);
-
-var _set2 = _interopRequireDefault(_set);
-
-var _from = __webpack_require__(428);
-
-var _from2 = _interopRequireDefault(_from);
+var _keys2 = _interopRequireDefault(_keys);
 
 var _getIterator2 = __webpack_require__(259);
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-var _regenerator = __webpack_require__(411);
+var _promise = __webpack_require__(400);
 
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _asyncToGenerator2 = __webpack_require__(408);
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-var initialPrep = function () {
-  var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-    return _regenerator2.default.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-
-            console.log('1...');
-            _context.next = 3;
-            return fetchMapFeatures();
-
-          case 3:
-            _featJson = _context.sent;
-
-
-            console.log('2... ');
-            _context.next = 7;
-            return drawMapFeatures();
-
-          case 7:
-
-            console.log('3... ');
-            _context.next = 10;
-            return fetchAddLayers();
-
-          case 10:
-
-            console.log('4... ');
-            _context.next = 13;
-            return checkCookie();
-
-          case 13:
-
-            console.log('5 !!!');
-
-          case 14:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, this);
-  }));
-
-  return function initialPrep() {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var fetchMapFeatures = function () {
-  var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-    var geo_url, resp, features, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, feat;
-
-    return _regenerator2.default.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            geo_url = API_SERVER + GEO_VIEW + '?select=geoid_1,geometry';
-            _context2.prev = 1;
-            _context2.next = 4;
-            return fetch(geo_url);
-
-          case 4:
-            resp = _context2.sent;
-            _context2.next = 7;
-            return resp.json();
-
-          case 7:
-            features = _context2.sent;
-
-
-            // do some parsing and stuff
-            _iteratorNormalCompletion = true;
-            _didIteratorError = false;
-            _iteratorError = undefined;
-            _context2.prev = 11;
-            for (_iterator = (0, _getIterator3.default)(features); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              feat = _step.value;
-
-              feat['type'] = 'Feature';
-              feat['geometry'] = JSON.parse(feat.geometry);
-              feat = updateGeoType(feat);
-            }
-            _context2.next = 19;
-            break;
-
-          case 15:
-            _context2.prev = 15;
-            _context2.t0 = _context2['catch'](11);
-            _didIteratorError = true;
-            _iteratorError = _context2.t0;
-
-          case 19:
-            _context2.prev = 19;
-            _context2.prev = 20;
-
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-
-          case 22:
-            _context2.prev = 22;
-
-            if (!_didIteratorError) {
-              _context2.next = 25;
-              break;
-            }
-
-            throw _iteratorError;
-
-          case 25:
-            return _context2.finish(22);
-
-          case 26:
-            return _context2.finish(19);
-
-          case 27:
-            return _context2.abrupt('return', features);
-
-          case 30:
-            _context2.prev = 30;
-            _context2.t1 = _context2['catch'](1);
-
-            console.log('map feature error: ' + _context2.t1);
-
-          case 33:
-          case 'end':
-            return _context2.stop();
-        }
-      }
-    }, _callee2, this, [[1, 30], [11, 15, 19, 27], [20,, 22, 26]]);
-  }));
-
-  return function fetchMapFeatures() {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-var updateGeoType = function () {
-  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(obj) {
-    return _regenerator2.default.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            obj['bgflag'] = 0;
-
-            if (!(obj[GEOID_VAR].length == 11)) {
-              _context3.next = 6;
-              break;
-            }
-
-            obj['tract_id'] = obj[GEOID_VAR].substring(5, 11);
-            obj['bg_id'] = 'NA';
-            _context3.next = 13;
-            break;
-
-          case 6:
-            if (!(obj[GEOID_VAR].length == 19)) {
-              _context3.next = 12;
-              break;
-            }
-
-            obj['tract_id'] = obj[GEOID_VAR].substring(12, 18);
-            obj['bg_id'] = obj[GEOID_VAR].substring(18, 19);
-            obj['bgflag'] = 1;
-            _context3.next = 13;
-            break;
-
-          case 12:
-            throw 'ERROR: Unknown feature/geography!!!' + GEOID_VAR + ': ' + obj[GEOID_VAR];
-
-          case 13:
-            return _context3.abrupt('return', obj);
-
-          case 14:
-          case 'end':
-            return _context3.stop();
-        }
-      }
-    }, _callee3, this);
-  }));
-
-  return function updateGeoType(_x) {
-    return _ref3.apply(this, arguments);
-  };
-}();
-
-var fetchAddLayers = function () {
-  var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-    var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, item, resp, features, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, feat, lyr;
-
-    return _regenerator2.default.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.prev = 0;
-            _iteratorNormalCompletion2 = true;
-            _didIteratorError2 = false;
-            _iteratorError2 = undefined;
-            _context4.prev = 4;
-            _iterator2 = (0, _getIterator3.default)(ADDLAYERS);
-
-          case 6:
-            if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context4.next = 39;
-              break;
-            }
-
-            item = _step2.value;
-            _context4.next = 10;
-            return fetch(API_SERVER + item.view);
-
-          case 10:
-            resp = _context4.sent;
-            _context4.next = 13;
-            return resp.json();
-
-          case 13:
-            features = _context4.sent;
-            _iteratorNormalCompletion3 = true;
-            _didIteratorError3 = false;
-            _iteratorError3 = undefined;
-            _context4.prev = 17;
-
-            for (_iterator3 = (0, _getIterator3.default)(features); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-              feat = _step3.value;
-
-              feat['type'] = 'Feature';
-              feat['geometry'] = JSON.parse(feat.geometry);
-            }
-            _context4.next = 25;
-            break;
-
-          case 21:
-            _context4.prev = 21;
-            _context4.t0 = _context4['catch'](17);
-            _didIteratorError3 = true;
-            _iteratorError3 = _context4.t0;
-
-          case 25:
-            _context4.prev = 25;
-            _context4.prev = 26;
-
-            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-              _iterator3.return();
-            }
-
-          case 28:
-            _context4.prev = 28;
-
-            if (!_didIteratorError3) {
-              _context4.next = 31;
-              break;
-            }
-
-            throw _iteratorError3;
-
-          case 31:
-            return _context4.finish(28);
-
-          case 32:
-            return _context4.finish(25);
-
-          case 33:
-            lyr = L.geoJSON(features, {
-              style: item.style,
-              pane: 'shadowPane'
-            }).addTo(mymap);
-
-            addLayerStore[item.view] = lyr;
-            mymap.removeLayer(lyr);
-
-          case 36:
-            _iteratorNormalCompletion2 = true;
-            _context4.next = 6;
-            break;
-
-          case 39:
-            _context4.next = 45;
-            break;
-
-          case 41:
-            _context4.prev = 41;
-            _context4.t1 = _context4['catch'](4);
-            _didIteratorError2 = true;
-            _iteratorError2 = _context4.t1;
-
-          case 45:
-            _context4.prev = 45;
-            _context4.prev = 46;
-
-            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-              _iterator2.return();
-            }
-
-          case 48:
-            _context4.prev = 48;
-
-            if (!_didIteratorError2) {
-              _context4.next = 51;
-              break;
-            }
-
-            throw _iteratorError2;
-
-          case 51:
-            return _context4.finish(48);
-
-          case 52:
-            return _context4.finish(45);
-
-          case 53:
-            _context4.next = 58;
-            break;
-
-          case 55:
-            _context4.prev = 55;
-            _context4.t2 = _context4['catch'](0);
-
-            console.log('additional layers error: ' + _context4.t2);
-
-          case 58:
-          case 'end':
-            return _context4.stop();
-        }
-      }
-    }, _callee4, this, [[0, 55], [4, 41, 45, 53], [17, 21, 25, 33], [26,, 28, 32], [46,, 48, 52]]);
-  }));
-
-  return function fetchAddLayers() {
-    return _ref4.apply(this, arguments);
-  };
-}();
-
-// hover panel -------------------
-
-
-var getMapData = function () {
-  var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-    var data_url, resp, jsonData, tmp, _iteratorNormalCompletion4, _didIteratorError4, _iteratorError4, _iterator4, _step4, yr, _iteratorNormalCompletion7, _didIteratorError7, _iteratorError7, _iterator7, _step7, met, _iteratorNormalCompletion5, _didIteratorError5, _iteratorError5, _iterator5, _step5, entry, _iteratorNormalCompletion8, _didIteratorError8, _iteratorError8, _iterator8, _step8, _yr2, _iteratorNormalCompletion9, _didIteratorError9, _iteratorError9, _iterator9, _step9, _met, _iteratorNormalCompletion6, _didIteratorError6, _iteratorError6, _iterator6, _step6, _yr, row, _iteratorNormalCompletion10, _didIteratorError10, _iteratorError10, _iterator10, _step10, _met2;
-
-    return _regenerator2.default.wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            data_url = API_SERVER + DATA_VIEW;
-            _context5.next = 3;
-            return fetch(data_url);
-
-          case 3:
-            resp = _context5.sent;
-            _context5.next = 6;
-            return resp.json();
-
-          case 6:
-            jsonData = _context5.sent;
-
-            base_lookup = {};
-            tmp = {};
-            _iteratorNormalCompletion4 = true;
-            _didIteratorError4 = false;
-            _iteratorError4 = undefined;
-            _context5.prev = 12;
-            _iterator4 = (0, _getIterator3.default)(YR_LIST);
-
-          case 14:
-            if (_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done) {
-              _context5.next = 39;
-              break;
-            }
-
-            yr = _step4.value;
-
-            tmp[yr] = {};
-            _iteratorNormalCompletion7 = true;
-            _didIteratorError7 = false;
-            _iteratorError7 = undefined;
-            _context5.prev = 20;
-            for (_iterator7 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-              met = _step7.value;
-
-              tmp[yr][met.value] = 0;
-            }
-            _context5.next = 28;
-            break;
-
-          case 24:
-            _context5.prev = 24;
-            _context5.t0 = _context5['catch'](20);
-            _didIteratorError7 = true;
-            _iteratorError7 = _context5.t0;
-
-          case 28:
-            _context5.prev = 28;
-            _context5.prev = 29;
-
-            if (!_iteratorNormalCompletion7 && _iterator7.return) {
-              _iterator7.return();
-            }
-
-          case 31:
-            _context5.prev = 31;
-
-            if (!_didIteratorError7) {
-              _context5.next = 34;
-              break;
-            }
-
-            throw _iteratorError7;
-
-          case 34:
-            return _context5.finish(31);
-
-          case 35:
-            return _context5.finish(28);
-
-          case 36:
-            _iteratorNormalCompletion4 = true;
-            _context5.next = 14;
-            break;
-
-          case 39:
-            _context5.next = 45;
-            break;
-
-          case 41:
-            _context5.prev = 41;
-            _context5.t1 = _context5['catch'](12);
-            _didIteratorError4 = true;
-            _iteratorError4 = _context5.t1;
-
-          case 45:
-            _context5.prev = 45;
-            _context5.prev = 46;
-
-            if (!_iteratorNormalCompletion4 && _iterator4.return) {
-              _iterator4.return();
-            }
-
-          case 48:
-            _context5.prev = 48;
-
-            if (!_didIteratorError4) {
-              _context5.next = 51;
-              break;
-            }
-
-            throw _iteratorError4;
-
-          case 51:
-            return _context5.finish(48);
-
-          case 52:
-            return _context5.finish(45);
-
-          case 53:
-            _iteratorNormalCompletion5 = true;
-            _didIteratorError5 = false;
-            _iteratorError5 = undefined;
-            _context5.prev = 56;
-            _iterator5 = (0, _getIterator3.default)(jsonData);
-
-          case 58:
-            if (_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done) {
-              _context5.next = 107;
-              break;
-            }
-
-            entry = _step5.value;
-
-
-            base_lookup[entry[GEOID_VAR]] = entry;
-
-            _iteratorNormalCompletion8 = true;
-            _didIteratorError8 = false;
-            _iteratorError8 = undefined;
-            _context5.prev = 64;
-            _iterator8 = (0, _getIterator3.default)(YR_LIST);
-
-          case 66:
-            if (_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done) {
-              _context5.next = 90;
-              break;
-            }
-
-            _yr2 = _step8.value;
-            _iteratorNormalCompletion9 = true;
-            _didIteratorError9 = false;
-            _iteratorError9 = undefined;
-            _context5.prev = 71;
-
-            for (_iterator9 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-              _met = _step9.value;
-
-              tmp[_yr2][_met.value] += entry[_met.value + _yr2];
-            }
-            _context5.next = 79;
-            break;
-
-          case 75:
-            _context5.prev = 75;
-            _context5.t2 = _context5['catch'](71);
-            _didIteratorError9 = true;
-            _iteratorError9 = _context5.t2;
-
-          case 79:
-            _context5.prev = 79;
-            _context5.prev = 80;
-
-            if (!_iteratorNormalCompletion9 && _iterator9.return) {
-              _iterator9.return();
-            }
-
-          case 82:
-            _context5.prev = 82;
-
-            if (!_didIteratorError9) {
-              _context5.next = 85;
-              break;
-            }
-
-            throw _iteratorError9;
-
-          case 85:
-            return _context5.finish(82);
-
-          case 86:
-            return _context5.finish(79);
-
-          case 87:
-            _iteratorNormalCompletion8 = true;
-            _context5.next = 66;
-            break;
-
-          case 90:
-            _context5.next = 96;
-            break;
-
-          case 92:
-            _context5.prev = 92;
-            _context5.t3 = _context5['catch'](64);
-            _didIteratorError8 = true;
-            _iteratorError8 = _context5.t3;
-
-          case 96:
-            _context5.prev = 96;
-            _context5.prev = 97;
-
-            if (!_iteratorNormalCompletion8 && _iterator8.return) {
-              _iterator8.return();
-            }
-
-          case 99:
-            _context5.prev = 99;
-
-            if (!_didIteratorError8) {
-              _context5.next = 102;
-              break;
-            }
-
-            throw _iteratorError8;
-
-          case 102:
-            return _context5.finish(99);
-
-          case 103:
-            return _context5.finish(96);
-
-          case 104:
-            _iteratorNormalCompletion5 = true;
-            _context5.next = 58;
-            break;
-
-          case 107:
-            _context5.next = 113;
-            break;
-
-          case 109:
-            _context5.prev = 109;
-            _context5.t4 = _context5['catch'](56);
-            _didIteratorError5 = true;
-            _iteratorError5 = _context5.t4;
-
-          case 113:
-            _context5.prev = 113;
-            _context5.prev = 114;
-
-            if (!_iteratorNormalCompletion5 && _iterator5.return) {
-              _iterator5.return();
-            }
-
-          case 116:
-            _context5.prev = 116;
-
-            if (!_didIteratorError5) {
-              _context5.next = 119;
-              break;
-            }
-
-            throw _iteratorError5;
-
-          case 119:
-            return _context5.finish(116);
-
-          case 120:
-            return _context5.finish(113);
-
-          case 121:
-            _aggregateData = [];
-            _iteratorNormalCompletion6 = true;
-            _didIteratorError6 = false;
-            _iteratorError6 = undefined;
-            _context5.prev = 125;
-            _iterator6 = (0, _getIterator3.default)(YR_LIST);
-
-          case 127:
-            if (_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done) {
-              _context5.next = 154;
-              break;
-            }
-
-            _yr = _step6.value;
-            row = {};
-
-            row['year'] = _yr.toString();
-            _iteratorNormalCompletion10 = true;
-            _didIteratorError10 = false;
-            _iteratorError10 = undefined;
-            _context5.prev = 134;
-            for (_iterator10 = (0, _getIterator3.default)(app.metric_options); !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-              _met2 = _step10.value;
-
-              row[_met2.value] = tmp[_yr][_met2.value];
-            }
-            _context5.next = 142;
-            break;
-
-          case 138:
-            _context5.prev = 138;
-            _context5.t5 = _context5['catch'](134);
-            _didIteratorError10 = true;
-            _iteratorError10 = _context5.t5;
-
-          case 142:
-            _context5.prev = 142;
-            _context5.prev = 143;
-
-            if (!_iteratorNormalCompletion10 && _iterator10.return) {
-              _iterator10.return();
-            }
-
-          case 145:
-            _context5.prev = 145;
-
-            if (!_didIteratorError10) {
-              _context5.next = 148;
-              break;
-            }
-
-            throw _iteratorError10;
-
-          case 148:
-            return _context5.finish(145);
-
-          case 149:
-            return _context5.finish(142);
-
-          case 150:
-            _aggregateData.push(row);
-
-          case 151:
-            _iteratorNormalCompletion6 = true;
-            _context5.next = 127;
-            break;
-
-          case 154:
-            _context5.next = 160;
-            break;
-
-          case 156:
-            _context5.prev = 156;
-            _context5.t6 = _context5['catch'](125);
-            _didIteratorError6 = true;
-            _iteratorError6 = _context5.t6;
-
-          case 160:
-            _context5.prev = 160;
-            _context5.prev = 161;
-
-            if (!_iteratorNormalCompletion6 && _iterator6.return) {
-              _iterator6.return();
-            }
-
-          case 163:
-            _context5.prev = 163;
-
-            if (!_didIteratorError6) {
-              _context5.next = 166;
-              break;
-            }
-
-            throw _iteratorError6;
-
-          case 166:
-            return _context5.finish(163);
-
-          case 167:
-            return _context5.finish(160);
-
-          case 168:
-          case 'end':
-            return _context5.stop();
-        }
-      }
-    }, _callee5, this, [[12, 41, 45, 53], [20, 24, 28, 36], [29,, 31, 35], [46,, 48, 52], [56, 109, 113, 121], [64, 92, 96, 104], [71, 75, 79, 87], [80,, 82, 86], [97,, 99, 103], [114,, 116, 120], [125, 156, 160, 168], [134, 138, 142, 150], [143,, 145, 149], [161,, 163, 167]]);
-  }));
-
-  return function getMapData() {
-    return _ref5.apply(this, arguments);
-  };
-}();
-
-var drawMapFeatures = function () {
-  var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
-    var queryMapData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-    var cleanFeatures, sel_metric, base_metric, comp_metric, map_metric, _iteratorNormalCompletion11, _didIteratorError11, _iteratorError11, _iterator11, _step11, feat, feat_entry, color_func, sel_colorvals2, bp, mode, custom_bps, _iteratorNormalCompletion12, _didIteratorError12, _iteratorError12, _iterator12, _step12, i;
-
-    return _regenerator2.default.wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            if (_featJson) {
-              _context6.next = 2;
-              break;
-            }
-
-            return _context6.abrupt('return');
-
-          case 2:
-            cleanFeatures = _featJson.slice();
-            sel_metric = app.selected_metric;
-            base_metric = sel_metric + app.sliderValue[0];
-            comp_metric = sel_metric + app.sliderValue[1];
-
-            if (base_metric == comp_metric) {
-              app.comp_check = false;
-              app.pct_check = false;
-            } else {
-              app.comp_check = true;
-            }
-            prec = FRAC_COLS.includes(sel_metric) ? 100 : 1;
-
-            _context6.prev = 8;
-
-            if (!queryMapData) {
-              _context6.next = 35;
-              break;
-            }
-
-            if (!(base_lookup == undefined)) {
-              _context6.next = 13;
-              break;
-            }
-
-            _context6.next = 13;
-            return getMapData();
-
-          case 13:
-            map_metric = void 0;
-
-            map_vals = [];
-            _iteratorNormalCompletion11 = true;
-            _didIteratorError11 = false;
-            _iteratorError11 = undefined;
-            _context6.prev = 18;
-            for (_iterator11 = (0, _getIterator3.default)(cleanFeatures); !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-              feat = _step11.value;
-
-              map_metric = null;
-
-              if (app.comp_check) {
-                if (base_lookup.hasOwnProperty(feat[GEOID_VAR])) {
-                  feat_entry = base_lookup[feat[GEOID_VAR]];
-
-                  map_metric = Math.round(feat_entry[comp_metric] / (feat['sq_mile'] * 1000)) - Math.round(feat_entry[base_metric] / (feat['sq_mile'] * 1000));
-                  feat['base'] = feat_entry[base_metric];
-                  feat['comp'] = feat_entry[comp_metric];
-                  if (app.pct_check && app.comp_check) {
-                    if (feat_entry[base_metric] > 0) {
-                      map_metric = map_metric * 100 / feat_entry[base_metric];
-                    }
-                  }
-                }
-              } else {
-                if (base_lookup.hasOwnProperty(feat[GEOID_VAR])) {
-                  map_metric = base_lookup[feat[GEOID_VAR]][VARMAP[feat['bgflag']][sel_metric]] * 100;
-                }
-              }
-
-              if (map_metric !== null) {
-                map_metric = Math.round(map_metric * prec) / prec;
-                map_vals.push(map_metric);
-              }
-              feat['metric'] = map_metric;
-            }
-            _context6.next = 26;
-            break;
-
-          case 22:
-            _context6.prev = 22;
-            _context6.t0 = _context6['catch'](18);
-            _didIteratorError11 = true;
-            _iteratorError11 = _context6.t0;
-
-          case 26:
-            _context6.prev = 26;
-            _context6.prev = 27;
-
-            if (!_iteratorNormalCompletion11 && _iterator11.return) {
-              _iterator11.return();
-            }
-
-          case 29:
-            _context6.prev = 29;
-
-            if (!_didIteratorError11) {
-              _context6.next = 32;
-              break;
-            }
-
-            throw _iteratorError11;
-
-          case 32:
-            return _context6.finish(29);
-
-          case 33:
-            return _context6.finish(26);
-
-          case 34:
-            map_vals = map_vals.sort(function (a, b) {
-              return a - b;
-            });
-
-          case 35:
-            if (!(map_vals.length > 0)) {
-              _context6.next = 81;
-              break;
-            }
-
-            color_func = void 0;
-            sel_colorvals2 = void 0;
-            bp = void 0;
-
-            if (!queryMapData) {
-              _context6.next = 44;
-              break;
-            }
-
-            sel_colorvals = (0, _from2.default)(new _set2.default(map_vals)).sort(function (a, b) {
-              return a - b;
-            });
-
-            if (sel_colorvals.length <= DISCRETE_VAR_LIMIT || INT_COLS.includes(sel_metric)) {
-              sel_binsflag = false;
-              color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals.concat([sel_colorvals[sel_colorvals.length - 1] + 1]));
-              sel_colorvals2 = sel_colorvals.slice(0);
-
-              app.bp0 = 0;
-              app.bp1 = 0;
-              app.bp2 = 0;
-              app.bp3 = 0;
-              app.bp4 = 0;
-              app.bp5 = 1;
-            } else {
-              mode = 'base';
-
-              if (app.comp_check) {
-                if (app.pct_check) {
-                  mode = 'pctdiff';
-                } else {
-                  mode = 'diff';
-                }
-              }
-
-              custom_bps = CUSTOM_BP_DICT[sel_metric][mode];
-
-              sel_colorvals = [map_vals[0]].concat(custom_bps);
-              map_vals[map_vals.length - 1] > custom_bps[custom_bps.length - 1] ? sel_colorvals.push(map_vals[map_vals.length - 1]) : sel_colorvals.push(custom_bps[custom_bps.length - 1] + 1);
-
-              bp = (0, _from2.default)(sel_colorvals).sort(function (a, b) {
-                return a - b;
-              });
-              app.bp0 = bp[0];
-              app.bp5 = bp[bp.length - 1];
-              app.bp1 = custom_bps[0];
-              app.bp2 = custom_bps[1];
-              app.bp3 = custom_bps[2];
-              app.bp4 = custom_bps[3];
-              if (custom_bps[0] < app.bp0) app.bp1 = app.bp0;
-
-              sel_colorvals = (0, _from2.default)(new _set2.default(sel_colorvals)).sort(function (a, b) {
-                return a - b;
-              });
-              //updateColorScheme(sel_colorvals);
-              sel_binsflag = true;
-              color_func = chroma.scale(app.selected_colorscheme).mode(getColorMode(app.selected_colorscheme)).classes(sel_colorvals);
-              sel_colorvals2 = sel_colorvals.slice(0, sel_colorvals.length - 1);
-            }
-            _context6.next = 45;
-            break;
-
-          case 44:
-            throw 'ERROR: This step should not be occurring!!!';
-
-          case 45:
-
-            sel_colors = [];
-            _iteratorNormalCompletion12 = true;
-            _didIteratorError12 = false;
-            _iteratorError12 = undefined;
-            _context6.prev = 49;
-            for (_iterator12 = (0, _getIterator3.default)(sel_colorvals2); !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-              i = _step12.value;
-
-              sel_colors.push(color_func(i).hex());
-            }
-
-            _context6.next = 57;
-            break;
-
-          case 53:
-            _context6.prev = 53;
-            _context6.t1 = _context6['catch'](49);
-            _didIteratorError12 = true;
-            _iteratorError12 = _context6.t1;
-
-          case 57:
-            _context6.prev = 57;
-            _context6.prev = 58;
-
-            if (!_iteratorNormalCompletion12 && _iterator12.return) {
-              _iterator12.return();
-            }
-
-          case 60:
-            _context6.prev = 60;
-
-            if (!_didIteratorError12) {
-              _context6.next = 63;
-              break;
-            }
-
-            throw _iteratorError12;
-
-          case 63:
-            return _context6.finish(60);
-
-          case 64:
-            return _context6.finish(57);
-
-          case 65:
-            if (geoLayer) mymap.removeLayer(geoLayer);
-            if (mapLegend) mymap.removeControl(mapLegend);
-            geoLayer = L.geoJSON(cleanFeatures, {
-              style: styleByMetricColor,
-              onEachFeature: function onEachFeature(feature, layer) {
-                layer.on({
-                  mouseover: hoverFeature,
-                  click: clickedOnFeature
-                });
-              }
-            });
-            geoLayer.addTo(mymap);
-
-            mapLegend = L.control({ position: 'bottomright' });
-            mapLegend.onAdd = function (map) {
-              var div = L.DomUtil.create('div', 'legend');
-              var legHTML = getLegHTML(sel_colorvals, sel_colors, sel_binsflag, '%');
-
-              legHTML = '<h4>' + METRIC_DESC_SHORT[sel_metric] + (app.pct_check ? ' % Diff' : METRIC_UNITS.hasOwnProperty(sel_metric) ? '<br>(' + METRIC_UNITS[sel_metric] + ')' : '') + '</h4>' + legHTML;
-              div.innerHTML = legHTML;
-              return div;
-            };
-            if (app.selected_metric != 'None') mapLegend.addTo(mymap);
-
-            if (!selectedGeo) {
-              _context6.next = 80;
-              break;
-            }
-
-            if (!base_lookup.hasOwnProperty(selectedGeo.feature[GEOID_VAR])) {
-              _context6.next = 77;
-              break;
-            }
-
-            return _context6.abrupt('return', cleanFeatures.filter(function (entry) {
-              return entry[GEOID_VAR] == selectedGeo.feature[GEOID_VAR];
-            })[0]);
-
-          case 77:
-            resetPopGeo();
-
-          case 78:
-            _context6.next = 81;
-            break;
-
-          case 80:
-            return _context6.abrupt('return', null);
-
-          case 81:
-            _context6.next = 86;
-            break;
-
-          case 83:
-            _context6.prev = 83;
-            _context6.t2 = _context6['catch'](8);
-
-            console.log(_context6.t2);
-
-          case 86:
-          case 'end':
-            return _context6.stop();
-        }
-      }
-    }, _callee6, this, [[8, 83], [18, 22, 26, 34], [27,, 29, 33], [49, 53, 57, 65], [58,, 60, 64]]);
-  }));
-
-  return function drawMapFeatures() {
-    return _ref6.apply(this, arguments);
-  };
-}();
-
-var selectionChanged = function () {
-  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(thing) {
-    var selfeat;
-    return _regenerator2.default.wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            app.chartTitle = METRIC_DESC[app.selected_metric] + ' Trend';
-
-            if (!(app.sliderValue && app.selected_metric)) {
-              _context7.next = 6;
-              break;
-            }
-
-            _context7.next = 4;
-            return drawMapFeatures();
-
-          case 4:
-            selfeat = _context7.sent;
-
-            if (selfeat) {
-              highlightSelectedSegment();
-              popSelGeo.setContent(getInfoHtml(selfeat));
-            }
-
-          case 6:
-          case 'end':
-            return _context7.stop();
-        }
-      }
-    }, _callee7, this);
-  }));
-
-  return function selectionChanged(_x3) {
-    return _ref7.apply(this, arguments);
-  };
-}();
-
-var postComments = function () {
-  var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(comment) {
-    var comment_url;
-    return _regenerator2.default.wrap(function _callee8$(_context8) {
-      while (1) {
-        switch (_context8.prev = _context8.next) {
-          case 0:
-            comment_url = COMMENT_SERVER + COMMENT_VIEW;
-            // console.log(JSON.stringify(comment))
-
-            _context8.prev = 1;
-            _context8.next = 4;
-            return fetch(comment_url, {
-              method: 'POST',
-              body: (0, _stringify2.default)(comment),
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
-
-          case 4:
-            _context8.next = 9;
-            break;
-
-          case 6:
-            _context8.prev = 6;
-            _context8.t0 = _context8['catch'](1);
-
-            console.log('comment error: ' + _context8.t0);
-
-          case 9:
-          case 'end':
-            return _context8.stop();
-        }
-      }
-    }, _callee8, this, [[1, 6]]);
-  }));
-
-  return function postComments(_x4) {
-    return _ref8.apply(this, arguments);
-  };
-}();
+var _promise2 = _interopRequireDefault(_promise);
 
 __webpack_require__(384);
 
@@ -14242,370 +11709,1273 @@ var _jsCookie = __webpack_require__(398);
 
 var _jsCookie2 = _interopRequireDefault(_jsCookie);
 
+var _vueInputAutowidth = __webpack_require__(569);
+
+var _vueInputAutowidth2 = _interopRequireDefault(_vueInputAutowidth);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+Vue.use(_vueInputAutowidth2.default);
+//import App from './App'
 
 var maplib = __webpack_require__(394);
 var styles = maplib.styles;
-var getLegHTML = maplib.getLegHTML2;
-var getColorFromVal = maplib.getColorFromVal2;
-
-var baseLayer = maplib.baseLayer;
+var getLegHTML = maplib.getLegHTML;
 var mymap = maplib.sfmap;
-mymap.setView([37.76889, -122.440997], 13);
-mymap.removeLayer(baseLayer);
-var url = 'https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token={accessToken}';
-var token = 'pk.eyJ1Ijoic2ZjdGEiLCJhIjoiY2ozdXBhNm1mMDFkaTJ3dGRmZHFqanRuOCJ9.KDmACTJBGNA6l0CyPi1Luw';
-var attribution = '<a href="http://openstreetmap.org">OpenStreetMap</a> | ' + '<a href="http://mapbox.com">Mapbox</a>';
-baseLayer = L.tileLayer(url, {
-  attribution: attribution,
-  maxZoom: 18,
-  accessToken: token
-}).addTo(mymap);
+var numeral = __webpack_require__(550);
+var leafletPip = __webpack_require__(506);
+//var acc = require('accordion-js');
+//leafletPip.bassackwards = true;
 
-var url2 = 'https://api.mapbox.com/styles/v1/sfcta/cjscclu2q07qn1fpimxuf2wbd/tiles/256/{z}/{x}/{y}?access_token={accessToken}';
-var streetLayer = L.tileLayer(url2, {
-  attribution: attribution,
-  maxZoom: 18,
-  accessToken: token,
-  pane: 'shadowPane'
+mymap.setView([37.76889, -122.440997], 12);
+
+// some important constant variables.
+var CTA_API_SERVER = 'https://api.sfcta.org/api/';
+var DISTRICTS_URL = 'tia_dist12';
+var PLACETYPES_URL = 'tia_place_type';
+var CITY_URL = 'tia_san_francisco';
+var TRIP_DISTRIBUTION = 'tia_distribution';
+var TRIP_GEN_RTS = 'tia_tripgen';
+var MODE_SPLITS = 'tia_modesplit';
+var PLANNING_GEOCODER_baseurl = 'http://sfplanninggis.org/cpc_geocode/?search=';
+var AVO_DATA = 'tia_avo';
+
+var geoDistricts = void 0;
+var geoPlaceTypes = void 0;
+var geoCities = void 0;
+var distributionData = void 0;
+queryServer(CTA_API_SERVER + TRIP_DISTRIBUTION).then(function (data) {
+  distributionData = data;
 });
-streetLayer.addTo(mymap);
 
-var stripes = new L.StripePattern({ weight: 3, spaceWeight: 3, opacity: 0.6, angle: 135 });stripes.addTo(mymap);
+var mapLegend = void 0;
 
-var ADDLAYERS = [{
-  view: 'sup_district_boundaries', name: 'Supervisorial District Boundaries',
-  style: { opacity: 1, weight: 3, color: '#730073', fillOpacity: 0, interactive: false }
-}, {
-  view: 'sfparks', name: 'Major Parks',
-  style: { opacity: 1, weight: 2, color: 'grey', fillPattern: stripes, interactive: false }
-}, {
-  view: 'hin2017', name: 'High Injury Network',
-  style: { opacity: 1, weight: 3, color: '#FF8C00', interactive: false }
-}];
+var modeSplits = void 0;
+queryServer(CTA_API_SERVER + MODE_SPLITS).then(function (data) {
+  modeSplits = data;
+});
 
-// some important global variables.
-var API_SERVER = 'https://api.sfcta.org/api/';
-var GEO_VIEW = 'coc2017';
-var DATA_VIEW = 'coc2017';
-var COMMENT_SERVER = 'https://api.sfcta.org/commapi/';
-var COMMENT_VIEW = 'coc_comment';
+var tripGenRates = void 0;
+queryServer(CTA_API_SERVER + TRIP_GEN_RTS).then(function (data) {
+  tripGenRates = data;
+  app.ret_tripgen_daily = numeral(tripGenRates[3].daily_rate).format('0.0');
+  app.res_tripgen_daily = numeral(tripGenRates[1].daily_rate).format('0.0');
+  app.rest_tripgen_daily = numeral(tripGenRates[5].daily_rate).format('0.0');
+  app.comp_tripgen_daily = numeral(tripGenRates[6].daily_rate).format('0.0');
+  app.off_tripgen_daily = numeral(tripGenRates[0].daily_rate).format('0.0');
+  app.sup_tripgen_daily = numeral(tripGenRates[4].daily_rate).format('0.0');
+  app.hot_tripgen_daily = numeral(tripGenRates[2].daily_rate).format('0.0');
 
-var GEOTYPE = 'CoC';
-var GEOID_VAR = 'geoid_1';
+  app.ret_tripgen_PM = numeral(tripGenRates[3].pkhr_rate).format('0.0');
+  app.res_tripgen_PM = numeral(tripGenRates[1].pkhr_rate).format('0.0');
+  app.rest_tripgen_PM = numeral(tripGenRates[5].pkhr_rate).format('0.0');
+  app.comp_tripgen_PM = numeral(tripGenRates[6].pkhr_rate).format('0.0');
+  app.off_tripgen_PM = numeral(tripGenRates[0].pkhr_rate).format('0.0');
+  app.sup_tripgen_PM = numeral(tripGenRates[4].pkhr_rate).format('0.0');
+  app.hot_tripgen_PM = numeral(tripGenRates[2].pkhr_rate).format('0.0');
+});
 
-var FRAC_COLS = [];
-var YR_LIST = [2015, 2050];
+var AVO_data = void 0;
+queryServer(CTA_API_SERVER + AVO_DATA).then(function (data) {
+  AVO_data = data;
+});
 
-var INT_COLS = [];
-var DISCRETE_VAR_LIMIT = 10;
-var MISSING_COLOR = '#ffffcc';
-var COLORRAMP = { SEQ: ['#fceca8', '#f6c558', '#dc9e48', '#8f5448'],
-  DIV: ['#d7191c', '#fdae61', '#ffffbf', '#a6d96a', '#1a9641'] };
+var color_styles = [{ normal: { "color": "#39f", "weight": 3, "opacity": 0.5 },
+  selected: { "color": "#33f", "weight": 4, "opacity": 0.5 } }, { normal: { "fillColor": "#8B0000 ", "fillOpacity": 0.8 },
+  selected: { "color": "#34784b", "weight": 5, "opacity": 1.0 } }, { normal: { "fillColor": "#000", "fillOpacity": 0.8 },
+  selected: { "color": "#000", "weight": 5, "opacity": 1.0 } }, { normal: { "color": "#969696", "fillColor": "#969696", "fillOpacity": 0.3, "weight": 2, "opacity": 1 },
+  selected: { "color": "#43C1FC", "weight": 1, "opacity": 1 } }];
 
-var MAX_PCTDIFF = 200;
-var CUSTOM_BP_DICT = {
-  'min': { 'base': [50, 70, 90] },
-  'linc': { 'base': [25, 30, 35] },
-  'o75': { 'base': [5, 10, 15] },
-  'disab': { 'base': [10, 25, 40] },
-  'lep': { 'base': [10, 20, 30] },
-  'zvhh': { 'base': [5, 10, 15] },
-  'spfam': { 'base': [10, 20, 30] },
-  'rentb': { 'base': [5, 15, 25] }
-};
+var pt_styles = [{ normal: { 'color': "#39F", "weight": 5, 'opacity': 0.5, 'fillOpacity': 0.0 },
+  selected: { 'color': "#f4df42", "weight": 5, 'fillColor': "#f4df42", 'opacity': 1.0, 'fillOpacity': 0.2 } }];
 
-var METRIC_UNITS = { 'pop': '000s per sq. mi.',
-  'tot': '000s per sq. mi.',
-  'jobpop': '000s per sq. mi.' };
-var METRIC_DESC = { 'pop': 'Population', 'tot': 'Jobs',
-  'jobpop': 'Jobs+Population'
-};
-var METRIC_DESC_SHORT = { 'min': 'Minority Pop', 'linc': 'Low-Income Pop', 'o75': 'Over 75 yrs Pop', 'disab': 'Disabled Pop',
-  'lep': 'Low English Pop', 'zvhh': 'Zero-Veh HH', 'spfam': 'Single-Parent Fam', 'rentb': 'Rent-Burdened HH'
-};
-var VARMAP = [{ 'min': 'pct_minori', 'linc': 'pct_below2', 'o75': 'pct_over75', 'disab': 'pct_disab',
-  'lep': 'pct_lep', 'zvhh': 'pct_zvhhs', 'spfam': 'pct_spfam', 'rentb': 'pct_hus_re' }, { 'min': 'pct_mino_1', 'linc': 'pct_lowinc', 'o75': 'pct_over_1', 'disab': 'pct_disab_',
-  'lep': 'pct_lep_1', 'zvhh': 'pct_zvhh', 'spfam': 'pct_spfam_', 'rentb': 'pct_rent50' }];
+//some global geolayer variables
+var address_geoLyr = void 0;
+var addressGroup = void 0;
+var districts = void 0;
+var districts_lyr = void 0;
+var placetype_lyr = void 0;
+var city_lyr = void 0;
+var markers = []; //this is the list of all the district markers
+var color_func = void 0;
+var landUses = ["Residential", "Hotel", "Retail", "Supermarket", "Office", "Restaurant", "Composite"];
+var modeTypes = ["auto", "transit", "tnc/taxi", "walk", "bike", "pvt_shuttle"];
+var landUseToAttr = void 0;
 
-var sel_colorvals = void 0,
-    sel_colors = void 0,
-    sel_binsflag = void 0;
+//some other global variables
+var addressDistrictNum = void 0;
+var addressDistrictName = void 0;
+var addressPlaceType = void 0;
+var selectedMode = 'auto';
+var address = void 0;
 
-var chart_deftitle = 'All ' + GEOTYPE + 's Combined';
+//selects a land use. it communicates that at least one land use has been specified by the user, enabling computation
+var selectedPurpose = 'work';
+var selectedDirection = 'inbound';
+var selectedTimePeriod = 'daily';
+var selectedDistribution = 'district';
+var namePopup = void 0;
 
-var geoLayer = void 0,
-    mapLegend = void 0;
-var _featJson = void 0;
-var _aggregateData = void 0;
-var prec = void 0;
-var addLayerStore = {};
+var infoDistrict = L.control();
+var infoTotals = L.control();
 
-var infoPanel = L.control();
+function landUseCheck() {
+  if (app.off_sqft !== null || app.ret_sqft !== null || app.rest_sqft !== null || app.comp_sqft !== null || app.sup_sqft !== null || app.hot_rooms !== null || app.num_studios !== null || app.num_1bed !== null || app.num_2bed !== null || app.num_3bed !== null) {
+    return true;
+  }
+  return false;
+}
 
-infoPanel.onAdd = function (map) {
-  // create a div with a class "info"
-  this._div = L.DomUtil.create('div', 'info-panel-hide');
+infoDistrict.onAdd = function (map) {
+  this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+  this.update();
   return this._div;
 };
 
-function getInfoHtml(geo) {
-  var retval = '<b>TRACT ID: </b>' + (geo['tract_id'] + '<br/>') + '<b>BLOCKGROUP ID: </b>' + (geo['bg_id'] + '<br/><hr>');
-
-  if (app.selected_metric != 'None') {
-    retval += '<b>' + METRIC_DESC_SHORT[app.selected_metric] + '</b>' + '<b> Percent: </b>' + ('' + geo['metric']) + '%';
-  }
-  return retval;
-}
-
-infoPanel.update = function (geo) {
-  infoPanel._div.innerHTML = '';
-  infoPanel._div.className = 'info-panel';
-  if (geo) this._div.innerHTML = getInfoHtml(geo);
-
-  infoPanelTimeout = setTimeout(function () {
-    // use CSS to hide the info-panel
-    infoPanel._div.className = 'info-panel-hide';
-    // and clear the hover too
-    if (oldHoverTarget.feature[GEOID_VAR] != selGeoId) geoLayer.resetStyle(oldHoverTarget);
-  }, 2500);
+infoTotals.onAdd = function (map) {
+  this._div = L.DomUtil.create('div', 'infoTotals'); // create a div with a class "info"
+  this.update();
+  return this._div;
 };
-infoPanel.addTo(mymap);
 
-var base_lookup = void 0;
-var map_vals = void 0;
+infoTotals.update = function () {
+  var message = '';
 
-
-function updateColorScheme(colorvals) {
-  if (colorvals[0] * colorvals[colorvals.length - 1] >= 0) {
-    app.selected_colorscheme = COLORRAMP.SEQ;
+  if (addressDistrictNum == null || landUseCheck() == false) {
+    message = '<h4>Information</h4>';
+    if (addressDistrictNum == null) {
+      message += '<b>-Input an address</b>';
+    }
+    if (landUseCheck() == false) {
+      message += '<br><b>-Select a land use and enter project details</b>';
+    }
   } else {
-    app.selected_colorscheme = COLORRAMP.DIV;
-  }
-}
+    message = '<table class="ui small very compact inverted table">';
+    message += '<tr><th></th><th colspan="2">Person Trips</th><th colspan="2">Vehicle Trips</th></tr>';
+    message += '<tr><th>Mode</th><th>Total</th><th>Filtered*</th>';
+    message += '<th>Total</th><th>Filtered*</th></tr>';
 
-function styleByMetricColor(feat) {
-  var color = getColorFromVal(feat['metric'], sel_colorvals, sel_colors, sel_binsflag);
-  if (!color) color = MISSING_COLOR;
-  if (app.selected_metric == 'None') {
-    return { fillColor: '#baa0d2', opacity: 0, weight: 0, color: color, fillOpacity: 0.5 };
+    message += '<tr><td>Auto</td><td>' + roundToNearest(totalPersonTripsByMode["auto"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredPersonTripsByMode["auto"]) + '</td>';
+    message += '<td>' + roundToNearest(totalVehicleTripsByMode["auto"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredVehicleTripsByMode["auto"]) + '</td>';
+
+    message += '<tr><td>TNC/Taxi</td><td>' + roundToNearest(totalPersonTripsByMode["tnc/taxi"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredPersonTripsByMode["tnc/taxi"]) + '</td>';
+    message += '<td>' + roundToNearest(totalVehicleTripsByMode["tnc/taxi"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredVehicleTripsByMode["tnc/taxi"]) + '</td>';
+
+    message += '<tr><td>Transit</td><td>' + roundToNearest(totalPersonTripsByMode["transit"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredPersonTripsByMode["transit"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(totalVehicleTripsByMode["transit"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(filteredVehicleTripsByMode["transit"]) + '</td>';
+
+    message += '<tr><td>Private Shuttle</td><td>' + roundToNearest(totalPersonTripsByMode["pvt_shuttle"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredPersonTripsByMode["pvt_shuttle"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(totalVehicleTripsByMode["pvt_shuttle"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(filteredVehicleTripsByMode["pvt_shuttle"]) + '</td>';
+
+    message += '<tr><td>Bike</td><td>' + roundToNearest(totalPersonTripsByMode["bike"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredPersonTripsByMode["bike"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(totalVehicleTripsByMode["bike"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(filteredVehicleTripsByMode["bike"]) + '</td>';
+
+    message += '<tr><td>Walk</td><td>' + roundToNearest(totalPersonTripsByMode["walk"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredPersonTripsByMode["walk"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(totalVehicleTripsByMode["walk"]) + '</td>';
+    message += '<td></td>'; //'<td>' + roundToNearest(filteredVehicleTripsByMode["walk"]) + '</td>';
+
+    message += '<tr><td>Total</td><td>' + roundToNearest(totalPersonTripsByMode["total"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredPersonTripsByMode["total"]) + '</td>';
+    message += '<td>' + roundToNearest(totalVehicleTripsByMode["auto"] + totalVehicleTripsByMode["tnc/taxi"]) + '</td>';
+    message += '<td>' + roundToNearest(filteredVehicleTripsByMode["auto"] + filteredVehicleTripsByMode["tnc/taxi"]) + '</td>';
+    message += '</table>';
+    message += 'Filtered by: ' + selectedTimePeriod + ' ' + selectedDirection + ' ' + selectedPurpose;
+    message += '<br><br><b>Total trips:</b> all daily trips, by all modes, purposes, and directions';
+    message += '<br><b>Filtered trips:</b> trips filtered by selected toggle buttons for time period,';
+    message += '<br>purpose, and direction';
+  }
+  this._div.innerHTML = message;
+};
+
+infoDistrict.update = function (hoverDistrict) {
+  //hoverDistrict is the mouseover target defned in updateMap
+  var message = '';
+  if (addressDistrictNum == null || landUseCheck() == false) {
+    message = '';
+  } else if (hoverDistrict == null) {
+    message = '<h4>Information</h4>' + '<b> Hover over a district to see filtered trips by mode </b>';
   } else {
-    return { fillColor: color, opacity: 1, weight: 1, color: color, fillOpacity: 1 };
+    message = '<h4>';
+    switch (selectedTimePeriod) {
+      case 'daily':
+        message += 'Daily';
+        break;
+      case 'pm':
+        message += 'PM Peak Period';
+    }
+    switch (selectedPurpose) {
+      case 'work':
+        message += ' Work';
+        break;
+      case 'non-work':
+        message += ' Non-Work';
+        break;
+      case 'work and non-work':
+        message += ' Work and Non-Work';
+        break;
+    }
+    switch (selectedMode) {
+      case 'auto':
+        message += ' Trips by Auto';
+        break;
+      case 'tnc/taxi':
+        message += ' Trips by TNC/Taxi';
+        break;
+      case 'transit':
+        message += ' Trips by Transit';
+    }
+    message += '<br>';
+    switch (selectedDirection) {
+      case 'outbound':
+        message += ' Outbound From' + address + ' to ';
+        break;
+      case 'inbound':
+        message += ' Inbound To ' + address + ' from ';
+        break;
+      default:
+        message += ' Inbound/Outbound ' + address + ' from/to ';
+        break;
+    }
+    message += hoverDistrict.distname.toString() + ' </h4>';
+    message += "Person trips: " + "<b>" + roundToNearest(districtPersonTrips[hoverDistrict.dist]["total"]) + '</b>';
+    if (selectedMode !== "transit") {
+      message += '<br>' + "Vehicle trips: " + "<b>" + roundToNearest(districtVehicleTrips[hoverDistrict.dist]["total"]) + '</b>';
+      var avo = districtPersonTrips[hoverDistrict.dist]["total"] / districtVehicleTrips[hoverDistrict.dist]["total"];
+      message += '<br>' + "Avg Veh Occ: " + "<b>" + roundToNearest(avo, 1);
+    }
   }
+  this._div.innerHTML = message;
+};
+
+function queryServer(url) {
+  var promise = new _promise2.default(function (resolve, reject) {
+    fetch(url).then(function (resp) {
+      return resp.json();
+    }).then(function (jsonData) {
+      resolve(jsonData);
+    }).catch(function (error) {
+      alert("Cannot query server");
+    });
+  });
+  return promise;
 }
 
-var infoPanelTimeout = void 0;
-var oldHoverTarget = void 0;
-
-function hoverFeature(e) {
-  clearTimeout(infoPanelTimeout);
-  infoPanel.update(e.target.feature);
-
-  // don't do anything else if the feature is already clicked
-  if (selGeoId === e.target.feature[GEOID_VAR]) return;
-
-  // return previously-hovered segment to its original color
-  if (oldHoverTarget && e.target.feature[GEOID_VAR] != selGeoId) {
-    if (oldHoverTarget.feature[GEOID_VAR] != selGeoId) geoLayer.resetStyle(oldHoverTarget);
-  }
-
-  var highlightedGeo = e.target;
-  highlightedGeo.bringToFront();
-  highlightedGeo.setStyle(styles.selected);
-  oldHoverTarget = e.target;
+function planningJson2geojson(json) {
+  //converts the response json of the planning geocoder into a geojson format that is readable by leaflet
+  //allows this data to be added to a geoLayer and drawn on the map  
+  var geoCodeJson = {};
+  geoCodeJson['blklot'] = json.features[0].attributes.blklot;
+  geoCodeJson['type'] = 'Feature';
+  geoCodeJson['geometry'] = {};
+  geoCodeJson['geometry']['type'] = 'MultiPolygon';
+  geoCodeJson['geometry']['coordinates'] = [json.features[0].geometry.rings];
+  return geoCodeJson;
 }
 
-function highlightSelectedSegment() {
-  if (!selGeoId) return;
+function ctaJson2geojson(json) {
+  //converts the response json of the sfcta api into a geojson format that is readable by leaflet
+  //allows this data to be added to a geoLayer and drawn on the map
+  json["type"] = "Feature";
+  json["geometry"] = JSON.parse(json.geometry);
+}
 
-  mymap.eachLayer(function (e) {
+function addDistrictGeoLayer(geoJsonData, tooltip_positions) {
+  var districtMarker = void 0;
+  var geolyr = L.geoJSON(geoJsonData, { //this makes a geoJSON layer from
+    //geojson data, which is required input. i is the style input
+    style: color_styles[3].normal,
+    onEachFeature: function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: function mouseover(e) {
+          //e.target.setStyle(color_styles[3].normal);
+          //e.target.bringToFront(); 
+          if (districtMarker) {
+            districtMarker.unbindTooltip();
+            mymap.removeLayer(districtMarker);
+          }
+          districtMarker = L.circleMarker(tooltip_positions[feature.dist], { color: 'blue', radius: 1 }).addTo(mymap).bindTooltip(feature.distname, { permanent: true, sticky: true });
+          infoDistrict.update(e.target.feature);
+          infoTotals.update();
+        },
+        mouseout: function mouseout(e) {}
+      });
+    }
+  });
+  geolyr.addTo(mymap);
+  return geolyr;
+}
+
+function addPlaceTypeGeoLayer(geoJsonData) {
+  var geolyr = L.geoJSON(geoJsonData, { //this makes a geoJSON layer from
+    style: pt_styles[0].normal
+  });
+  return geolyr;
+}
+
+function addCityGeoLayer(geoJsonData) {
+  var geolyr = L.geoJSON(geoJsonData, { //this makes a geoJSON layer from
+    style: pt_styles[0].normal
+  });
+  return geolyr;
+}
+
+function getMax() {
+  var distributions = [];
+  if (selectedMode && landUseCheck() == true && selectedPurpose && selectedDirection && addressDistrictNum && selectedTimePeriod) {
+    //not sure if this last check is correct
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
     try {
-      if (e.feature[GEOID_VAR] === selGeoId) {
-        e.bringToFront();
-        e.setStyle(styles.popup);
-        selectedGeo = e;
-        return;
+      for (var _iterator = (0, _getIterator3.default)((0, _keys2.default)(districtPersonTrips)), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var key = _step.value;
+
+        distributions.push(districtPersonTrips[key]["total"]);
       }
-    } catch (error) {}
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    return Math.max.apply(null, distributions);
+  }
+}
+
+function filterDistributionData(sourceGeoType, sourceGeoTypeKey, mode, direction, landUse, timePeriod, purpose) {
+  //returns a json object or list of json objects that fit given parameters   
+  return distributionData.filter(function (piece) {
+    return piece.geo_type == sourceGeoType && piece.geo_id == sourceGeoTypeKey && piece.mode == mode && piece.landuse == landUse && piece.purpose == purpose && piece.direction == direction && piece.time_period == timePeriod;
   });
 }
 
-var selGeoId = void 0;
-var selectedGeo = void 0,
-    prevSelectedGeo = void 0;
-var selectedLatLng = void 0;
+function getDistProps(sourceGeoType, sourceGeoTypeKey, targetDistrict, mode, direction, landUse, timePeriod, purpose) {
+  // geoType is district, place_type, or city
+  // geoTypeKey is the id associated with the geoType: 1-12 for district, 1-3 for place_type, 1 for city
+  // direction is inbound, outbound, or both
+  // landUse is residential, retail, office, hotel, supermarket, or restaurant
+  // timePeriod is daily or pm
+  var data = void 0;
+  var districtFieldName = "prop_dist" + targetDistrict.dist; //the field name for the target district
 
-function clickedOnFeature(e) {
-  e.target.setStyle(styles.popup);
-  var geo = e.target.feature;
-  selGeoId = geo[GEOID_VAR];
-
-  // unselect the previously-selected selection, if there is one
-  if (selectedGeo && selectedGeo.feature[GEOID_VAR] != geo[GEOID_VAR]) {
-    prevSelectedGeo = selectedGeo;
-    geoLayer.resetStyle(prevSelectedGeo);
-  }
-  selectedGeo = e.target;
-  var selfeat = selectedGeo.feature;
-  app.chartSubtitle = GEOTYPE + ' ' + selfeat[GEOID_VAR] + ' in ' + selfeat.nhood;
-  selectedLatLng = e.latlng;
-  if (base_lookup.hasOwnProperty(selGeoId)) {
-    showGeoDetails(selectedLatLng);
-    //buildChartHtmlFromData(selGeoId);
-  } else {
-    resetPopGeo();
+  if (selectedMode && landUseCheck() == true && selectedPurpose && selectedDirection && addressDistrictNum && selectedTimePeriod) {
+    //this returns a number not an object
+    data = filterDistributionData(sourceGeoType, sourceGeoTypeKey, mode, direction, landUse, timePeriod, purpose)[0][districtFieldName];
+    return data;
   }
 }
 
-var popSelGeo = void 0;
-function showGeoDetails(latlng) {
-  // show popup
-  popSelGeo = L.popup().setLatLng(latlng).setContent(infoPanel._div.innerHTML).addTo(mymap);
+function filterModeSplitData(landUse, placetype) {
+  //trying to access the proportion that corresponds with a given land use, placetype and mode
+  if (selectedMode && landUseCheck() == true && app.placetype != '') {
+    return modeSplits.filter(function (piece) {
+      return piece.place_type == placetype && piece.landuse == landUse;
+    });
+  }
+}
 
-  // Revert to overall chart when no segment selected
-  popSelGeo.on('remove', function (e) {
-    resetPopGeo();
+function filterAvoData(landUse, timePeriod, geoType, geoTypeKey) {
+  //trying to access the proportion that corresponds with a given land use, placetype and mode
+  var key = void 0;
+  switch (geoType) {
+    case "district":
+      key = "District " + geoTypeKey;
+      break;
+    case "place-type":
+      key = "Place Type " + geoTypeKey;
+      break;
+    case "city":
+      key = "San Francisco";
+      break;
+  }
+
+  return AVO_data.filter(function (piece) {
+    //how to deal with land use?
+    return piece.geography == key && piece.time_period == timePeriod;
+  })[0][landUse];
+}
+
+function addAddressTooltipToMap() {
+  if (mymap.hasLayer(address_geoLyr)) {
+    mymap.removeLayer(address_geoLyr);
+  }
+
+  address = app.address; // app.address is the user input. app refers to the VUE object below that handles
+  if (address == null) {
+    return;
+  }
+  var geocodedJson = queryServer(PLANNING_GEOCODER_baseurl + address, 0) //data has got to the geocoder
+  .then(function (geocodedJson) {
+    //after queryServer returns the data, do this:
+    //if (geocodedJson.features.length !== 0 && selectedMode && landUseCheck==true && selectedPurpose && 
+    //  selectedDirection && selectedTimePeriod) {
+    var geoJson = planningJson2geojson(geocodedJson); //this is the polygon
+    address_geoLyr = L.geoJSON(geoJson, { //this makes a geoJSON layer from geojson data, which is input
+      style: color_styles[1].normal, //this is hardcoded to blue
+      onEachFeature: function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: function mouseover(e) {
+            //e.target.setStyle(color_styles[1].selected);
+            //e.target.bringToFront();
+          },
+          mouseout: function mouseout(e) {
+            address_geoLyr.resetStyle(e.target);
+          }
+        });
+      }
+    });
+    address_geoLyr.bindTooltip(address, { permanent: true, className: 'myCSSClass' }).addTo(mymap);
+    assignDistrict(geoJson);
+    updateMap();
   });
 }
 
-function resetPopGeo() {
-  geoLayer.resetStyle(selectedGeo);
-  prevSelectedGeo = selectedGeo = selGeoId = null;
-  app.chartSubtitle = chart_deftitle;
-}
-
-function yrChanged(yr) {
-  app.selected_year = yr;
-  if (yr == 'diff') {
-    app.sliderValue = YR_LIST;
-  } else {
-    app.sliderValue = [yr, yr];
+function updateMap() {
+  if (landUseCheck() == false) {
+    return;
   }
-}
+  landUseToAttr = { 'Residential': { 'rate_key': 1, 'scalar': app.num_studios + app.num_1bed + 2 * app.num_2bed + 3 * app.num_3bed,
+      'unit': 'Bedrooms', 'proxyLandUse': 'Residential' },
+    'Office': { 'rate_key': 0, 'scalar': app.off_sqft / 1000,
+      'unit': '1K Square Feet', 'proxyLandUse': 'Office' },
+    'Retail': { 'rate_key': 3, 'scalar': app.ret_sqft / 1000,
+      'unit': '1K Square Feet', 'proxyLandUse': 'Retail' },
+    'Restaurant': { 'rate_key': 5, 'scalar': app.rest_sqft / 1000,
+      'unit': '1K Square Feet', 'proxyLandUse': 'Restaurant' },
+    'Composite': { 'rate_key': 6, 'scalar': app.comp_sqft / 1000,
+      'unit': '1K Square Feet', 'proxyLandUse': 'Composite' },
+    'Supermarket': { 'rate_key': 4, 'scalar': app.sup_sqft / 1000,
+      'unit': '1K Square Feet', 'proxyLandUse': 'Supermarket' },
+    'Hotel': { 'rate_key': 2, 'scalar': app.hot_rooms,
+      'unit': 'Rooms', 'proxyLandUse': 'Hotel' }
+  };
+  getFilteredTripsByDistrict();
+  getTotalTrips();
+  //coloring the districts
 
-function metricChanged(metric) {
-  app.selected_metric = metric;
-}
+  var trips = [];
+  districts_lyr.setStyle(function (feature) {
+    var style = void 0;
 
-function getColorMode(cscheme) {
-  if (app.modeMap.hasOwnProperty(cscheme.toString())) {
-    return app.modeMap[cscheme];
-  } else {
-    return 'lrgb';
-  }
-}
+    color_func = chroma.scale(['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c']).domain([0, getMax()], 4, 'equal interval');
+    //#ffffe0 #ffd59b #ffa474 #f47461 #db4551 #b81b34 #8b0000
+    var tot_person_trips = districtPersonTrips[feature.dist]["total"];
+    trips.push(tot_person_trips);
 
-function showExtraLayers(e) {
-  for (var lyr in addLayerStore) {
-    mymap.removeLayer(addLayerStore[lyr]);
-  }
-  var _iteratorNormalCompletion13 = true;
-  var _didIteratorError13 = false;
-  var _iteratorError13 = undefined;
+    if (trips.reduce(function (a, b) {
+      return a + b;
+    }, 0) == 0) {
+      //if all the districts have 0 person trips, force the fill color to be light blue
+      style = { 'color': '#444444', 'weight': 2, 'fillColor': '#c6dbef', fillOpacity: 0.6 };
+    } else {
+      //otherwise, color the districts according to the chroma color function
+      style = { 'color': '#444444', 'weight': 2, 'fillColor': color_func(tot_person_trips), fillOpacity: 0.6 };
+    }
+    return style;
+  });
+
+  //sort the person trips from all the districts in order
+  trips.sort(function (a, b) {
+    return a - b;
+  });
+
+  var labels = [];
+  var colors = [];
+
+  //get the breakpoints from the chroma quantiles function on the trips array 
+  var breakpoints = chroma.limits(trips, 'e', 4);
+
+  //get rid of any duplicate breakpoints b/c only want unique labels on the legend
+  var unique_breakpoints = breakpoints.filter(function (v, i, a) {
+    return a.indexOf(v) === i;
+  });
+
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
 
   try {
-    for (var _iterator13 = (0, _getIterator3.default)(app.addLayers), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-      var _lyr = _step13.value;
+    for (var _iterator2 = (0, _getIterator3.default)(unique_breakpoints), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var breakpoint = _step2.value;
 
-      addLayerStore[_lyr].addTo(mymap);
+      if (breakpoint == 0) {
+        labels.push(roundToNearest(breakpoint));
+      } else {
+        labels.push("<=" + Math.round(breakpoint));
+      }
+      if (unique_breakpoints.reduce(function (a, b) {
+        return a + b;
+      }, 0) == 0) {
+        colors.push("#c6dbef");
+      } else {
+        colors.push(color_func(roundToNearest(breakpoint)));
+      }
     }
+
+    //building and styling the legend for the districts
   } catch (err) {
-    _didIteratorError13 = true;
-    _iteratorError13 = err;
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion13 && _iterator13.return) {
-        _iterator13.return();
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
       }
     } finally {
-      if (_didIteratorError13) {
-        throw _iteratorError13;
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  if (mapLegend) mymap.removeControl(mapLegend);
+  mapLegend = L.control({ position: 'bottomright' });
+
+  mapLegend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    var units = [" "];
+
+    //I am not sure that the colors correctly match
+    var legHTML = getLegHTML(labels, colors, false, units);
+
+    for (var i = 0; i < labels.length; i++) {
+      div.innerHTML = '<h4>' + "Person Trips" + '</h4>' + legHTML;
+    }
+    return div;
+  };
+
+  mapLegend.addTo(mymap);
+  infoTotals.update();
+}
+
+function roundToNearest(number) {
+  var precision = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+  var scale = Math.pow(10, precision);
+  return Math.round(number * scale) / scale;
+}
+
+var totalPersonTripsByMode = {};
+var totalVehicleTripsByMode = {};
+var filteredPersonTripsByMode = {};
+var filteredVehicleTripsByMode = {};
+
+function getTotalTrips() {
+  var num_studios = app.num_studios;
+  var num_1bed = app.num_1bed;
+  var num_2bed = app.num_2bed;
+  var num_3bed = app.num_3bed;
+  var tot_num_bedrooms = num_studios + num_1bed + 2 * app.num_2bed + 3 * app.num_3bed;
+  var totalPersonTrips = {}; // key is landUse
+  var totalVehicleTrips = {}; // key is landUse
+  var filteredPersonTrips = {};
+  var filteredVehicleTrips = {};
+  var geoId = void 0;
+  var attr = void 0;
+  var rate = void 0;
+  var rate_key = void 0;
+  var unit = void 0;
+  var scalar = void 0;
+  var proxyLandUse = void 0;
+  var filtered_rate = void 0;
+
+  totalPersonTripsByMode['total'] = 0;
+  totalVehicleTripsByMode['total'] = 0;
+  filteredPersonTripsByMode['total'] = 0;
+  filteredVehicleTripsByMode['total'] = 0;
+
+  switch (selectedDistribution) {
+    case 'district':
+      geoId = addressDistrictNum;
+      break;
+    case 'place-type':
+      geoId = addressPlaceType;
+      break;
+    case 'city':
+      geoId = 1;
+      break;
+    default:
+      geoId = addressDistrictNum;
+      break;
+  }
+  //the computations below happen without the direction and distrbution data multiplications
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
+
+  try {
+    for (var _iterator3 = (0, _getIterator3.default)(modeTypes), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var mode = _step3.value;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = (0, _getIterator3.default)(landUses), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var landUse = _step4.value;
+
+          attr = landUseToAttr[landUse];
+          rate_key = attr['rate_key'];
+          scalar = attr['scalar'];
+          unit = attr['unit'];
+          proxyLandUse = attr['proxyLandUse'];
+
+          switch (selectedTimePeriod) {
+            case 'pm':
+              filtered_rate = tripGenRates[rate_key].pkhr_rate;
+              break;
+            case 'daily':
+              filtered_rate = tripGenRates[rate_key].daily_rate;
+              break;
+          }
+          rate = tripGenRates[rate_key].daily_rate;
+
+          // postgreSQL can't have slash in field name, so this is necessary as long as the mode continues to have slash
+          var mode2 = mode;
+          if (mode == 'tnc/taxi') {
+            mode2 = 'tnc_taxi';
+          }
+          // note that all modes are displayed regardless of selected mode, so don't filter by mode here.
+          totalPersonTrips[landUse] = rate * scalar * filterModeSplitData(proxyLandUse, app.placetype)[0][mode2];
+          filteredPersonTrips[landUse] = filtered_rate * scalar * filterModeSplitData(proxyLandUse, app.placetype)[0][mode2];
+
+          var filteredProp = 0;
+
+          if (mode != 'walk' && mode != 'bike' && mode != 'pvt_shuttle') {
+            var _iteratorNormalCompletion6 = true;
+            var _didIteratorError6 = false;
+            var _iteratorError6 = undefined;
+
+            try {
+              for (var _iterator6 = (0, _getIterator3.default)(geoDistricts), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                var district = _step6.value;
+
+                filteredProp += getDistProps(selectedDistribution, geoId, district, mode, selectedDirection, proxyLandUse, selectedTimePeriod, selectedPurpose);
+              }
+            } catch (err) {
+              _didIteratorError6 = true;
+              _iteratorError6 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                  _iterator6.return();
+                }
+              } finally {
+                if (_didIteratorError6) {
+                  throw _iteratorError6;
+                }
+              }
+            }
+          } else {
+            // TO DO: Need to include walk/bike in database.  This is a hack b/c active modes don't matter for now.
+            var _iteratorNormalCompletion7 = true;
+            var _didIteratorError7 = false;
+            var _iteratorError7 = undefined;
+
+            try {
+              for (var _iterator7 = (0, _getIterator3.default)(geoDistricts), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+                var _district = _step7.value;
+                var _arr = ['auto', 'transit', 'tnc/taxi'];
+
+                for (var _i = 0; _i < _arr.length; _i++) {
+                  var mode3 = _arr[_i];
+                  filteredProp += getDistProps(selectedDistribution, geoId, _district, mode3, selectedDirection, proxyLandUse, selectedTimePeriod, selectedPurpose);
+                }
+              }
+            } catch (err) {
+              _didIteratorError7 = true;
+              _iteratorError7 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion7 && _iterator7.return) {
+                  _iterator7.return();
+                }
+              } finally {
+                if (_didIteratorError7) {
+                  throw _iteratorError7;
+                }
+              }
+            }
+
+            filteredProp = filteredProp / 3;
+          }
+          filteredPersonTrips[landUse] = filteredPersonTrips[landUse] * filteredProp;
+
+          if (mode == 'auto') {
+            var avo = filterAvoData(proxyLandUse.toLowerCase(), selectedTimePeriod, selectedDistribution, geoId);
+            totalVehicleTrips[landUse] = totalPersonTrips[landUse] / avo;
+            filteredVehicleTrips[landUse] = filteredPersonTrips[landUse] / avo;
+          } else if (mode == 'tnc/taxi') {
+            var _avo = 1.5;
+            totalVehicleTrips[landUse] = totalPersonTrips[landUse] / _avo;
+            filteredVehicleTrips[landUse] = filteredPersonTrips[landUse] / _avo;
+          } else {
+            totalVehicleTrips[landUse] = totalPersonTrips[landUse];
+            filteredVehicleTrips[landUse] = filteredPersonTrips[landUse] * filteredProp;
+          }
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
+      totalPersonTrips["total"] = 0;
+      totalVehicleTrips["total"] = 0;
+      filteredPersonTrips["total"] = 0;
+      filteredVehicleTrips["total"] = 0;
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = (0, _getIterator3.default)(landUses), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var _landUse = _step5.value;
+
+          if (!totalPersonTrips[_landUse]) {
+            totalPersonTrips[_landUse] == 0;
+          }
+          if (!totalVehicleTrips[_landUse]) {
+            totalVehicleTrips[_landUse] == 0;
+          }
+          if (!filteredPersonTrips[_landUse]) {
+            filteredPersonTrips[_landUse] == 0;
+          }
+          if (!filteredVehicleTrips[_landUse]) {
+            filteredVehicleTrips[_landUse] == 0;
+          }
+          totalPersonTrips["total"] += totalPersonTrips[_landUse];
+          totalVehicleTrips["total"] += totalVehicleTrips[_landUse];
+          filteredPersonTrips["total"] += filteredPersonTrips[_landUse];
+          filteredVehicleTrips["total"] += filteredVehicleTrips[_landUse];
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+
+      totalPersonTripsByMode[mode] = totalPersonTrips["total"];
+      totalPersonTripsByMode["total"] += totalPersonTrips["total"];
+      totalVehicleTripsByMode[mode] = totalVehicleTrips["total"];
+      totalVehicleTripsByMode["total"] += totalVehicleTrips["total"];
+
+      filteredPersonTripsByMode[mode] = filteredPersonTrips["total"];
+      filteredPersonTripsByMode["total"] += filteredPersonTrips["total"];
+      filteredVehicleTripsByMode[mode] = filteredVehicleTrips["total"];
+      filteredVehicleTripsByMode["total"] += filteredVehicleTrips["total"];
+    }
+  } catch (err) {
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+        _iterator3.return();
+      }
+    } finally {
+      if (_didIteratorError3) {
+        throw _iteratorError3;
       }
     }
   }
 }
 
-var app = new Vue({
-  el: '#panel',
-  delimiters: ['${', '}'],
-  components: {
-    'vue-recaptcha': VueRecaptcha
-  },
-  data: {
-    isPanelHidden: false,
-    extraLayers: ADDLAYERS,
-    comp_check: false,
-    pct_check: false,
-    bp0: 0.0,
-    bp1: 0.0,
-    bp2: 0.0,
-    bp3: 0.0,
-    bp4: 0.0,
-    bp5: 0.0,
-    aggData: [{ pop: 0, tot: 0, jobpop: 0 }, { pop: 0, tot: 0, jobpop: 0 }],
+var districtPersonTrips = {}; // {key = district number, value = person trips corresponding to this district}
+var districtVehicleTrips = {};
 
-    year_options: [{ text: 'Year 2015', value: '2015' }, { text: 'Year 2050', value: '2050' }, { text: 'Change', value: 'diff' }],
-    selected_year: '2015',
-    sliderValue: [YR_LIST[0], YR_LIST[0]],
+// Calculates the number of person trips for each of districts
+// filtered by selected purpose, mode, direction, timePeriod, selectedDistribution
+// and aggregates districts to region
+function getFilteredTripsByDistrict() {
+  var num_studios = app.num_studios;
+  var num_1bed = app.num_1bed;
+  var num_2bed = app.num_2bed;
+  var num_3bed = app.num_3bed;
+  var tot_num_bedrooms = num_studios + num_1bed + 2 * app.num_2bed + 3 * app.num_3bed;
+  var attr = void 0;
+  var rate = void 0;
+  var rate_key = void 0;
+  var unit = void 0;
+  var scalar = void 0;
+  var proxyLandUse = void 0;
 
-    selected_metric: 'None',
-    metric_options: [{ text: 'None', value: 'None' }, { text: 'Minority', value: 'min' }, { text: 'Low Income', value: 'linc' }, { text: 'Elderly', value: 'o75' }, { text: 'Disability', value: 'disab' }, { text: 'Low English Prof.', value: 'lep' }, { text: 'Zero-Veh HH', value: 'zvhh' }, { text: 'Single Parent', value: 'spfam' }, { text: 'Rent Burdened', value: 'rentb' }],
-    chartTitle: METRIC_DESC['pop'] + ' Trend',
-    chartSubtitle: chart_deftitle,
+  var _iteratorNormalCompletion8 = true;
+  var _didIteratorError8 = false;
+  var _iteratorError8 = undefined;
 
-    selected_colorscheme: COLORRAMP.SEQ,
-    modeMap: {
-      '#ffffcc,#663399': 'lch',
-      '#ebbe5e,#3f324f': 'hsl',
-      '#ffffcc,#3f324f': 'hsl',
-      '#3f324f,#ffffcc': 'hsl',
-      '#fafa6e,#2A4858': 'lch'
-    },
-    comment: '',
-    comment_instruction: 'Please provide feedback. What do you think about this map? (800 maximum characters)',
-    submit_loading: false,
-    submit_disabled: false,
-    addLayers: []
-  },
-  watch: {
-    sliderValue: selectionChanged,
-    selected_metric: selectionChanged,
-    addLayers: showExtraLayers
-  },
-  methods: {
-    clickToggleHelp: clickToggleHelp,
-    clickedShowHide: clickedShowHide,
-    yrChanged: yrChanged,
-    metricChanged: metricChanged,
-    handleSubmit: handleSubmit,
-    onCaptchaVerified: onCaptchaVerified,
-    onCaptchaExpired: onCaptchaExpired
-  }
-});
+  try {
+    for (var _iterator8 = (0, _getIterator3.default)(geoDistricts), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+      var district = _step8.value;
 
-var slideapp = new Vue({
-  el: '#slide-panel',
-  delimiters: ['${', '}'],
-  data: {
-    isPanelHidden: false
-  },
-  methods: {
-    clickedShowHide: clickedShowHide
-  }
-});
+      var personTrips = {};
+      var vehicleTrips = {};
+      var totalPersonTrips = {};
+      var _totalVehicleTripsByMode = {};
+      var geoId = void 0;
 
-function clickedShowHide(e) {
-  slideapp.isPanelHidden = !slideapp.isPanelHidden;
-  app.isPanelHidden = slideapp.isPanelHidden;
-  // leaflet map needs to be force-recentered, and it is slow.
-  var _arr = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var delay = _arr[_i];
-    setTimeout(function () {
-      mymap.invalidateSize();
-    }, delay);
+      switch (selectedDistribution) {
+        case 'district':
+          geoId = addressDistrictNum;
+          break;
+        case 'place-type':
+          geoId = addressPlaceType;
+          break;
+        case 'city':
+          geoId = 1;
+          break;
+        default:
+          geoId = addressDistrictNum;
+          break;
+      }
+
+      var _iteratorNormalCompletion9 = true;
+      var _didIteratorError9 = false;
+      var _iteratorError9 = undefined;
+
+      try {
+        for (var _iterator9 = (0, _getIterator3.default)(landUses), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+          var landUse = _step9.value;
+
+          attr = landUseToAttr[landUse];
+          rate_key = attr['rate_key'];
+          scalar = attr['scalar'];
+          unit = attr['unit'];
+          proxyLandUse = attr['proxyLandUse'];
+
+          switch (selectedTimePeriod) {
+            case 'pm':
+              rate = tripGenRates[rate_key].pkhr_rate;
+              break;
+            case 'daily':
+              rate = tripGenRates[rate_key].daily_rate;
+              break;
+          }
+
+          var mode2 = selectedMode;
+          if (selectedMode == 'tnc/taxi') {
+            mode2 = 'tnc_taxi';
+          }
+
+          personTrips[landUse] = rate * scalar * filterModeSplitData(proxyLandUse, app.placetype)[0][mode2] * getDistProps(selectedDistribution, geoId, district, selectedMode, selectedDirection, proxyLandUse, selectedTimePeriod, selectedPurpose);
+          vehicleTrips[landUse] = personTrips[landUse] / filterAvoData(proxyLandUse.toLowerCase(), selectedTimePeriod, selectedDistribution, geoId);
+        }
+        //if any of the land uses are undefined b/c no input, set them equal to 0. landUses is a global array of all 5 land uses
+      } catch (err) {
+        _didIteratorError9 = true;
+        _iteratorError9 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion9 && _iterator9.return) {
+            _iterator9.return();
+          }
+        } finally {
+          if (_didIteratorError9) {
+            throw _iteratorError9;
+          }
+        }
+      }
+
+      personTrips["total"] = 0;
+      vehicleTrips["total"] = 0;
+      var _iteratorNormalCompletion10 = true;
+      var _didIteratorError10 = false;
+      var _iteratorError10 = undefined;
+
+      try {
+        for (var _iterator10 = (0, _getIterator3.default)(landUses), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+          var _landUse2 = _step10.value;
+
+          if (!personTrips[_landUse2]) {
+            personTrips[_landUse2] == 0;
+          }
+          if (!vehicleTrips[_landUse2]) {
+            vehicleTrips[_landUse2] == 0;
+          }
+          personTrips["total"] += personTrips[_landUse2];
+          vehicleTrips["total"] += vehicleTrips[_landUse2];
+        }
+      } catch (err) {
+        _didIteratorError10 = true;
+        _iteratorError10 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion10 && _iterator10.return) {
+            _iterator10.return();
+          }
+        } finally {
+          if (_didIteratorError10) {
+            throw _iteratorError10;
+          }
+        }
+      }
+
+      districtPersonTrips[district.dist] = personTrips; //this creates a dictionary of dictionaries, with one dictionary for every district where the keys are the land uses/total
+      //and the dictionary is populated by the time period
+      districtVehicleTrips[district.dist] = vehicleTrips;
+    }
+  } catch (err) {
+    _didIteratorError8 = true;
+    _iteratorError8 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion8 && _iterator8.return) {
+        _iterator8.return();
+      }
+    } finally {
+      if (_didIteratorError8) {
+        throw _iteratorError8;
+      }
+    }
   }
 }
+
+function clearAllInputs() {
+  //landUseCheck = false;
+  app.isModeAuto = true;
+  app.isModeTransit = false;
+  app.isModeTaxi = false;
+  app.address = null;
+  app.isOffice = false;
+  app.isResidential = false;
+  app.isRetail = false;
+  app.isRestaurant = false;
+  app.isSupermarket = false;
+  app.isHotel = false;
+  app.isPurposeWork = true;
+  app.isPurposeNonWork = false;
+  app.isPurposeAll = false;
+  app.isDirectionInbound = true;
+  app.isDirectionOutbound = false;
+  app.isDirectionBoth = false;
+  app.isTimePeriodDaily = true;
+  app.isTimePeriodPM = false;
+  app.off_sqft = null;
+  app.ret_sqft = null;
+  app.rest_sqft = null;
+  app.comp_sqft = null;
+  app.sup_sqft = null;
+  app.hot_rooms = null;
+  app.num_studios = null;
+  app.num_1bed = null;
+  app.num_2bed = null;
+  app.num_3bed = null;
+
+  app.placetype = '';
+  //this doesn't seem to be doing anything
+  //districts_lyr.resetStyle(color_styles[0].normal);
+  districts_lyr.setStyle(color_styles[3].normal);
+  if (mapLegend) mymap.removeControl(mapLegend);
+  if (address_geoLyr) {
+    mymap.removeLayer(address_geoLyr);
+    //this works but removing the layer is not the ideal situation. I'd rather keep the layer and just recolor it.
+    //mymap.removeLayer(districts_lyr);
+  }
+  infoDistrict.update();
+  infoTotals.update();
+}
+
+function resetAllInputs() {
+  //landUseCheck = false;
+  app.isRetail = false;
+  app.isResidential = false;
+  app.isOffice = false;
+  app.isRestaurant = false;
+  app.isSupermarket = false;
+  app.isHotel = false;
+  app.address = null;
+  pickMode('auto');
+  pickPurpose('work');
+  pickDirection('inbound');
+  pickTimePeriod('daily');
+  pickDistribution('district');
+  app.off_sqft = null;
+  app.ret_sqft = null;
+  app.rest_sqft = null;
+  app.comp_sqft = null;
+  app.sup_sqft = null;
+  app.hot_rooms = null;
+  app.num_studios = null;
+  app.num_1bed = null;
+  app.num_2bed = null;
+  app.num_3bed = null;
+
+  app.placetype = '';
+  //this doesn't seem to be doing anything
+  //districts_lyr.resetStyle(color_styles[0].normal);
+  districts_lyr.setStyle(color_styles[3].normal);
+  if (mapLegend) mymap.removeControl(mapLegend);
+  if (address_geoLyr) {
+    mymap.removeLayer(address_geoLyr);
+    //this works but removing the layer is not the ideal situation. I'd rather keep the layer and just recolor it.
+    //mymap.removeLayer(districts_lyr);
+  }
+  updateMap();
+  //infoDistrict.update();
+  //infoTotals.update();
+}
+
+//button functions
+function pickMode(mode) {
+  selectedMode = mode;
+  app.isModeAuto = false;
+  app.isModeTransit = false;
+  app.isModeTaxi = false;
+
+  switch (mode) {
+    case "auto":
+      app.isModeAuto = true;
+      break;
+    case "transit":
+      app.isModeTransit = true;
+      break;
+    case "tnc/taxi":
+      app.isModeTaxi = true;
+      break;
+  }
+  updateMap();
+}
+
+function pickPurpose(purpose) {
+  selectedPurpose = purpose;
+  app.isPurposeWork = false;
+  app.isPurposeNonWork = false;
+  app.isPurposeAll = false;
+
+  switch (purpose) {
+    case "work":
+      app.isPurposeWork = true;
+      break;
+    case "non-work":
+      app.isPurposeNonWork = true;
+      break;
+    case "work and non-work":
+      app.isPurposeAll = true;
+      break;
+  }
+  updateMap();
+}
+
+function pickDirection(direction) {
+  selectedDirection = direction;
+  app.isDirectionInbound = false;
+  app.isDirectionOutbound = false;
+  app.isDirectionBoth = false;
+
+  switch (direction) {
+    case "inbound":
+      app.isDirectionInbound = true;
+      break;
+    case "outbound":
+      app.isDirectionOutbound = true;
+      break;
+    case "inbound and outbound":
+      app.isDirectionBoth = true;
+      break;
+  }
+  updateMap();
+}
+
+function pickTimePeriod(timePeriod) {
+  selectedTimePeriod = timePeriod;
+  app.isTimePeriodPM = false;
+  app.isTimePeriodDaily = false;
+
+  switch (timePeriod) {
+    case "pm":
+      app.isTimePeriodPM = true;
+      break;
+    case "daily":
+      app.isTimePeriodDaily = true;
+      break;
+  }
+  updateMap();
+}
+
+function accord(thing) {
+  //landUseCheck = true;
+  $(".ui.accordion").accordion();
+}
+
+function pickDistribution(distribution) {
+  selectedDistribution = distribution;
+  app.isDistributionDistrict = false;
+  app.isDistributionPlaceType = false;
+  app.isDistributionCity = false;
+
+  switch (distribution) {
+    case "district":
+      app.isDistributionDistrict = true;
+      break;
+    case "place-type":
+      app.isDistributionPlaceType = true;
+      break;
+    case "city":
+      app.isDistributionCity = true;
+      break;
+  }
+  updateMap();
+  updateBoundary(selectedDistribution);
+}
+
+function updateBoundary(boundary_type) {
+  if (boundary_type == 'district') {
+    if (mymap.hasLayer(placetype_lyr)) {
+      mymap.removeLayer(placetype_lyr);
+    }
+    if (mymap.hasLayer(city_lyr)) {
+      mymap.removeLayer(city_lyr);
+    }
+  } else if (boundary_type == 'place-type') {
+    if (mymap.hasLayer(city_lyr)) {
+      mymap.removeLayer(city_lyr);
+    }
+
+    if (!mymap.hasLayer(placetype_lyr)) {
+      placetype_lyr.setStyle(function (feature) {
+        if (feature.place_type == addressPlaceType) {
+          return pt_styles[0].selected;
+        } else {
+          return pt_styles[0].normal;
+        }
+      });
+      placetype_lyr.addTo(mymap);
+      placetype_lyr.bringToBack();
+    }
+  } else if (boundary_type == 'city') {
+    if (mymap.hasLayer(placetype_lyr)) {
+      mymap.removeLayer(placetype_lyr);
+    }
+    if (!mymap.hasLayer(city_lyr)) {
+      city_lyr.setStyle(function (feature) {
+        return pt_styles[0].selected;
+      });
+      city_lyr.addTo(mymap);
+      city_lyr.bringToBack();
+    }
+  }
+}
+
+// Vue object connects what is done in the user interface html to the javascript. All the buttons
+// in the right side panel are connected here. 
+var app = new Vue({
+  el: '#panel', //element is 'el' the whole right side of the map
+  delimiters: ['${', '}'],
+  data: {
+    version: 0.3,
+    data_version: 0.3,
+    isModeAuto: true,
+    isModeTransit: false,
+    address: null,
+    isOffice: false,
+    isResidential: false,
+    isRetail: false,
+    isRestaurant: false,
+    isSupermarket: false,
+    isHotel: false,
+    isPurposeWork: true,
+    isPurposeNonWork: false,
+    isPurposeAll: false,
+    isDirectionInbound: true,
+    isDirectionOutbound: false,
+    isDirectionBoth: false,
+    isTimePeriodDaily: true,
+    isTimePeriodPM: false,
+    isDistributionDistrict: true,
+    isDistributionPlaceType: false,
+    isDistributionCity: false,
+    off_sqft: null,
+    ret_sqft: null,
+    rest_sqft: null,
+    comp_sqft: null,
+    sup_sqft: null,
+    hot_rooms: null,
+    num_studios: null,
+    num_1bed: null,
+    num_2bed: null,
+    num_3bed: null,
+    isModeTaxi: false,
+    inputs: false,
+    placetype: '',
+    placetype_text: '',
+    res_tripgen_daily: '',
+    ret_tripgen_daily: '',
+    rest_tripgen_daily: '',
+    comp_tripgen_daily: '',
+    off_tripgen_daily: '',
+    sup_tripgen_daily: '',
+    hot_tripgen_daily: '',
+
+    res_tripgen_PM: '',
+    ret_tripgen_PM: '',
+    rest_tripgen_PM: '',
+    comp_tripgen_PM: '',
+    off_tripgen_PM: '',
+    sup_tripgen_PM: '',
+    hot_tripgen_PM: ''
+
+  },
+  watch: {},
+
+  methods: {
+    clickToggleHelp: clickToggleHelp,
+    clickToggleInstructions: clickToggleInstructions,
+    pickMode: pickMode,
+    pickPurpose: pickPurpose,
+    pickDirection: pickDirection,
+    pickTimePeriod: pickTimePeriod,
+    pickDistribution: pickDistribution,
+
+    updateMap: updateMap,
+    addAddressTooltipToMap: addAddressTooltipToMap,
+    clearAllInputs: clearAllInputs,
+    resetAllInputs: resetAllInputs,
+
+    accord: accord,
+
+    getFilteredTripsByDistrict: getFilteredTripsByDistrict
+    //getFilteredTrips: getFilteredTrips
+  }
+});
 
 // eat some cookies -- so we can hide the help permanently
 var cookieShowHelp = _jsCookie2.default.get('showHelp');
@@ -14639,142 +13009,1102 @@ var helpPanel = new Vue({
   }
 });
 
-/* Cookie functions for comments*/
-function setCookie(cname, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + d.getTime() + ";" + expires + ";path=/";
-}
+var cookieInstructions = _jsCookie2.default.get('showInstructions');
+function clickToggleInstructions() {
+  instructionsPanel.showInstructions = !instructionsPanel.showInstructions;
 
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-function checkCookie() {
-  var username = getCookie("username");
-  if (username == "") {
-    setCookie("username", 365);
+  // and save it for next time
+  if (instructionsPanel.showInstructions) {
+    _jsCookie2.default.remove('showInstructions');
+  } else {
+    _jsCookie2.default.set('showInstructions', 'false', { expires: 365 });
   }
 }
 
-/* Code for storing comments*/
-var comment = {
-  select_metric: '',
-  add_layer: '',
-  comment_user: '',
-  comment_time: new Date(),
-  comment_latitude: -999,
-  comment_longitude: -999,
-  comment_content: ''
-};
+var instructionsPanel = new Vue({
+  el: '#instructionsBox',
+  data: {
+    showInstructions: cookieInstructions == undefined
+  },
+  methods: {
+    clickToggleInstructions: clickToggleInstructions
+  },
+  mounted: function mounted() {
+    var _this2 = this;
 
-function showPosition(position) {
-  comment.comment_latitude = position.coords.latitude;
-  comment.comment_longitude = position.coords.longitude;
-}
-
-function handleSubmit() {
-  this.$refs.recaptcha.execute();
-  var timestamp = new Date();
-  app.submit_loading = true;
-
-  setTimeout(function () {
-    if (app.comment == null | app.comment == '') {
-      app.submit_loading = false;
-    } else {
-      comment.select_metric = app.selected_metric;
-      comment.add_layer = app.addLayers;
-      comment.comment_user = getCookie("username");
-      comment.comment_time = timestamp;
-      comment.comment_content = app.comment;
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-        console.log("Geolocation is not supported by this browser.");
+    document.addEventListener('keydown', function (e) {
+      if (_this2.showInstructions && e.keyCode == 27) {
+        clickToggleInstructions();
       }
-      postComments(comment);
-      app.comment_instruction = 'Thank you for your feedback!';
-      app.comment = '';
-      app.submit_loading = false;
-    }
-  }, 1000);
+    });
+  }
+});
+
+function assignDistrict(address) {
+  //convert the address geojson to leaflet polygon
+  var addressPolygon = L.polygon(address.geometry.coordinates[0]);
+  //find the centroid of the address polygon
+  var centroid = addressPolygon.getBounds().getCenter();
+  var centroidArray = [centroid.lat, centroid.lng]; //reformat so that the lat/lon labels are correct
+  //find out which districts contain the point
+  var criticalDistrict = leafletPip.pointInLayer(centroidArray, districts_lyr);
+  addressDistrictNum = criticalDistrict[0].feature.dist;
+  addressDistrictName = criticalDistrict[0].feature.distname;
+  addressPlaceType = criticalDistrict[0].feature.place_type;
+  //find out which place type the address district is in
+  app.placetype = criticalDistrict[0].feature.place_type;
+
+  switch (app.placetype) {
+    case 1:
+      app.placetype_text = "Urban high density";
+      break;
+    case 2:
+      app.placetype_text = "Urban medium density";
+      break;
+    case 3:
+      app.placetype_text = "Urban low density";
+      break;
+    default:
+      app.placetype_text = "Unknown";
+      break;
+  }
 }
 
-/* Captcha functions*/
-function onCaptchaVerified(recaptchaToken) {
-  var self = this;
-  self.$refs.recaptcha.reset();
-  if (!recaptchaToken) {
-    return console.log("recaptchaToken is required");
+function drawDistricts() {
+  var tooltip_positions = {
+    1: [37.799981, -122.412459],
+    2: [37.775795, -122.407478],
+    3: [37.789693, -122.441499],
+    4: [37.760652, -122.400000],
+    5: [37.737820, -122.445233],
+    6: [37.730118, -122.389315],
+    7: [37.776303, -122.499615],
+    8: [37.745433, -122.498202],
+    9: [37.825639, -122.371648],
+    10: [37.596137, -122.403582],
+    11: [37.810595, -122.288403],
+    12: [37.835095, -122.493132] };
+  //let districtName;
+  var _iteratorNormalCompletion11 = true;
+  var _didIteratorError11 = false;
+  var _iteratorError11 = undefined;
+
+  try {
+    for (var _iterator11 = (0, _getIterator3.default)(geoDistricts), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+      var district = _step11.value;
+      // in a for loop bc sfcta api returns a list of json for this one
+      //calls json2geojson function to convert json data response to geojson
+      ctaJson2geojson(district);
+    }
+  } catch (err) {
+    _didIteratorError11 = true;
+    _iteratorError11 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion11 && _iterator11.return) {
+        _iterator11.return();
+      }
+    } finally {
+      if (_didIteratorError11) {
+        throw _iteratorError11;
+      }
+    }
   }
 
-  var verifyCaptchaOptions = {
-    secret: "6Leo_KMUAAAAAANqRfq4isW7Q50pAslnNdYbI8Pa",
-    response: recaptchaToken
-  };
+  districts_lyr = addDistrictGeoLayer(geoDistricts, tooltip_positions); //takes in a list of geoJson objects and draws them
+}
 
-  fetch("https://www.google.com/recaptcha/api/siteverify", {
-    method: 'POST',
-    mode: 'no-cors',
-    body: (0, _stringify2.default)(verifyCaptchaOptions),
-    headers: {
-      'Content-Type': 'application/json'
+//save the geoDistricts data locally
+queryServer(CTA_API_SERVER + DISTRICTS_URL).then(function (data) {
+  geoDistricts = data;
+  drawDistricts();
+});
+
+function drawPlaceTypes() {
+  var _iteratorNormalCompletion12 = true;
+  var _didIteratorError12 = false;
+  var _iteratorError12 = undefined;
+
+  try {
+    for (var _iterator12 = (0, _getIterator3.default)(geoPlaceTypes), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+      var pt = _step12.value;
+      // in a for loop bc sfcta api returns a list of json for this one
+      //calls json2geojson function to convert json data response to geojson
+      ctaJson2geojson(pt);
     }
-  }).catch(function (error) {
-    return console.error('Error:', error);
-  }).then(function (response) {
-    return function (response) {
-      // JSON.stringify(response)
-      console.log("Congratulations! We think you are human.");
-    };
+  } catch (err) {
+    _didIteratorError12 = true;
+    _iteratorError12 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion12 && _iterator12.return) {
+        _iterator12.return();
+      }
+    } finally {
+      if (_didIteratorError12) {
+        throw _iteratorError12;
+      }
+    }
+  }
+
+  placetype_lyr = addPlaceTypeGeoLayer(geoPlaceTypes);
+}
+queryServer(CTA_API_SERVER + PLACETYPES_URL).then(function (data) {
+  geoPlaceTypes = data;
+  drawPlaceTypes();
+});
+
+function drawCity() {
+  var _iteratorNormalCompletion13 = true;
+  var _didIteratorError13 = false;
+  var _iteratorError13 = undefined;
+
+  try {
+    for (var _iterator13 = (0, _getIterator3.default)(geoCities), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
+      var pt = _step13.value;
+      // in a for loop bc sfcta api returns a list of json for this one
+      //calls json2geojson function to convert json data response to geojson
+      ctaJson2geojson(pt);
+    }
+  } catch (err) {
+    _didIteratorError13 = true;
+    _iteratorError13 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion13 && _iterator13.return) {
+        _iterator13.return();
+      }
+    } finally {
+      if (_didIteratorError13) {
+        throw _iteratorError13;
+      }
+    }
+  }
+
+  city_lyr = addCityGeoLayer(geoCities);
+}
+
+infoTotals.addTo(mymap);
+infoDistrict.addTo(mymap);
+
+queryServer(CTA_API_SERVER + CITY_URL).then(function (data) {
+  geoCities = data;
+  drawCity();
+});
+//browser check function
+// function msieversion(){
+//   let ua = window.navigator.userAgent;
+//   let msie = au.indexOf("MSIE ");
+//   if (msie & gt; 0 || !!navigator.userAgent.match()) { //if IE, return true //
+//     return true;
+//   }
+//   else {
+//     return false;
+//   }
+//   return false;
+// }
+
+
+//this is the downloading part
+
+var avo_download = void 0;
+var trgen_download = void 0; //an array of dictionaries -> "a list of json"
+var tdist_download = void 0;
+var modesplit_download = void 0;
+var tdist_person_download = void 0;
+var tdist_vehicle_download = void 0;
+var total_person_dist = void 0;
+var total_vehicle_dist = void 0;
+var total_trips_download = void 0;
+
+function createDownloadObjects() {
+  // each of the downloads is a list of dicts, where the key is a column header
+  // and the value becomes a cell value in that column
+  avo_download = [];
+  trgen_download = [];
+  tdist_download = [];
+  modesplit_download = [];
+  tdist_vehicle_download = [];
+  total_person_dist = 0;
+  total_vehicle_dist = 0;
+  total_trips_download = [];
+  var attr = void 0;
+  var rate_key = void 0;
+  var scalar = void 0;
+  var unit = void 0;
+  var proxyLandUse = void 0;
+  var daily_rate = void 0;
+  var pm_rate = void 0;
+  var tmp_dwld = void 0;
+  var tmp_dwld_vehicle = void 0;
+
+  var tot_num_bedrooms = app.num_studios + app.num_1bed + 2 * app.num_2bed + 3 * app.num_3bed;
+  var tot_daily = 0;
+  var tot_pm = 0;
+
+  var _iteratorNormalCompletion14 = true;
+  var _didIteratorError14 = false;
+  var _iteratorError14 = undefined;
+
+  try {
+    for (var _iterator14 = (0, _getIterator3.default)(landUses), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
+      var landUse = _step14.value;
+
+      attr = landUseToAttr[landUse];
+      rate_key = attr['rate_key'];
+      scalar = attr['scalar'];
+      unit = attr['unit'];
+      proxyLandUse = attr['proxyLandUse'];
+      pm_rate = tripGenRates[rate_key].pkhr_rate;
+      daily_rate = tripGenRates[rate_key].daily_rate;
+
+      // Average Vehicle Occupancy
+      tmp_dwld = {};
+      tmp_dwld['Landuse'] = landUse;
+      //tmp_dwld['District'] = addressDistrictName;
+      tmp_dwld['District AVO'] = roundToNearest(filterAvoData(proxyLandUse.toLowerCase(), selectedTimePeriod, 'district', addressDistrictNum), 1);
+      //avo_download.push(tmp_dwld);
+      //tmp_dwld['Landuse'] = landUse;
+      //tmp_dwld['Place Type'] = app.placetype_text;
+      tmp_dwld['Place Type AVO'] = roundToNearest(filterAvoData(proxyLandUse.toLowerCase(), selectedTimePeriod, 'place-type', addressPlaceType), 1);
+      //tmp_dwld['City'] = 'San Francisco'
+      tmp_dwld['City AVO'] = roundToNearest(filterAvoData(proxyLandUse.toLowerCase(), selectedTimePeriod, 'city', 'San Francisco'), 1);
+      avo_download.push(tmp_dwld);
+
+      // Trip Generation
+      tmp_dwld = {};
+      tmp_dwld['Landuse'] = landUse;
+      tmp_dwld['Amount'] = scalar;
+      tmp_dwld['Unit'] = unit;
+      tmp_dwld['Daily Person Trip Rate'] = roundToNearest(daily_rate, 1);
+      tmp_dwld['Daily Person Trips'] = roundToNearest(scalar * daily_rate, 1);
+      tot_daily += scalar * daily_rate;
+      tmp_dwld['PM Person Trip Rate'] = roundToNearest(pm_rate, 1);
+      tmp_dwld['PM Person Trips'] = roundToNearest(scalar * pm_rate, 1);
+      tot_pm += scalar * pm_rate;
+      trgen_download.push(tmp_dwld);
+
+      // Mode Split
+      tmp_dwld = {};
+      tmp_dwld['Landuse'] = landUse;
+      tmp_dwld['Auto'] = roundToNearest(filterModeSplitData(proxyLandUse, app.placetype)[0]["auto"], 3);
+      tmp_dwld['TNC/Taxi'] = roundToNearest(filterModeSplitData(proxyLandUse, app.placetype)[0]["tnc_taxi"], 3);
+      tmp_dwld['Transit'] = roundToNearest(filterModeSplitData(proxyLandUse, app.placetype)[0]["transit"], 3);
+      tmp_dwld['Private Shuttle'] = roundToNearest(filterModeSplitData(proxyLandUse, app.placetype)[0]["pvt_shuttle"], 3);
+      tmp_dwld['Walk'] = roundToNearest(filterModeSplitData(proxyLandUse, app.placetype)[0]["walk"], 3);
+      tmp_dwld['Bike'] = roundToNearest(filterModeSplitData(proxyLandUse, app.placetype)[0]["bike"], 3);
+      modesplit_download.push(tmp_dwld);
+
+      // Person-trip Distribution
+      // TODO: is there a reason for this loop?  Is this already available in the totals dictionary?
+      tmp_dwld = {};
+      tmp_dwld['Landuse'] = landUse;
+      var _iteratorNormalCompletion17 = true;
+      var _didIteratorError17 = false;
+      var _iteratorError17 = undefined;
+
+      try {
+        for (var _iterator17 = (0, _getIterator3.default)(geoDistricts), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
+          var _district3 = _step17.value;
+
+          tmp_dwld[_district3.distname] = roundToNearest(districtPersonTrips[_district3.dist][landUse], 1);
+          total_person_dist += tmp_dwld[_district3.distname];
+        }
+      } catch (err) {
+        _didIteratorError17 = true;
+        _iteratorError17 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion17 && _iterator17.return) {
+            _iterator17.return();
+          }
+        } finally {
+          if (_didIteratorError17) {
+            throw _iteratorError17;
+          }
+        }
+      }
+
+      tdist_download.push(tmp_dwld);
+
+      // Vehicle-trip Distribution
+      tmp_dwld_vehicle = {};
+      tmp_dwld_vehicle['Landuse'] = landUse;
+      var _iteratorNormalCompletion18 = true;
+      var _didIteratorError18 = false;
+      var _iteratorError18 = undefined;
+
+      try {
+        for (var _iterator18 = (0, _getIterator3.default)(geoDistricts), _step18; !(_iteratorNormalCompletion18 = (_step18 = _iterator18.next()).done); _iteratorNormalCompletion18 = true) {
+          var _district4 = _step18.value;
+
+          tmp_dwld_vehicle[_district4.distname] = roundToNearest(districtVehicleTrips[_district4.dist][landUse], 1);
+          total_vehicle_dist += tmp_dwld_vehicle[_district4.distname];
+        }
+      } catch (err) {
+        _didIteratorError18 = true;
+        _iteratorError18 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion18 && _iterator18.return) {
+            _iterator18.return();
+          }
+        } finally {
+          if (_didIteratorError18) {
+            throw _iteratorError18;
+          }
+        }
+      }
+
+      tdist_vehicle_download.push(tmp_dwld_vehicle);
+    }
+  } catch (err) {
+    _didIteratorError14 = true;
+    _iteratorError14 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion14 && _iterator14.return) {
+        _iterator14.return();
+      }
+    } finally {
+      if (_didIteratorError14) {
+        throw _iteratorError14;
+      }
+    }
+  }
+
+  tmp_dwld_vehicle = {};
+  tmp_dwld_vehicle['Landuse'] = "Total";
+  var _iteratorNormalCompletion15 = true;
+  var _didIteratorError15 = false;
+  var _iteratorError15 = undefined;
+
+  try {
+    for (var _iterator15 = (0, _getIterator3.default)(geoDistricts), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
+      var district = _step15.value;
+
+      tmp_dwld_vehicle[district.distname] = roundToNearest(districtVehicleTrips[district.dist]["total"], 1);
+      total_vehicle_dist += tmp_dwld_vehicle[district.distname];
+    }
+  } catch (err) {
+    _didIteratorError15 = true;
+    _iteratorError15 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion15 && _iterator15.return) {
+        _iterator15.return();
+      }
+    } finally {
+      if (_didIteratorError15) {
+        throw _iteratorError15;
+      }
+    }
+  }
+
+  tdist_vehicle_download.push(tmp_dwld_vehicle);
+
+  //this is working
+  tmp_dwld = {};
+  tmp_dwld['Landuse'] = "Total";
+  var _iteratorNormalCompletion16 = true;
+  var _didIteratorError16 = false;
+  var _iteratorError16 = undefined;
+
+  try {
+    for (var _iterator16 = (0, _getIterator3.default)(geoDistricts), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {
+      var _district2 = _step16.value;
+
+      tmp_dwld[_district2.distname] = roundToNearest(districtPersonTrips[_district2.dist]["total"], 1);
+    }
+  } catch (err) {
+    _didIteratorError16 = true;
+    _iteratorError16 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion16 && _iterator16.return) {
+        _iterator16.return();
+      }
+    } finally {
+      if (_didIteratorError16) {
+        throw _iteratorError16;
+      }
+    }
+  }
+
+  tdist_download.push(tmp_dwld);
+
+  trgen_download.push({ 'Landuse': 'Total', 'Amount': '', 'Unit': '', 'Daily Person Trip Rate': '',
+    'Daily Person Trips': roundToNearest(tot_daily, 1), 'PM Person Trip Rate': '',
+    'PM Person Trips': roundToNearest(tot_pm, 1) });
+
+  //total trips by mode
+  tmp_dwld = {};
+  tmp_dwld["Mode"] = "Auto";
+  tmp_dwld["Total Person Trips"] = roundToNearest(totalPersonTripsByMode["auto"], 1);
+  tmp_dwld["Filtered Person Trips"] = roundToNearest(filteredPersonTripsByMode["auto"], 1);
+  tmp_dwld["Total Vehicle Trips"] = roundToNearest(totalVehicleTripsByMode["auto"], 1);
+  tmp_dwld["Filtered Vehicle Trips"] = roundToNearest(filteredVehicleTripsByMode["auto"], 1);
+  total_trips_download.push(tmp_dwld);
+  tmp_dwld = {};
+  tmp_dwld["Mode"] = "TNC/Taxi";
+  tmp_dwld["Total Person Trips"] = roundToNearest(totalPersonTripsByMode["tnc/taxi"], 1);
+  tmp_dwld["Filtered Person Trips"] = roundToNearest(filteredPersonTripsByMode["tnc/taxi"], 1);
+  tmp_dwld["Total Vehicle Trips"] = roundToNearest(totalVehicleTripsByMode["tnc/taxi"], 1);
+  tmp_dwld["Filtered Vehicle Trips"] = roundToNearest(filteredVehicleTripsByMode["tnc/taxi"], 1);
+  total_trips_download.push(tmp_dwld);
+  tmp_dwld = {};
+  tmp_dwld["Mode"] = "Transit";
+  tmp_dwld["Total Person Trips"] = roundToNearest(totalPersonTripsByMode["transit"], 1);
+  tmp_dwld["Filtered Person Trips"] = roundToNearest(filteredPersonTripsByMode["transit"], 1);
+  tmp_dwld["Total Vehicle Trips"] = ""; //totalVehicleTripsByMode["transit"];
+  tmp_dwld["Filtered Vehicle Trips"] = ""; //filteredVehicleTripsByMode["transit"];
+  total_trips_download.push(tmp_dwld);
+  tmp_dwld = {};
+  tmp_dwld["Mode"] = "Private Shuttle";
+  tmp_dwld["Total Person Trips"] = roundToNearest(totalPersonTripsByMode["pvt_shuttle"], 1);
+  tmp_dwld["Filtered Person Trips"] = roundToNearest(filteredPersonTripsByMode["pvt_shuttle"], 1);
+  tmp_dwld["Total Vehicle Trips"] = ""; //totalVehicleTripsByMode["pvt_shuttle"];
+  tmp_dwld["Filtered Vehicle Trips"] = ""; //filteredVehicleTripsByMode["pvt_shuttle"];
+  total_trips_download.push(tmp_dwld);
+  tmp_dwld = {};
+  tmp_dwld["Mode"] = "Walk";
+  tmp_dwld["Total Person Trips"] = roundToNearest(totalPersonTripsByMode["walk"], 1);
+  tmp_dwld["Filtered Person Trips"] = roundToNearest(filteredPersonTripsByMode["walk"], 1);
+  tmp_dwld["Total Vehicle Trips"] = ""; //totalVehicleTripsByMode["walk"];
+  tmp_dwld["Filtered Vehicle Trips"] = ""; //filteredVehicleTripsByMode["walk"];
+  total_trips_download.push(tmp_dwld);
+  tmp_dwld = {};
+  tmp_dwld["Mode"] = "Bike";
+  tmp_dwld["Total Person Trips"] = roundToNearest(totalPersonTripsByMode["bike"], 1);
+  tmp_dwld["Filtered Person Trips"] = roundToNearest(filteredPersonTripsByMode["bike"], 1);
+  tmp_dwld["Total Vehicle Trips"] = ""; //totalVehicleTripsByMode["bike"];
+  tmp_dwld["Filtered Vehicle Trips"] = ""; //filteredVehicleTripsByMode["bike"];
+  total_trips_download.push(tmp_dwld);
+}
+
+window.downloadCSV = function () {
+  createDownloadObjects();
+  var data = void 0,
+      filename = void 0,
+      link = void 0;
+  var csv = 'SAN FRANCISCO TRAVEL DEMAND TOOL INFO';
+  csv += '\n------------------------';
+  csv += '\nWEBSITE VERSION: ' + app.version;
+  csv += '\nDATA VERSION: ' + app.data_version;
+
+  csv += '\n\nPROJECT LOCATION ATTRIBUTES';
+  csv += '\n------------------------';
+  csv += '\nAddress:, ' + address;
+  csv += '\nDistrict:, ' + addressDistrictName;
+  csv += '\nPlace Type:, ' + app.placetype_text;
+  csv += '\nCity:, San Francisco';
+
+  csv += '\n\nSELECTED FILTERS';
+  csv += '\n------------------------';
+  csv += '\nTime Period:, ' + selectedTimePeriod;
+  csv += '\nPurpose:, ' + selectedPurpose;
+  csv += '\nDirection:, ' + selectedDirection;
+  csv += '\nDistribution Method:, ' + selectedDistribution;
+  csv += '\n\n';
+
+  csv += 'Average vehicle occupancy';
+  csv += '\n' + convertArrayOfObjectsToCSV({
+    data: avo_download
   });
-}
 
-function onCaptchaExpired() {
-  this.$refs.recaptcha.reset();
-}
+  csv += '\n\n' + 'Total Trips Generated by Land Use and Time';
+  csv += '\n' + convertArrayOfObjectsToCSV({
+    data: trgen_download
+  });
 
-initialPrep();
+  csv += '\n\n' + 'Mode Split Distribution';
+  csv += '\n' + convertArrayOfObjectsToCSV({
+    data: modesplit_download
+  });
+
+  csv += '\n\n' + 'Total Trips by Mode';
+  csv += '\n' + convertArrayOfObjectsToCSV({
+    data: total_trips_download
+  });
+
+  csv += '\n\n ' + selectedMode + ' Person Trips Distribution by District';
+  csv += '\n' + convertArrayOfObjectsToCSV({
+    data: tdist_download
+  });
+
+  csv += '\n\n ' + selectedMode + ' Vehicle Trips Distribution by District';
+  csv += '\n' + convertArrayOfObjectsToCSV({
+    data: tdist_vehicle_download
+  });
+
+  filename = 'tdtool_dataexport.csv';
+  //handle IE browsers
+  // if (msieversion()){
+  //   let IEwindow = window.open();
+  //   IEwindow.document.write('sep=,/r/n'+csv);
+  //   IEwindow.document.close();
+  //   IEWindow.execCommand('SaveAs', true, filename+ ".csv");
+  //   IE.window.close();
+  // }
+  // else {
+
+
+  if (!csv.match(/^data:text\/csv/i)) {
+    csv = 'data:text/csv;charset=utf-8,' + csv; //set the proper format to convert the json data to
+  }
+  data = encodeURI(csv);
+  link = document.createElement('a'); //create a link element
+  link.style.display = 'none';
+  link.setAttribute('href', data);
+  document.body.appendChild(link); //append that link to the body
+  link.setAttribute('download', filename);
+  link.click(); //link click event
+  document.body.removeChild(link);
+};
+// };
+
+function convertArrayOfObjectsToCSV(args) {
+  var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+  data = args.data || null;
+  if (data == null || !data.length) {
+    return null;
+  }
+
+  columnDelimiter = args.columnDelimiter || ',';
+  lineDelimiter = args.lineDelimiter || '\n';
+
+  keys = (0, _keys2.default)(data[0]);
+
+  result = '';
+  result += keys.join(columnDelimiter);
+  result += lineDelimiter;
+
+  data.forEach(function (item) {
+    ctr = 0;
+    keys.forEach(function (key) {
+      if (ctr > 0) result += columnDelimiter;
+
+      result += item[key];
+      ctr++;
+    });
+    result += lineDelimiter;
+  });
+
+  return result;
+}
 
 /***/ }),
-/* 493 */,
-/* 494 */,
-/* 495 */,
-/* 496 */,
-/* 497 */,
-/* 498 */,
-/* 499 */,
-/* 500 */,
 /* 501 */,
 /* 502 */,
 /* 503 */,
 /* 504 */,
 /* 505 */,
-/* 506 */,
+/* 506 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var gju = __webpack_require__(517);
+
+function isPoly(l) {
+    return l.feature &&
+        l.feature.geometry &&
+        l.feature.geometry.type &&
+        ['Polygon', 'MultiPolygon'].indexOf(l.feature.geometry.type) !== -1;
+}
+
+var leafletPip = {
+    bassackwards: false,
+    pointInLayer: function(p, layer, first) {
+        if (typeof p.lat === 'number') p = [p.lng, p.lat];
+        else if (leafletPip.bassackwards) p = p.concat().reverse();
+
+        var results = [];
+
+        layer.eachLayer(function(l) {
+            if (first && results.length) return;
+
+            if (isPoly(l) && gju.pointInPolygon({
+                type: 'Point',
+                coordinates: p
+            }, l.toGeoJSON().geometry)) {
+                results.push(l);
+            }
+        });
+        return results;
+    }
+};
+
+module.exports = leafletPip;
+
+
+/***/ }),
 /* 507 */,
-/* 508 */,
+/* 508 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(513), __esModule: true };
+
+/***/ }),
 /* 509 */,
 /* 510 */,
 /* 511 */,
 /* 512 */,
-/* 513 */,
-/* 514 */,
+/* 513 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(516);
+module.exports = __webpack_require__(31).Object.keys;
+
+
+/***/ }),
+/* 514 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// most Object methods by ES6 should accept primitives
+var $export = __webpack_require__(54);
+var core = __webpack_require__(31);
+var fails = __webpack_require__(80);
+module.exports = function (KEY, exec) {
+  var fn = (core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+};
+
+
+/***/ }),
 /* 515 */,
-/* 516 */,
-/* 517 */,
+/* 516 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.14 Object.keys(O)
+var toObject = __webpack_require__(126);
+var $keys = __webpack_require__(258);
+
+__webpack_require__(514)('keys', function () {
+  return function keys(it) {
+    return $keys(toObject(it));
+  };
+});
+
+
+/***/ }),
+/* 517 */
+/***/ (function(module, exports) {
+
+(function () {
+  var gju = this.gju = {};
+
+  // Export the geojson object for **CommonJS**
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = gju;
+  }
+
+  // adapted from http://www.kevlindev.com/gui/math/intersection/Intersection.js
+  gju.lineStringsIntersect = function (l1, l2) {
+    var intersects = [];
+    for (var i = 0; i <= l1.coordinates.length - 2; ++i) {
+      for (var j = 0; j <= l2.coordinates.length - 2; ++j) {
+        var a1 = {
+          x: l1.coordinates[i][1],
+          y: l1.coordinates[i][0]
+        },
+          a2 = {
+            x: l1.coordinates[i + 1][1],
+            y: l1.coordinates[i + 1][0]
+          },
+          b1 = {
+            x: l2.coordinates[j][1],
+            y: l2.coordinates[j][0]
+          },
+          b2 = {
+            x: l2.coordinates[j + 1][1],
+            y: l2.coordinates[j + 1][0]
+          },
+          ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x),
+          ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x),
+          u_b = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
+        if (u_b != 0) {
+          var ua = ua_t / u_b,
+            ub = ub_t / u_b;
+          if (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1) {
+            intersects.push({
+              'type': 'Point',
+              'coordinates': [a1.x + ua * (a2.x - a1.x), a1.y + ua * (a2.y - a1.y)]
+            });
+          }
+        }
+      }
+    }
+    if (intersects.length == 0) intersects = false;
+    return intersects;
+  }
+
+  // Bounding Box
+
+  function boundingBoxAroundPolyCoords (coords) {
+    var xAll = [], yAll = []
+
+    for (var i = 0; i < coords[0].length; i++) {
+      xAll.push(coords[0][i][1])
+      yAll.push(coords[0][i][0])
+    }
+
+    xAll = xAll.sort(function (a,b) { return a - b })
+    yAll = yAll.sort(function (a,b) { return a - b })
+
+    return [ [xAll[0], yAll[0]], [xAll[xAll.length - 1], yAll[yAll.length - 1]] ]
+  }
+
+  gju.pointInBoundingBox = function (point, bounds) {
+    return !(point.coordinates[1] < bounds[0][0] || point.coordinates[1] > bounds[1][0] || point.coordinates[0] < bounds[0][1] || point.coordinates[0] > bounds[1][1]) 
+  }
+
+  // Point in Polygon
+  // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html#Listing the Vertices
+
+  function pnpoly (x,y,coords) {
+    var vert = [ [0,0] ]
+
+    for (var i = 0; i < coords.length; i++) {
+      for (var j = 0; j < coords[i].length; j++) {
+        vert.push(coords[i][j])
+      }
+	  vert.push(coords[i][0])
+      vert.push([0,0])
+    }
+
+    var inside = false
+    for (var i = 0, j = vert.length - 1; i < vert.length; j = i++) {
+      if (((vert[i][0] > y) != (vert[j][0] > y)) && (x < (vert[j][1] - vert[i][1]) * (y - vert[i][0]) / (vert[j][0] - vert[i][0]) + vert[i][1])) inside = !inside
+    }
+
+    return inside
+  }
+
+  gju.pointInPolygon = function (p, poly) {
+    var coords = (poly.type == "Polygon") ? [ poly.coordinates ] : poly.coordinates
+
+    var insideBox = false
+    for (var i = 0; i < coords.length; i++) {
+      if (gju.pointInBoundingBox(p, boundingBoxAroundPolyCoords(coords[i]))) insideBox = true
+    }
+    if (!insideBox) return false
+
+    var insidePoly = false
+    for (var i = 0; i < coords.length; i++) {
+      if (pnpoly(p.coordinates[1], p.coordinates[0], coords[i])) insidePoly = true
+    }
+
+    return insidePoly
+  }
+
+  // support multi (but not donut) polygons
+  gju.pointInMultiPolygon = function (p, poly) {
+    var coords_array = (poly.type == "MultiPolygon") ? [ poly.coordinates ] : poly.coordinates
+
+    var insideBox = false
+    var insidePoly = false
+    for (var i = 0; i < coords_array.length; i++){
+      var coords = coords_array[i];
+      for (var j = 0; j < coords.length; j++) {
+        if (!insideBox){
+          if (gju.pointInBoundingBox(p, boundingBoxAroundPolyCoords(coords[j]))) {
+            insideBox = true
+          }
+        }
+      }
+      if (!insideBox) return false
+      for (var j = 0; j < coords.length; j++) {
+        if (!insidePoly){
+          if (pnpoly(p.coordinates[1], p.coordinates[0], coords[j])) {
+            insidePoly = true
+          }
+        }
+      }
+    }
+
+    return insidePoly
+  }
+
+  gju.numberToRadius = function (number) {
+    return number * Math.PI / 180;
+  }
+
+  gju.numberToDegree = function (number) {
+    return number * 180 / Math.PI;
+  }
+
+  // written with help from @tautologe
+  gju.drawCircle = function (radiusInMeters, centerPoint, steps) {
+    var center = [centerPoint.coordinates[1], centerPoint.coordinates[0]],
+      dist = (radiusInMeters / 1000) / 6371,
+      // convert meters to radiant
+      radCenter = [gju.numberToRadius(center[0]), gju.numberToRadius(center[1])],
+      steps = steps || 15,
+      // 15 sided circle
+      poly = [[center[0], center[1]]];
+    for (var i = 0; i < steps; i++) {
+      var brng = 2 * Math.PI * i / steps;
+      var lat = Math.asin(Math.sin(radCenter[0]) * Math.cos(dist)
+              + Math.cos(radCenter[0]) * Math.sin(dist) * Math.cos(brng));
+      var lng = radCenter[1] + Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(radCenter[0]),
+                                          Math.cos(dist) - Math.sin(radCenter[0]) * Math.sin(lat));
+      poly[i] = [];
+      poly[i][1] = gju.numberToDegree(lat);
+      poly[i][0] = gju.numberToDegree(lng);
+    }
+    return {
+      "type": "Polygon",
+      "coordinates": [poly]
+    };
+  }
+
+  // assumes rectangle starts at lower left point
+  gju.rectangleCentroid = function (rectangle) {
+    var bbox = rectangle.coordinates[0];
+    var xmin = bbox[0][0],
+      ymin = bbox[0][1],
+      xmax = bbox[2][0],
+      ymax = bbox[2][1];
+    var xwidth = xmax - xmin;
+    var ywidth = ymax - ymin;
+    return {
+      'type': 'Point',
+      'coordinates': [xmin + xwidth / 2, ymin + ywidth / 2]
+    };
+  }
+
+  // from http://www.movable-type.co.uk/scripts/latlong.html
+  gju.pointDistance = function (pt1, pt2) {
+    var lon1 = pt1.coordinates[0],
+      lat1 = pt1.coordinates[1],
+      lon2 = pt2.coordinates[0],
+      lat2 = pt2.coordinates[1],
+      dLat = gju.numberToRadius(lat2 - lat1),
+      dLon = gju.numberToRadius(lon2 - lon1),
+      a = Math.pow(Math.sin(dLat / 2), 2) + Math.cos(gju.numberToRadius(lat1))
+        * Math.cos(gju.numberToRadius(lat2)) * Math.pow(Math.sin(dLon / 2), 2),
+      c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return (6371 * c) * 1000; // returns meters
+  },
+
+  // checks if geometry lies entirely within a circle
+  // works with Point, LineString, Polygon
+  gju.geometryWithinRadius = function (geometry, center, radius) {
+    if (geometry.type == 'Point') {
+      return gju.pointDistance(geometry, center) <= radius;
+    } else if (geometry.type == 'LineString' || geometry.type == 'Polygon') {
+      var point = {};
+      var coordinates;
+      if (geometry.type == 'Polygon') {
+        // it's enough to check the exterior ring of the Polygon
+        coordinates = geometry.coordinates[0];
+      } else {
+        coordinates = geometry.coordinates;
+      }
+      for (var i in coordinates) {
+        point.coordinates = coordinates[i];
+        if (gju.pointDistance(point, center) > radius) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  // adapted from http://paulbourke.net/geometry/polyarea/javascript.txt
+  gju.area = function (polygon) {
+    var area = 0;
+    // TODO: polygon holes at coordinates[1]
+    var points = polygon.coordinates[0];
+    var j = points.length - 1;
+    var p1, p2;
+
+    for (var i = 0; i < points.length; j = i++) {
+      var p1 = {
+        x: points[i][1],
+        y: points[i][0]
+      };
+      var p2 = {
+        x: points[j][1],
+        y: points[j][0]
+      };
+      area += p1.x * p2.y;
+      area -= p1.y * p2.x;
+    }
+
+    area /= 2;
+    return area;
+  },
+
+  // adapted from http://paulbourke.net/geometry/polyarea/javascript.txt
+  gju.centroid = function (polygon) {
+    var f, x = 0,
+      y = 0;
+    // TODO: polygon holes at coordinates[1]
+    var points = polygon.coordinates[0];
+    var j = points.length - 1;
+    var p1, p2;
+
+    for (var i = 0; i < points.length; j = i++) {
+      var p1 = {
+        x: points[i][1],
+        y: points[i][0]
+      };
+      var p2 = {
+        x: points[j][1],
+        y: points[j][0]
+      };
+      f = p1.x * p2.y - p2.x * p1.y;
+      x += (p1.x + p2.x) * f;
+      y += (p1.y + p2.y) * f;
+    }
+
+    f = gju.area(polygon) * 6;
+    return {
+      'type': 'Point',
+      'coordinates': [y / f, x / f]
+    };
+  },
+
+  gju.simplify = function (source, kink) { /* source[] array of geojson points */
+    /* kink	in metres, kinks above this depth kept  */
+    /* kink depth is the height of the triangle abc where a-b and b-c are two consecutive line segments */
+    kink = kink || 20;
+    source = source.map(function (o) {
+      return {
+        lng: o.coordinates[0],
+        lat: o.coordinates[1]
+      }
+    });
+
+    var n_source, n_stack, n_dest, start, end, i, sig;
+    var dev_sqr, max_dev_sqr, band_sqr;
+    var x12, y12, d12, x13, y13, d13, x23, y23, d23;
+    var F = (Math.PI / 180.0) * 0.5;
+    var index = new Array(); /* aray of indexes of source points to include in the reduced line */
+    var sig_start = new Array(); /* indices of start & end of working section */
+    var sig_end = new Array();
+
+    /* check for simple cases */
+
+    if (source.length < 3) return (source); /* one or two points */
+
+    /* more complex case. initialize stack */
+
+    n_source = source.length;
+    band_sqr = kink * 360.0 / (2.0 * Math.PI * 6378137.0); /* Now in degrees */
+    band_sqr *= band_sqr;
+    n_dest = 0;
+    sig_start[0] = 0;
+    sig_end[0] = n_source - 1;
+    n_stack = 1;
+
+    /* while the stack is not empty  ... */
+    while (n_stack > 0) {
+
+      /* ... pop the top-most entries off the stacks */
+
+      start = sig_start[n_stack - 1];
+      end = sig_end[n_stack - 1];
+      n_stack--;
+
+      if ((end - start) > 1) { /* any intermediate points ? */
+
+        /* ... yes, so find most deviant intermediate point to
+        either side of line joining start & end points */
+
+        x12 = (source[end].lng() - source[start].lng());
+        y12 = (source[end].lat() - source[start].lat());
+        if (Math.abs(x12) > 180.0) x12 = 360.0 - Math.abs(x12);
+        x12 *= Math.cos(F * (source[end].lat() + source[start].lat())); /* use avg lat to reduce lng */
+        d12 = (x12 * x12) + (y12 * y12);
+
+        for (i = start + 1, sig = start, max_dev_sqr = -1.0; i < end; i++) {
+
+          x13 = source[i].lng() - source[start].lng();
+          y13 = source[i].lat() - source[start].lat();
+          if (Math.abs(x13) > 180.0) x13 = 360.0 - Math.abs(x13);
+          x13 *= Math.cos(F * (source[i].lat() + source[start].lat()));
+          d13 = (x13 * x13) + (y13 * y13);
+
+          x23 = source[i].lng() - source[end].lng();
+          y23 = source[i].lat() - source[end].lat();
+          if (Math.abs(x23) > 180.0) x23 = 360.0 - Math.abs(x23);
+          x23 *= Math.cos(F * (source[i].lat() + source[end].lat()));
+          d23 = (x23 * x23) + (y23 * y23);
+
+          if (d13 >= (d12 + d23)) dev_sqr = d23;
+          else if (d23 >= (d12 + d13)) dev_sqr = d13;
+          else dev_sqr = (x13 * y12 - y13 * x12) * (x13 * y12 - y13 * x12) / d12; // solve triangle
+          if (dev_sqr > max_dev_sqr) {
+            sig = i;
+            max_dev_sqr = dev_sqr;
+          }
+        }
+
+        if (max_dev_sqr < band_sqr) { /* is there a sig. intermediate point ? */
+          /* ... no, so transfer current start point */
+          index[n_dest] = start;
+          n_dest++;
+        } else { /* ... yes, so push two sub-sections on stack for further processing */
+          n_stack++;
+          sig_start[n_stack - 1] = sig;
+          sig_end[n_stack - 1] = end;
+          n_stack++;
+          sig_start[n_stack - 1] = start;
+          sig_end[n_stack - 1] = sig;
+        }
+      } else { /* ... no intermediate points, so transfer current start point */
+        index[n_dest] = start;
+        n_dest++;
+      }
+    }
+
+    /* transfer last point */
+    index[n_dest] = n_source - 1;
+    n_dest++;
+
+    /* make return array */
+    var r = new Array();
+    for (var i = 0; i < n_dest; i++)
+      r.push(source[index[i]]);
+
+    return r.map(function (o) {
+      return {
+        type: "Point",
+        coordinates: [o.lng, o.lat]
+      }
+    });
+  }
+
+  // http://www.movable-type.co.uk/scripts/latlong.html#destPoint
+  gju.destinationPoint = function (pt, brng, dist) {
+    dist = dist/6371;  // convert dist to angular distance in radians
+    brng = gju.numberToRadius(brng);
+
+    var lon1 = gju.numberToRadius(pt.coordinates[0]);
+    var lat1 = gju.numberToRadius(pt.coordinates[1]);
+
+    var lat2 = Math.asin( Math.sin(lat1)*Math.cos(dist) +
+                          Math.cos(lat1)*Math.sin(dist)*Math.cos(brng) );
+    var lon2 = lon1 + Math.atan2(Math.sin(brng)*Math.sin(dist)*Math.cos(lat1),
+                                 Math.cos(dist)-Math.sin(lat1)*Math.sin(lat2));
+    lon2 = (lon2+3*Math.PI) % (2*Math.PI) - Math.PI;  // normalise to -180..+180º
+
+    return {
+      'type': 'Point',
+      'coordinates': [gju.numberToDegree(lon2), gju.numberToDegree(lat2)]
+    };
+  };
+
+})();
+
+
+/***/ }),
 /* 518 */,
 /* 519 */,
 /* 520 */,
@@ -14807,7 +14137,1029 @@ initialPrep();
 /* 547 */,
 /* 548 */,
 /* 549 */,
-/* 550 */,
+/* 550 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
+ * numeral.js
+ * version : 2.0.6
+ * author : Adam Draper
+ * license : MIT
+ * http://adamwdraper.github.com/Numeral-js/
+ */
+
+(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
+				__WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        global.numeral = factory();
+    }
+}(this, function () {
+    /************************************
+        Variables
+    ************************************/
+
+    var numeral,
+        _,
+        VERSION = '2.0.6',
+        formats = {},
+        locales = {},
+        defaults = {
+            currentLocale: 'en',
+            zeroFormat: null,
+            nullFormat: null,
+            defaultFormat: '0,0',
+            scalePercentBy100: true
+        },
+        options = {
+            currentLocale: defaults.currentLocale,
+            zeroFormat: defaults.zeroFormat,
+            nullFormat: defaults.nullFormat,
+            defaultFormat: defaults.defaultFormat,
+            scalePercentBy100: defaults.scalePercentBy100
+        };
+
+
+    /************************************
+        Constructors
+    ************************************/
+
+    // Numeral prototype object
+    function Numeral(input, number) {
+        this._input = input;
+
+        this._value = number;
+    }
+
+    numeral = function(input) {
+        var value,
+            kind,
+            unformatFunction,
+            regexp;
+
+        if (numeral.isNumeral(input)) {
+            value = input.value();
+        } else if (input === 0 || typeof input === 'undefined') {
+            value = 0;
+        } else if (input === null || _.isNaN(input)) {
+            value = null;
+        } else if (typeof input === 'string') {
+            if (options.zeroFormat && input === options.zeroFormat) {
+                value = 0;
+            } else if (options.nullFormat && input === options.nullFormat || !input.replace(/[^0-9]+/g, '').length) {
+                value = null;
+            } else {
+                for (kind in formats) {
+                    regexp = typeof formats[kind].regexps.unformat === 'function' ? formats[kind].regexps.unformat() : formats[kind].regexps.unformat;
+
+                    if (regexp && input.match(regexp)) {
+                        unformatFunction = formats[kind].unformat;
+
+                        break;
+                    }
+                }
+
+                unformatFunction = unformatFunction || numeral._.stringToNumber;
+
+                value = unformatFunction(input);
+            }
+        } else {
+            value = Number(input)|| null;
+        }
+
+        return new Numeral(input, value);
+    };
+
+    // version number
+    numeral.version = VERSION;
+
+    // compare numeral object
+    numeral.isNumeral = function(obj) {
+        return obj instanceof Numeral;
+    };
+
+    // helper functions
+    numeral._ = _ = {
+        // formats numbers separators, decimals places, signs, abbreviations
+        numberToFormat: function(value, format, roundingFunction) {
+            var locale = locales[numeral.options.currentLocale],
+                negP = false,
+                optDec = false,
+                leadingCount = 0,
+                abbr = '',
+                trillion = 1000000000000,
+                billion = 1000000000,
+                million = 1000000,
+                thousand = 1000,
+                decimal = '',
+                neg = false,
+                abbrForce, // force abbreviation
+                abs,
+                min,
+                max,
+                power,
+                int,
+                precision,
+                signed,
+                thousands,
+                output;
+
+            // make sure we never format a null value
+            value = value || 0;
+
+            abs = Math.abs(value);
+
+            // see if we should use parentheses for negative number or if we should prefix with a sign
+            // if both are present we default to parentheses
+            if (numeral._.includes(format, '(')) {
+                negP = true;
+                format = format.replace(/[\(|\)]/g, '');
+            } else if (numeral._.includes(format, '+') || numeral._.includes(format, '-')) {
+                signed = numeral._.includes(format, '+') ? format.indexOf('+') : value < 0 ? format.indexOf('-') : -1;
+                format = format.replace(/[\+|\-]/g, '');
+            }
+
+            // see if abbreviation is wanted
+            if (numeral._.includes(format, 'a')) {
+                abbrForce = format.match(/a(k|m|b|t)?/);
+
+                abbrForce = abbrForce ? abbrForce[1] : false;
+
+                // check for space before abbreviation
+                if (numeral._.includes(format, ' a')) {
+                    abbr = ' ';
+                }
+
+                format = format.replace(new RegExp(abbr + 'a[kmbt]?'), '');
+
+                if (abs >= trillion && !abbrForce || abbrForce === 't') {
+                    // trillion
+                    abbr += locale.abbreviations.trillion;
+                    value = value / trillion;
+                } else if (abs < trillion && abs >= billion && !abbrForce || abbrForce === 'b') {
+                    // billion
+                    abbr += locale.abbreviations.billion;
+                    value = value / billion;
+                } else if (abs < billion && abs >= million && !abbrForce || abbrForce === 'm') {
+                    // million
+                    abbr += locale.abbreviations.million;
+                    value = value / million;
+                } else if (abs < million && abs >= thousand && !abbrForce || abbrForce === 'k') {
+                    // thousand
+                    abbr += locale.abbreviations.thousand;
+                    value = value / thousand;
+                }
+            }
+
+            // check for optional decimals
+            if (numeral._.includes(format, '[.]')) {
+                optDec = true;
+                format = format.replace('[.]', '.');
+            }
+
+            // break number and format
+            int = value.toString().split('.')[0];
+            precision = format.split('.')[1];
+            thousands = format.indexOf(',');
+            leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
+
+            if (precision) {
+                if (numeral._.includes(precision, '[')) {
+                    precision = precision.replace(']', '');
+                    precision = precision.split('[');
+                    decimal = numeral._.toFixed(value, (precision[0].length + precision[1].length), roundingFunction, precision[1].length);
+                } else {
+                    decimal = numeral._.toFixed(value, precision.length, roundingFunction);
+                }
+
+                int = decimal.split('.')[0];
+
+                if (numeral._.includes(decimal, '.')) {
+                    decimal = locale.delimiters.decimal + decimal.split('.')[1];
+                } else {
+                    decimal = '';
+                }
+
+                if (optDec && Number(decimal.slice(1)) === 0) {
+                    decimal = '';
+                }
+            } else {
+                int = numeral._.toFixed(value, 0, roundingFunction);
+            }
+
+            // check abbreviation again after rounding
+            if (abbr && !abbrForce && Number(int) >= 1000 && abbr !== locale.abbreviations.trillion) {
+                int = String(Number(int) / 1000);
+
+                switch (abbr) {
+                    case locale.abbreviations.thousand:
+                        abbr = locale.abbreviations.million;
+                        break;
+                    case locale.abbreviations.million:
+                        abbr = locale.abbreviations.billion;
+                        break;
+                    case locale.abbreviations.billion:
+                        abbr = locale.abbreviations.trillion;
+                        break;
+                }
+            }
+
+
+            // format number
+            if (numeral._.includes(int, '-')) {
+                int = int.slice(1);
+                neg = true;
+            }
+
+            if (int.length < leadingCount) {
+                for (var i = leadingCount - int.length; i > 0; i--) {
+                    int = '0' + int;
+                }
+            }
+
+            if (thousands > -1) {
+                int = int.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + locale.delimiters.thousands);
+            }
+
+            if (format.indexOf('.') === 0) {
+                int = '';
+            }
+
+            output = int + decimal + (abbr ? abbr : '');
+
+            if (negP) {
+                output = (negP && neg ? '(' : '') + output + (negP && neg ? ')' : '');
+            } else {
+                if (signed >= 0) {
+                    output = signed === 0 ? (neg ? '-' : '+') + output : output + (neg ? '-' : '+');
+                } else if (neg) {
+                    output = '-' + output;
+                }
+            }
+
+            return output;
+        },
+        // unformats numbers separators, decimals places, signs, abbreviations
+        stringToNumber: function(string) {
+            var locale = locales[options.currentLocale],
+                stringOriginal = string,
+                abbreviations = {
+                    thousand: 3,
+                    million: 6,
+                    billion: 9,
+                    trillion: 12
+                },
+                abbreviation,
+                value,
+                i,
+                regexp;
+
+            if (options.zeroFormat && string === options.zeroFormat) {
+                value = 0;
+            } else if (options.nullFormat && string === options.nullFormat || !string.replace(/[^0-9]+/g, '').length) {
+                value = null;
+            } else {
+                value = 1;
+
+                if (locale.delimiters.decimal !== '.') {
+                    string = string.replace(/\./g, '').replace(locale.delimiters.decimal, '.');
+                }
+
+                for (abbreviation in abbreviations) {
+                    regexp = new RegExp('[^a-zA-Z]' + locale.abbreviations[abbreviation] + '(?:\\)|(\\' + locale.currency.symbol + ')?(?:\\))?)?$');
+
+                    if (stringOriginal.match(regexp)) {
+                        value *= Math.pow(10, abbreviations[abbreviation]);
+                        break;
+                    }
+                }
+
+                // check for negative number
+                value *= (string.split('-').length + Math.min(string.split('(').length - 1, string.split(')').length - 1)) % 2 ? 1 : -1;
+
+                // remove non numbers
+                string = string.replace(/[^0-9\.]+/g, '');
+
+                value *= Number(string);
+            }
+
+            return value;
+        },
+        isNaN: function(value) {
+            return typeof value === 'number' && isNaN(value);
+        },
+        includes: function(string, search) {
+            return string.indexOf(search) !== -1;
+        },
+        insert: function(string, subString, start) {
+            return string.slice(0, start) + subString + string.slice(start);
+        },
+        reduce: function(array, callback /*, initialValue*/) {
+            if (this === null) {
+                throw new TypeError('Array.prototype.reduce called on null or undefined');
+            }
+
+            if (typeof callback !== 'function') {
+                throw new TypeError(callback + ' is not a function');
+            }
+
+            var t = Object(array),
+                len = t.length >>> 0,
+                k = 0,
+                value;
+
+            if (arguments.length === 3) {
+                value = arguments[2];
+            } else {
+                while (k < len && !(k in t)) {
+                    k++;
+                }
+
+                if (k >= len) {
+                    throw new TypeError('Reduce of empty array with no initial value');
+                }
+
+                value = t[k++];
+            }
+            for (; k < len; k++) {
+                if (k in t) {
+                    value = callback(value, t[k], k, t);
+                }
+            }
+            return value;
+        },
+        /**
+         * Computes the multiplier necessary to make x >= 1,
+         * effectively eliminating miscalculations caused by
+         * finite precision.
+         */
+        multiplier: function (x) {
+            var parts = x.toString().split('.');
+
+            return parts.length < 2 ? 1 : Math.pow(10, parts[1].length);
+        },
+        /**
+         * Given a variable number of arguments, returns the maximum
+         * multiplier that must be used to normalize an operation involving
+         * all of them.
+         */
+        correctionFactor: function () {
+            var args = Array.prototype.slice.call(arguments);
+
+            return args.reduce(function(accum, next) {
+                var mn = _.multiplier(next);
+                return accum > mn ? accum : mn;
+            }, 1);
+        },
+        /**
+         * Implementation of toFixed() that treats floats more like decimals
+         *
+         * Fixes binary rounding issues (eg. (0.615).toFixed(2) === '0.61') that present
+         * problems for accounting- and finance-related software.
+         */
+        toFixed: function(value, maxDecimals, roundingFunction, optionals) {
+            var splitValue = value.toString().split('.'),
+                minDecimals = maxDecimals - (optionals || 0),
+                boundedPrecision,
+                optionalsRegExp,
+                power,
+                output;
+
+            // Use the smallest precision value possible to avoid errors from floating point representation
+            if (splitValue.length === 2) {
+              boundedPrecision = Math.min(Math.max(splitValue[1].length, minDecimals), maxDecimals);
+            } else {
+              boundedPrecision = minDecimals;
+            }
+
+            power = Math.pow(10, boundedPrecision);
+
+            // Multiply up by precision, round accurately, then divide and use native toFixed():
+            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+
+            if (optionals > maxDecimals - boundedPrecision) {
+                optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
+                output = output.replace(optionalsRegExp, '');
+            }
+
+            return output;
+        }
+    };
+
+    // avaliable options
+    numeral.options = options;
+
+    // avaliable formats
+    numeral.formats = formats;
+
+    // avaliable formats
+    numeral.locales = locales;
+
+    // This function sets the current locale.  If
+    // no arguments are passed in, it will simply return the current global
+    // locale key.
+    numeral.locale = function(key) {
+        if (key) {
+            options.currentLocale = key.toLowerCase();
+        }
+
+        return options.currentLocale;
+    };
+
+    // This function provides access to the loaded locale data.  If
+    // no arguments are passed in, it will simply return the current
+    // global locale object.
+    numeral.localeData = function(key) {
+        if (!key) {
+            return locales[options.currentLocale];
+        }
+
+        key = key.toLowerCase();
+
+        if (!locales[key]) {
+            throw new Error('Unknown locale : ' + key);
+        }
+
+        return locales[key];
+    };
+
+    numeral.reset = function() {
+        for (var property in defaults) {
+            options[property] = defaults[property];
+        }
+    };
+
+    numeral.zeroFormat = function(format) {
+        options.zeroFormat = typeof(format) === 'string' ? format : null;
+    };
+
+    numeral.nullFormat = function (format) {
+        options.nullFormat = typeof(format) === 'string' ? format : null;
+    };
+
+    numeral.defaultFormat = function(format) {
+        options.defaultFormat = typeof(format) === 'string' ? format : '0.0';
+    };
+
+    numeral.register = function(type, name, format) {
+        name = name.toLowerCase();
+
+        if (this[type + 's'][name]) {
+            throw new TypeError(name + ' ' + type + ' already registered.');
+        }
+
+        this[type + 's'][name] = format;
+
+        return format;
+    };
+
+
+    numeral.validate = function(val, culture) {
+        var _decimalSep,
+            _thousandSep,
+            _currSymbol,
+            _valArray,
+            _abbrObj,
+            _thousandRegEx,
+            localeData,
+            temp;
+
+        //coerce val to string
+        if (typeof val !== 'string') {
+            val += '';
+
+            if (console.warn) {
+                console.warn('Numeral.js: Value is not string. It has been co-erced to: ', val);
+            }
+        }
+
+        //trim whitespaces from either sides
+        val = val.trim();
+
+        //if val is just digits return true
+        if (!!val.match(/^\d+$/)) {
+            return true;
+        }
+
+        //if val is empty return false
+        if (val === '') {
+            return false;
+        }
+
+        //get the decimal and thousands separator from numeral.localeData
+        try {
+            //check if the culture is understood by numeral. if not, default it to current locale
+            localeData = numeral.localeData(culture);
+        } catch (e) {
+            localeData = numeral.localeData(numeral.locale());
+        }
+
+        //setup the delimiters and currency symbol based on culture/locale
+        _currSymbol = localeData.currency.symbol;
+        _abbrObj = localeData.abbreviations;
+        _decimalSep = localeData.delimiters.decimal;
+        if (localeData.delimiters.thousands === '.') {
+            _thousandSep = '\\.';
+        } else {
+            _thousandSep = localeData.delimiters.thousands;
+        }
+
+        // validating currency symbol
+        temp = val.match(/^[^\d]+/);
+        if (temp !== null) {
+            val = val.substr(1);
+            if (temp[0] !== _currSymbol) {
+                return false;
+            }
+        }
+
+        //validating abbreviation symbol
+        temp = val.match(/[^\d]+$/);
+        if (temp !== null) {
+            val = val.slice(0, -1);
+            if (temp[0] !== _abbrObj.thousand && temp[0] !== _abbrObj.million && temp[0] !== _abbrObj.billion && temp[0] !== _abbrObj.trillion) {
+                return false;
+            }
+        }
+
+        _thousandRegEx = new RegExp(_thousandSep + '{2}');
+
+        if (!val.match(/[^\d.,]/g)) {
+            _valArray = val.split(_decimalSep);
+            if (_valArray.length > 2) {
+                return false;
+            } else {
+                if (_valArray.length < 2) {
+                    return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx));
+                } else {
+                    if (_valArray[0].length === 1) {
+                        return ( !! _valArray[0].match(/^\d+$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
+                    } else {
+                        return ( !! _valArray[0].match(/^\d+.*\d$/) && !_valArray[0].match(_thousandRegEx) && !! _valArray[1].match(/^\d+$/));
+                    }
+                }
+            }
+        }
+
+        return false;
+    };
+
+
+    /************************************
+        Numeral Prototype
+    ************************************/
+
+    numeral.fn = Numeral.prototype = {
+        clone: function() {
+            return numeral(this);
+        },
+        format: function(inputString, roundingFunction) {
+            var value = this._value,
+                format = inputString || options.defaultFormat,
+                kind,
+                output,
+                formatFunction;
+
+            // make sure we have a roundingFunction
+            roundingFunction = roundingFunction || Math.round;
+
+            // format based on value
+            if (value === 0 && options.zeroFormat !== null) {
+                output = options.zeroFormat;
+            } else if (value === null && options.nullFormat !== null) {
+                output = options.nullFormat;
+            } else {
+                for (kind in formats) {
+                    if (format.match(formats[kind].regexps.format)) {
+                        formatFunction = formats[kind].format;
+
+                        break;
+                    }
+                }
+
+                formatFunction = formatFunction || numeral._.numberToFormat;
+
+                output = formatFunction(value, format, roundingFunction);
+            }
+
+            return output;
+        },
+        value: function() {
+            return this._value;
+        },
+        input: function() {
+            return this._input;
+        },
+        set: function(value) {
+            this._value = Number(value);
+
+            return this;
+        },
+        add: function(value) {
+            var corrFactor = _.correctionFactor.call(null, this._value, value);
+
+            function cback(accum, curr, currI, O) {
+                return accum + Math.round(corrFactor * curr);
+            }
+
+            this._value = _.reduce([this._value, value], cback, 0) / corrFactor;
+
+            return this;
+        },
+        subtract: function(value) {
+            var corrFactor = _.correctionFactor.call(null, this._value, value);
+
+            function cback(accum, curr, currI, O) {
+                return accum - Math.round(corrFactor * curr);
+            }
+
+            this._value = _.reduce([value], cback, Math.round(this._value * corrFactor)) / corrFactor;
+
+            return this;
+        },
+        multiply: function(value) {
+            function cback(accum, curr, currI, O) {
+                var corrFactor = _.correctionFactor(accum, curr);
+                return Math.round(accum * corrFactor) * Math.round(curr * corrFactor) / Math.round(corrFactor * corrFactor);
+            }
+
+            this._value = _.reduce([this._value, value], cback, 1);
+
+            return this;
+        },
+        divide: function(value) {
+            function cback(accum, curr, currI, O) {
+                var corrFactor = _.correctionFactor(accum, curr);
+                return Math.round(accum * corrFactor) / Math.round(curr * corrFactor);
+            }
+
+            this._value = _.reduce([this._value, value], cback);
+
+            return this;
+        },
+        difference: function(value) {
+            return Math.abs(numeral(this._value).subtract(value).value());
+        }
+    };
+
+    /************************************
+        Default Locale && Format
+    ************************************/
+
+    numeral.register('locale', 'en', {
+        delimiters: {
+            thousands: ',',
+            decimal: '.'
+        },
+        abbreviations: {
+            thousand: 'k',
+            million: 'm',
+            billion: 'b',
+            trillion: 't'
+        },
+        ordinal: function(number) {
+            var b = number % 10;
+            return (~~(number % 100 / 10) === 1) ? 'th' :
+                (b === 1) ? 'st' :
+                (b === 2) ? 'nd' :
+                (b === 3) ? 'rd' : 'th';
+        },
+        currency: {
+            symbol: '$'
+        }
+    });
+
+    
+
+(function() {
+        numeral.register('format', 'bps', {
+            regexps: {
+                format: /(BPS)/,
+                unformat: /(BPS)/
+            },
+            format: function(value, format, roundingFunction) {
+                var space = numeral._.includes(format, ' BPS') ? ' ' : '',
+                    output;
+
+                value = value * 10000;
+
+                // check for space before BPS
+                format = format.replace(/\s?BPS/, '');
+
+                output = numeral._.numberToFormat(value, format, roundingFunction);
+
+                if (numeral._.includes(output, ')')) {
+                    output = output.split('');
+
+                    output.splice(-1, 0, space + 'BPS');
+
+                    output = output.join('');
+                } else {
+                    output = output + space + 'BPS';
+                }
+
+                return output;
+            },
+            unformat: function(string) {
+                return +(numeral._.stringToNumber(string) * 0.0001).toFixed(15);
+            }
+        });
+})();
+
+
+(function() {
+        var decimal = {
+            base: 1000,
+            suffixes: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        },
+        binary = {
+            base: 1024,
+            suffixes: ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+        };
+
+    var allSuffixes =  decimal.suffixes.concat(binary.suffixes.filter(function (item) {
+            return decimal.suffixes.indexOf(item) < 0;
+        }));
+        var unformatRegex = allSuffixes.join('|');
+        // Allow support for BPS (http://www.investopedia.com/terms/b/basispoint.asp)
+        unformatRegex = '(' + unformatRegex.replace('B', 'B(?!PS)') + ')';
+
+    numeral.register('format', 'bytes', {
+        regexps: {
+            format: /([0\s]i?b)/,
+            unformat: new RegExp(unformatRegex)
+        },
+        format: function(value, format, roundingFunction) {
+            var output,
+                bytes = numeral._.includes(format, 'ib') ? binary : decimal,
+                suffix = numeral._.includes(format, ' b') || numeral._.includes(format, ' ib') ? ' ' : '',
+                power,
+                min,
+                max;
+
+            // check for space before
+            format = format.replace(/\s?i?b/, '');
+
+            for (power = 0; power <= bytes.suffixes.length; power++) {
+                min = Math.pow(bytes.base, power);
+                max = Math.pow(bytes.base, power + 1);
+
+                if (value === null || value === 0 || value >= min && value < max) {
+                    suffix += bytes.suffixes[power];
+
+                    if (min > 0) {
+                        value = value / min;
+                    }
+
+                    break;
+                }
+            }
+
+            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+            return output + suffix;
+        },
+        unformat: function(string) {
+            var value = numeral._.stringToNumber(string),
+                power,
+                bytesMultiplier;
+
+            if (value) {
+                for (power = decimal.suffixes.length - 1; power >= 0; power--) {
+                    if (numeral._.includes(string, decimal.suffixes[power])) {
+                        bytesMultiplier = Math.pow(decimal.base, power);
+
+                        break;
+                    }
+
+                    if (numeral._.includes(string, binary.suffixes[power])) {
+                        bytesMultiplier = Math.pow(binary.base, power);
+
+                        break;
+                    }
+                }
+
+                value *= (bytesMultiplier || 1);
+            }
+
+            return value;
+        }
+    });
+})();
+
+
+(function() {
+        numeral.register('format', 'currency', {
+        regexps: {
+            format: /(\$)/
+        },
+        format: function(value, format, roundingFunction) {
+            var locale = numeral.locales[numeral.options.currentLocale],
+                symbols = {
+                    before: format.match(/^([\+|\-|\(|\s|\$]*)/)[0],
+                    after: format.match(/([\+|\-|\)|\s|\$]*)$/)[0]
+                },
+                output,
+                symbol,
+                i;
+
+            // strip format of spaces and $
+            format = format.replace(/\s?\$\s?/, '');
+
+            // format the number
+            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+            // update the before and after based on value
+            if (value >= 0) {
+                symbols.before = symbols.before.replace(/[\-\(]/, '');
+                symbols.after = symbols.after.replace(/[\-\)]/, '');
+            } else if (value < 0 && (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '('))) {
+                symbols.before = '-' + symbols.before;
+            }
+
+            // loop through each before symbol
+            for (i = 0; i < symbols.before.length; i++) {
+                symbol = symbols.before[i];
+
+                switch (symbol) {
+                    case '$':
+                        output = numeral._.insert(output, locale.currency.symbol, i);
+                        break;
+                    case ' ':
+                        output = numeral._.insert(output, ' ', i + locale.currency.symbol.length - 1);
+                        break;
+                }
+            }
+
+            // loop through each after symbol
+            for (i = symbols.after.length - 1; i >= 0; i--) {
+                symbol = symbols.after[i];
+
+                switch (symbol) {
+                    case '$':
+                        output = i === symbols.after.length - 1 ? output + locale.currency.symbol : numeral._.insert(output, locale.currency.symbol, -(symbols.after.length - (1 + i)));
+                        break;
+                    case ' ':
+                        output = i === symbols.after.length - 1 ? output + ' ' : numeral._.insert(output, ' ', -(symbols.after.length - (1 + i) + locale.currency.symbol.length - 1));
+                        break;
+                }
+            }
+
+
+            return output;
+        }
+    });
+})();
+
+
+(function() {
+        numeral.register('format', 'exponential', {
+        regexps: {
+            format: /(e\+|e-)/,
+            unformat: /(e\+|e-)/
+        },
+        format: function(value, format, roundingFunction) {
+            var output,
+                exponential = typeof value === 'number' && !numeral._.isNaN(value) ? value.toExponential() : '0e+0',
+                parts = exponential.split('e');
+
+            format = format.replace(/e[\+|\-]{1}0/, '');
+
+            output = numeral._.numberToFormat(Number(parts[0]), format, roundingFunction);
+
+            return output + 'e' + parts[1];
+        },
+        unformat: function(string) {
+            var parts = numeral._.includes(string, 'e+') ? string.split('e+') : string.split('e-'),
+                value = Number(parts[0]),
+                power = Number(parts[1]);
+
+            power = numeral._.includes(string, 'e-') ? power *= -1 : power;
+
+            function cback(accum, curr, currI, O) {
+                var corrFactor = numeral._.correctionFactor(accum, curr),
+                    num = (accum * corrFactor) * (curr * corrFactor) / (corrFactor * corrFactor);
+                return num;
+            }
+
+            return numeral._.reduce([value, Math.pow(10, power)], cback, 1);
+        }
+    });
+})();
+
+
+(function() {
+        numeral.register('format', 'ordinal', {
+        regexps: {
+            format: /(o)/
+        },
+        format: function(value, format, roundingFunction) {
+            var locale = numeral.locales[numeral.options.currentLocale],
+                output,
+                ordinal = numeral._.includes(format, ' o') ? ' ' : '';
+
+            // check for space before
+            format = format.replace(/\s?o/, '');
+
+            ordinal += locale.ordinal(value);
+
+            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+            return output + ordinal;
+        }
+    });
+})();
+
+
+(function() {
+        numeral.register('format', 'percentage', {
+        regexps: {
+            format: /(%)/,
+            unformat: /(%)/
+        },
+        format: function(value, format, roundingFunction) {
+            var space = numeral._.includes(format, ' %') ? ' ' : '',
+                output;
+
+            if (numeral.options.scalePercentBy100) {
+                value = value * 100;
+            }
+
+            // check for space before %
+            format = format.replace(/\s?\%/, '');
+
+            output = numeral._.numberToFormat(value, format, roundingFunction);
+
+            if (numeral._.includes(output, ')')) {
+                output = output.split('');
+
+                output.splice(-1, 0, space + '%');
+
+                output = output.join('');
+            } else {
+                output = output + space + '%';
+            }
+
+            return output;
+        },
+        unformat: function(string) {
+            var number = numeral._.stringToNumber(string);
+            if (numeral.options.scalePercentBy100) {
+                return number * 0.01;
+            }
+            return number;
+        }
+    });
+})();
+
+
+(function() {
+        numeral.register('format', 'time', {
+        regexps: {
+            format: /(:)/,
+            unformat: /(:)/
+        },
+        format: function(value, format, roundingFunction) {
+            var hours = Math.floor(value / 60 / 60),
+                minutes = Math.floor((value - (hours * 60 * 60)) / 60),
+                seconds = Math.round(value - (hours * 60 * 60) - (minutes * 60));
+
+            return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+        },
+        unformat: function(string) {
+            var timeArray = string.split(':'),
+                seconds = 0;
+
+            // turn hours and minutes into seconds and add them all up
+            if (timeArray.length === 3) {
+                // hours
+                seconds = seconds + (Number(timeArray[0]) * 60 * 60);
+                // minutes
+                seconds = seconds + (Number(timeArray[1]) * 60);
+                // seconds
+                seconds = seconds + Number(timeArray[2]);
+            } else if (timeArray.length === 2) {
+                // minutes
+                seconds = seconds + (Number(timeArray[0]) * 60);
+                // seconds
+                seconds = seconds + Number(timeArray[1]);
+            }
+            return Number(seconds);
+        }
+    });
+})();
+
+return numeral;
+}));
+
+
+/***/ }),
 /* 551 */,
 /* 552 */,
 /* 553 */,
@@ -14826,17 +15178,31 @@ initialPrep();
 /* 566 */,
 /* 567 */,
 /* 568 */,
-/* 569 */,
+/* 569 */
+/***/ (function(module, exports, __webpack_require__) {
+
+!function(t,e){ true?module.exports=e():"function"==typeof define&&define.amd?define(e):t.VueInputAutowidth=e()}(this,function(){"use strict";function t(t,e){if(void 0===t||null===t)throw new TypeError("Cannot convert first argument to object");for(var n=Object(t),o=1;o<arguments.length;o++){var r=arguments[o];if(void 0!==r&&null!==r)for(var i=Object.keys(Object(r)),a=0,u=i.length;a<u;a++){var d=i[a],l=Object.getOwnPropertyDescriptor(r,d);void 0!==l&&l.enumerable&&(n[d]=r[d])}}return n}function e(t,e){t.directive("autowidth",o)}({assign:t,polyfill:function(){Object.assign||Object.defineProperty(Object,"assign",{enumerable:!1,configurable:!0,writable:!0,value:t})}}).polyfill();var n=function(t,e){var n=document.querySelector(".vue-input-autowidth-mirror-"+t.dataset.uuid),o={maxWidth:"none",minWidth:"none",comfortZone:0},r=Object.assign({},o,e.value);t.style.maxWidth=r.maxWidth,t.style.minWidth=r.minWidth;var i=t.value;for(i||(i=t.placeholder||"");n.childNodes.length;)n.removeChild(n.childNodes[0]);n.appendChild(document.createTextNode(i));var a=n.getBoundingClientRect().width+r.comfortZone;a!=t.getBoundingClientRect().width&&(t.style.width=a+"px")},o={bind:function(t){if("INPUT"!==t.tagName.toLocaleUpperCase())throw new Error("v-input-autowidth can only be used on input elements.");t.dataset.uuid=Math.random().toString(36).slice(-5)},inserted:function(t,e){var o=document.createElement("span");o.classList.add("vue-input-autowidth-mirror-"+t.dataset.uuid);var r=window.getComputedStyle(t);Object.assign(o.style,{position:"absolute",top:"-9999px",left:"-9999px",width:"auto",whiteSpace:"pre",opacity:0,border:r.getPropertyValue("border"),fontSize:r.getPropertyValue("font-size"),fontFamily:r.getPropertyValue("font-family"),fontWeight:r.getPropertyValue("font-weight"),fontStyle:r.getPropertyValue("font-style"),fontFeatureSettings:r.getPropertyValue("font-feature-settings"),fontKerning:r.getPropertyValue("font-kerning"),fontStretch:r.getPropertyValue("font-stretch"),fontVariant:r.getPropertyValue("font-variant"),fontVariantCaps:r.getPropertyValue("font-variant-caps"),fontVariantLigatures:r.getPropertyValue("font-variant-ligatures"),fontVariantNumeric:r.getPropertyValue("font-variant-numeric"),letterSpacing:r.getPropertyValue("letter-spacing"),padding:r.getPropertyValue("padding"),textTransform:r.getPropertyValue("text-transform"),ariaHidden:!0}),document.body.appendChild(o),n(t,e)},componentUpdated:function(t,e){n(t,e)}};return"undefined"!=typeof window&&window.Vue&&window.Vue.use(e),e});
+
+
+/***/ }),
 /* 570 */,
 /* 571 */,
 /* 572 */,
 /* 573 */,
 /* 574 */,
-/* 575 */
+/* 575 */,
+/* 576 */,
+/* 577 */,
+/* 578 */,
+/* 579 */,
+/* 580 */,
+/* 581 */,
+/* 582 */,
+/* 583 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(159);
-module.exports = __webpack_require__(492);
+module.exports = __webpack_require__(500);
 
 
 /***/ })
